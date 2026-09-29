@@ -1,0 +1,227 @@
+<svg viewBox="0 0 1400 1000" xmlns="http://www.w3.org/2000/svg" font-family="Consolas, 'DejaVu Sans Mono', monospace">
+  <style>
+    .title   { font-family: Arial, Helvetica, sans-serif; font-size: 26px; font-weight: 700; fill: #1a1a1a; }
+    .subtitle{ font-family: Arial, Helvetica, sans-serif; font-size: 14px; fill: #555; }
+    .lbl     { font-family: Arial, Helvetica, sans-serif; font-size: 13px; fill: #1a1a1a; }
+    .lbl-b   { font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a1a; }
+    .small   { font-family: Arial, Helvetica, sans-serif; font-size: 11px; fill: #444; }
+    .small-w { font-family: Arial, Helvetica, sans-serif; font-size: 11px; fill: #fff; }
+    .pin     { font-size: 12px; fill: #fff; }
+    .note    { font-family: Arial, Helvetica, sans-serif; font-size: 12.5px; fill: #7a1f1f; font-weight: 700; }
+    .legend  { font-family: Arial, Helvetica, sans-serif; font-size: 12px; fill: #1a1a1a; }
+    .board   { fill: #2b2f38; stroke: #111; stroke-width: 2; }
+    .servobox{ fill: #eef3fb; stroke: #2b4a7a; stroke-width: 1.5; }
+    .psubox  { fill: #fff3e6; stroke: #a35a00; stroke-width: 1.5; }
+    .capbox  { fill: #eafbea; stroke: #1f7a1f; stroke-width: 1.5; }
+    .pcbox   { fill: #f2f2f2; stroke: #444; stroke-width: 1.5; }
+    .sigwire { stroke: #d99a00; stroke-width: 2.2; fill: none; }
+    .pwrwire { stroke: #c0392b; stroke-width: 2.6; fill: none; }
+    .gndwire { stroke: #2b2b2b; stroke-width: 2.2; fill: none; }
+    .usbwire { stroke: #2b6fd9; stroke-width: 2.4; fill: none; }
+    .fuse    { fill: #fff; stroke: #333; stroke-width: 1.5; }
+  </style>
+
+  <rect x="0" y="0" width="1400" height="1000" fill="#ffffff"/>
+
+  <text x="30" y="38" class="title">Desk Arm V1 — Wiring Diagram (Configuration B, ESP32)</text>
+  <text x="30" y="58" class="subtitle">Full arm: controller, 5 servos, power rail. See docs/electronics.md and docs/power_system.md for the reasoning behind every rule noted below.</text>
+
+  <!-- ============ LEGEND ============ -->
+  <g transform="translate(1030,20)">
+    <rect x="0" y="0" width="345" height="112" fill="#fafafa" stroke="#bbb" stroke-width="1"/>
+    <text x="12" y="18" class="lbl-b">Legend</text>
+    <line x1="12" y1="32" x2="50" y2="32" class="sigwire"/><text x="58" y="36" class="legend">PWM signal (GPIO → servo)</text>
+    <line x1="12" y1="50" x2="50" y2="50" class="pwrwire"/><text x="58" y="54" class="legend">6 V servo power rail (V+)</text>
+    <line x1="12" y1="68" x2="50" y2="68" class="gndwire"/><text x="58" y="72" class="legend">Common ground</text>
+    <line x1="12" y1="86" x2="50" y2="86" class="usbwire"/><text x="58" y="90" class="legend">USB (data + PC-side 5 V, unused for servos)</text>
+    <text x="12" y="104" class="note" font-size="11">Red never touches the ESP32 5V/VIN pin — Rule 1 below.</text>
+  </g>
+
+  <!-- ============ PC ============ -->
+  <g transform="translate(30,110)">
+    <rect width="130" height="70" rx="8" class="pcbox"/>
+    <text x="65" y="40" text-anchor="middle" class="lbl-b">PC</text>
+    <text x="65" y="58" text-anchor="middle" class="small">software/robot</text>
+  </g>
+  <path d="M160,145 H228" class="usbwire"/>
+  <text x="163" y="138" class="small">USB serial, 115200 baud</text>
+  <polygon points="230,145 218,139 218,151" fill="#2b6fd9"/>
+
+  <!-- ============ ESP32 board ============ -->
+  <g transform="translate(230,80)">
+    <rect width="230" height="270" rx="10" class="board"/>
+    <text x="115" y="26" text-anchor="middle" class="lbl-b" fill="#fff">ESP32 DevKit</text>
+    <text x="115" y="44" text-anchor="middle" class="small-w">(DevKitC or equivalent)</text>
+    <rect x="90" y="4" width="50" height="14" fill="#555"/>
+    <text x="115" y="14" text-anchor="middle" class="small-w" font-size="9">USB-C / micro-USB</text>
+
+    <!-- GPIO pin stubs, right side, going to servos -->
+    <text x="222" y="66"  text-anchor="end" class="pin">GPIO13 (base)</text>
+    <circle cx="230" cy="70" r="3" fill="#f2c200"/>
+    <text x="222" y="106" text-anchor="end" class="pin">GPIO14 (shoulder)</text>
+    <circle cx="230" cy="110" r="3" fill="#f2c200"/>
+    <text x="222" y="146" text-anchor="end" class="pin">GPIO27 (elbow)</text>
+    <circle cx="230" cy="150" r="3" fill="#f2c200"/>
+    <text x="222" y="186" text-anchor="end" class="pin">GPIO26 (wrist)</text>
+    <circle cx="230" cy="190" r="3" fill="#f2c200"/>
+    <text x="222" y="226" text-anchor="end" class="pin">GPIO25 (gripper)</text>
+    <circle cx="230" cy="230" r="3" fill="#f2c200"/>
+
+    <!-- GND and 5V/VIN pins, bottom edge -->
+    <circle cx="60" cy="270" r="3" fill="#ddd"/>
+    <text x="60" y="252" text-anchor="middle" class="pin">GND</text>
+
+    <circle cx="170" cy="270" r="3" fill="#ff8080"/>
+    <text x="170" y="252" text-anchor="middle" class="pin" fill="#ff8080">5V/VIN</text>
+  </g>
+
+  <text x="235" y="400" class="note">✕ 5V/VIN is never wired to servo V+ — the board's regulator/USB can only source ~500 mA (Rule 1 below)</text>
+  <path d="M290,350 V410 H210 V580" class="gndwire"/>
+  <circle cx="290" cy="350" r="3" fill="#2b2b2b"/>
+
+  <!-- ============ Servos ============ -->
+  <g transform="translate(620,50)">
+    <rect width="220" height="60" rx="6" class="servobox"/>
+    <text x="12" y="22" class="lbl-b">BASE — MG90S</text>
+    <text x="12" y="40" class="small">GPIO13 → signal (orange)</text>
+    <text x="12" y="54" class="small">V+ red · GND black</text>
+  </g>
+  <g transform="translate(620,130)">
+    <rect width="220" height="60" rx="6" class="servobox"/>
+    <text x="12" y="22" class="lbl-b">SHOULDER — MG996R</text>
+    <text x="12" y="40" class="small">GPIO14 → signal (orange)</text>
+    <text x="12" y="54" class="small">V+ red · GND black</text>
+  </g>
+  <g transform="translate(620,210)">
+    <rect width="220" height="60" rx="6" class="servobox"/>
+    <text x="12" y="22" class="lbl-b">ELBOW — MG996R</text>
+    <text x="12" y="40" class="small">GPIO27 → signal (orange)</text>
+    <text x="12" y="54" class="small">V+ red · GND black</text>
+  </g>
+  <g transform="translate(620,290)">
+    <rect width="220" height="60" rx="6" class="servobox"/>
+    <text x="12" y="22" class="lbl-b">WRIST — SG90 (slaved)</text>
+    <text x="12" y="40" class="small">GPIO26 → signal (orange)</text>
+    <text x="12" y="54" class="small">V+ red · GND black</text>
+  </g>
+  <g transform="translate(620,370)">
+    <rect width="220" height="60" rx="6" class="servobox"/>
+    <text x="12" y="22" class="lbl-b">GRIPPER — MG90S</text>
+    <text x="12" y="40" class="small">GPIO25 → signal (orange)</text>
+    <text x="12" y="54" class="small">V+ red · GND black</text>
+  </g>
+
+  <!-- signal wires: GPIO pins (left, x=460) to servo box left edge (x=620) -->
+  <path d="M460,150 H500 V80  H620" class="sigwire"/>
+  <path d="M460,190 H500 V160 H620" class="sigwire"/>
+  <path d="M460,230 H500 V240 H620" class="sigwire"/>
+  <path d="M460,270 H500 V320 H620" class="sigwire"/>
+  <path d="M460,310 H500 V400 H620" class="sigwire"/>
+
+  <!-- V+ and GND to each servo's right edge (x=840), offset +/-6px so the two wires run in parallel, not on top of each other -->
+  <path d="M900,74  H840" class="pwrwire"/>
+  <path d="M900,154 H840" class="pwrwire"/>
+  <path d="M900,234 H840" class="pwrwire"/>
+  <path d="M900,314 H840" class="pwrwire"/>
+  <path d="M900,394 H840" class="pwrwire"/>
+  <path d="M960,86  H840" class="gndwire"/>
+  <path d="M960,166 H840" class="gndwire"/>
+  <path d="M960,246 H840" class="gndwire"/>
+  <path d="M960,326 H840" class="gndwire"/>
+  <path d="M960,406 H840" class="gndwire"/>
+
+  <!-- V+ bus: vertical at x=900 from topmost stub down into the perfboard's internal rail (passes the bulk caps, which sit on this same rail) -->
+  <path d="M900,74 V500 H400 V464" class="pwrwire"/>
+  <circle cx="400" cy="464" r="3" fill="#c0392b"/>
+  <!-- GND bus: vertical at x=960 from topmost stub down to the shared ground bus at y=580 -->
+  <path d="M960,86 V580" class="gndwire"/>
+  <circle cx="960" cy="580" r="3" fill="#2b2b2b"/>
+
+  <!-- ============ Perfboard block (fuse + caps + headers) ============ -->
+  <g transform="translate(230,430)">
+    <rect width="500" height="130" rx="8" fill="#f7f7f7" stroke="#888" stroke-width="1.5"/>
+    <text x="14" y="24" class="lbl-b">Perfboard (base plate) — barrel jack, fuse, bulk caps, 5×3-pin servo headers</text>
+
+    <g transform="translate(14,40)">
+      <rect width="60" height="34" rx="4" fill="#ddd" stroke="#333"/>
+      <text x="30" y="20" text-anchor="middle" class="small">6V 3A</text>
+      <text x="30" y="32" text-anchor="middle" class="small">jack</text>
+    </g>
+    <g transform="translate(100,46)">
+      <rect width="46" height="22" rx="10" class="fuse"/>
+      <text x="23" y="16" text-anchor="middle" class="small">3A fuse</text>
+    </g>
+    <g transform="translate(170,40)">
+      <rect width="34" height="34" rx="3" class="capbox"/>
+      <text x="17" y="20" text-anchor="middle" class="small" font-size="8.5">1000</text>
+      <text x="17" y="30" text-anchor="middle" class="small" font-size="8.5">µF</text>
+    </g>
+    <g transform="translate(212,40)">
+      <rect width="34" height="34" rx="3" class="capbox"/>
+      <text x="17" y="20" text-anchor="middle" class="small" font-size="8.5">1000</text>
+      <text x="17" y="30" text-anchor="middle" class="small" font-size="8.5">µF</text>
+    </g>
+
+    <text x="14" y="100" class="small">Caps sit physically at the servo headers (not just at the jack) to damp local transients.</text>
+    <text x="14" y="118" class="small">Ground bus (black) and V+ bus (red) run the full length of the board to all 5 headers.</text>
+  </g>
+
+  <!-- power supply block -->
+  <g transform="translate(30,430)">
+    <rect width="170" height="130" rx="8" class="psubox"/>
+    <text x="85" y="26" text-anchor="middle" class="lbl-b">6 V 3 A supply</text>
+    <text x="85" y="46" text-anchor="middle" class="small">(bench PSU for bring-up,</text>
+    <text x="85" y="60" text-anchor="middle" class="small">wall adapter after)</text>
+    <text x="85" y="84" text-anchor="middle" class="small">Separate from the ESP32's</text>
+    <text x="85" y="98" text-anchor="middle" class="small">own 5V/USB supply —</text>
+    <text x="85" y="112" text-anchor="middle" class="small">servos never share it.</text>
+  </g>
+  <path d="M200,470 H400 V464" class="pwrwire"/>
+  <circle cx="200" cy="470" r="3" fill="#c0392b"/>
+  <path d="M60,560 V580" class="gndwire"/>
+  <circle cx="60" cy="560" r="3" fill="#2b2b2b"/>
+
+  <!-- shared ground bus, routed clear of the perfboard/PSU blocks (bottom 560) and the notes panel (top 620) -->
+  <path d="M60,580 H960" class="gndwire"/>
+  <text x="65" y="598" class="small">Common ground bus — ESP32, perfboard, supply and all 5 servo grounds tied together (Rule 2)</text>
+
+  <!-- ============ Notes / rules panel ============ -->
+  <g transform="translate(30,620)">
+    <rect width="1340" height="320" rx="8" fill="#fffdf5" stroke="#d9c26a" stroke-width="1.5"/>
+    <text x="20" y="30" class="lbl-b" font-size="16">Wiring rules (docs/power_system.md, docs/electronics.md)</text>
+
+    <text x="20" y="60"  class="lbl-b">1. Never power the servo rail from the ESP32's 5V/VIN pin or its USB connection.</text>
+    <text x="40" y="78"  class="small">That pin sits upstream of the board's own 3.3 V logic regulator and just reflects whatever the USB port can source</text>
+    <text x="40" y="94"  class="small">(typically ~500 mA) — nowhere near enough for five servos. The servo rail is always the separate 6 V 3 A supply.</text>
+
+    <text x="20" y="122" class="lbl-b">2. Servo ground and ESP32 ground must be joined.</text>
+    <text x="40" y="140" class="small">Otherwise the PWM signal has no common reference and servos twitch randomly. One continuous ground bus ties the</text>
+    <text x="40" y="156" class="small">ESP32, the perfboard, the supply, and all five servos together (black wires above).</text>
+
+    <text x="20" y="184" class="lbl-b">3. Keep signal wires away from the barrel-jack input leads.</text>
+    <text x="40" y="202" class="small">Avoids switching noise on the PWM lines — route the orange signal bundle clear of the jack/fuse/cap corner of the perfboard.</text>
+
+    <text x="20" y="230" class="lbl-b">4. Test each servo's 3.3 V signal before final assembly.</text>
+    <text x="40" y="248" class="small">The ESP32 is 3.3 V logic where the original Nano choice was 5 V. Most SG90/MG90S/MG996R units latch cleanly on a</text>
+    <text x="40" y="264" class="small">3.3 V pulse, but it is unit-dependent. If a servo jitters, add a 74HCT125/74AHCT125 level shifter (~$1, one chip covers</text>
+    <text x="40" y="280" class="small">all five signal lines) between the GPIO and that signal wire — not part of the base BOM, only added if actually needed.</text>
+
+    <text x="20" y="308" class="lbl-b">5. No 7.4 V LiPo direct to the rail.</text>
+    <text x="40" y="326" class="small">It will destroy the MG90S and SG90 (rated to 6.6 V) within minutes. 6.0 V regulated only.</text>
+
+    <text x="760" y="60" class="lbl-b">GPIO pin choices (avoid these categories):</text>
+    <text x="780" y="78" class="small">GPIO 0 / 2 / 5 / 12 / 15 — boot-strapping pins</text>
+    <text x="780" y="94" class="small">GPIO 34–39 — input-only, can't drive a servo</text>
+    <text x="780" y="110" class="small">GPIO 1 / 3 — UART0, reserved for USB serial to the PC</text>
+
+    <text x="760" y="140" class="lbl-b">Bring-up order (docs/assembly.md):</text>
+    <text x="780" y="158" class="small">1. Bench supply on, ESP32 not yet wired to servos.</text>
+    <text x="780" y="174" class="small">2. Flash firmware, confirm PING → OK ARM v1.</text>
+    <text x="780" y="190" class="small">3. Connect servos one at a time, watch the ammeter.</text>
+    <text x="780" y="206" class="small">4. Only then HOME with all five connected.</text>
+
+    <text x="760" y="236" class="lbl-b">Library: ESP32Servo (not stock Servo.h)</text>
+    <text x="780" y="254" class="small">Same attach()/writeMicroseconds() API, backed by</text>
+    <text x="780" y="270" class="small">the LEDC PWM peripheral. See arm_firmware.ino.</text>
+  </g>
+</svg>

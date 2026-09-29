@@ -1,0 +1,1115 @@
+<title>Desk Arm V1 Design Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#EFF1F5;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FB;
+    --ink:#161A22;
+    --ink-2:#565E70;
+    --ink-3:#818A9C;
+    --rule:#D6DAE3;
+    --rule-soft:#E5E8EF;
+    --accent:#1B44C4;
+    --accent-soft:#E4E9FB;
+    --ok:#166B45;
+    --ok-soft:#DFF0E7;
+    --warn:#95620A;
+    --warn-soft:#F8EDD8;
+    --bad:#A8332A;
+    --bad-soft:#F8E4E2;
+    --shadow:0 1px 2px rgba(22,26,34,.05), 0 6px 20px -12px rgba(22,26,34,.22);
+    --measure:68ch;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#111319;
+      --surface:#181B22;
+      --surface-2:#1E222B;
+      --ink:#E7EAF1;
+      --ink-2:#9BA4B6;
+      --ink-3:#737C90;
+      --rule:#2B313C;
+      --rule-soft:#232833;
+      --accent:#7FA0FF;
+      --accent-soft:#1D2740;
+      --ok:#5CC48C;
+      --ok-soft:#162C22;
+      --warn:#DFAA55;
+      --warn-soft:#2E2618;
+      --bad:#EE8279;
+      --bad-soft:#331D1B;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px -12px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#111319;
+    --surface:#181B22;
+    --surface-2:#1E222B;
+    --ink:#E7EAF1;
+    --ink-2:#9BA4B6;
+    --ink-3:#737C90;
+    --rule:#2B313C;
+    --rule-soft:#232833;
+    --accent:#7FA0FF;
+    --accent-soft:#1D2740;
+    --ok:#5CC48C;
+    --ok-soft:#162C22;
+    --warn:#DFAA55;
+    --warn-soft:#2E2618;
+    --bad:#EE8279;
+    --bad-soft:#331D1B;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px -12px rgba(0,0,0,.7);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--ground);
+    color:var(--ink);
+    font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:15.5px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px 96px}
+
+  /* ---- type ---- */
+  h1,h2,h3,h4{font-family:Archivo,"IBM Plex Sans",sans-serif;text-wrap:balance;margin:0}
+  h1{font-size:clamp(30px,4.4vw,46px);font-weight:700;letter-spacing:-.022em;line-height:1.08}
+  h2{font-size:24px;font-weight:700;letter-spacing:-.012em;line-height:1.2}
+  h3{font-size:17px;font-weight:600;letter-spacing:-.005em;margin-bottom:2px}
+  h4{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-2)}
+  p{margin:0;max-width:var(--measure)}
+  a{color:var(--accent)}
+  strong{font-weight:600}
+  code,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:.9em}
+  code{background:var(--surface-2);border:1px solid var(--rule-soft);border-radius:3px;padding:.08em .32em}
+  .num{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .eyebrow{font-family:Archivo,sans-serif;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--accent)}
+  .lede{font-size:18px;line-height:1.55;color:var(--ink-2);max-width:60ch}
+  .fine{font-size:13.5px;color:var(--ink-2);line-height:1.55}
+
+  /* ---- masthead ---- */
+  header.mast{padding:52px 0 32px;border-bottom:2px solid var(--ink);margin-bottom:0}
+  .mast-meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.04em;color:var(--ink-3);text-transform:uppercase;margin-bottom:18px}
+  .mast-meta span{white-space:nowrap}
+
+  /* ---- verdict ---- */
+  .verdict{background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:2px;padding:22px 24px;margin:28px 0 0;box-shadow:var(--shadow)}
+  .verdict p{max-width:none}
+
+  /* ---- spec strip ---- */
+  .specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(122px,1fr));border-top:1px solid var(--rule);border-left:1px solid var(--rule);margin:28px 0 0;background:var(--surface)}
+  .spec{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:13px 14px 14px}
+  .spec dt{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:5px}
+  .spec dd{margin:0;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;font-size:20px;font-weight:500;letter-spacing:-.02em;line-height:1.15}
+  .spec dd small{display:block;font-size:11px;font-weight:400;color:var(--ink-3);letter-spacing:0;margin-top:3px;font-family:"IBM Plex Sans",sans-serif}
+
+  /* ---- nav ---- */
+  nav.toc{position:sticky;top:0;z-index:20;background:var(--ground);border-bottom:1px solid var(--rule);margin:40px 0 0;padding:10px 0;display:flex;gap:4px;overflow-x:auto;scrollbar-width:thin}
+  nav.toc a{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.03em;color:var(--ink-2);text-decoration:none;padding:4px 9px;border-radius:2px;white-space:nowrap;border:1px solid transparent}
+  nav.toc a:hover{color:var(--ink);background:var(--surface);border-color:var(--rule-soft)}
+  nav.toc a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+  /* ---- sections ---- */
+  section{padding-top:52px;scroll-margin-top:60px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--rule);padding-bottom:9px;margin-bottom:22px}
+  .sec-head .n{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-3);letter-spacing:.06em;padding-top:2px}
+  .stack{display:flex;flex-direction:column;gap:16px}
+  .stack-tight{display:flex;flex-direction:column;gap:9px}
+
+  /* ---- tables ---- */
+  .scroller{overflow-x:auto;border:1px solid var(--rule);background:var(--surface);border-radius:2px}
+  table{border-collapse:collapse;width:100%;font-size:13.8px;min-width:480px}
+  th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+  thead th{background:var(--surface-2);font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-2);border-bottom:1px solid var(--rule);white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  td.r,th.r{text-align:right;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tfoot td{border-top:1px solid var(--rule);background:var(--surface-2);font-weight:600}
+  tbody tr.total td{background:var(--surface-2);font-weight:600;border-top:1px solid var(--rule)}
+  td.part{font-family:"IBM Plex Mono",monospace;font-size:12.6px}
+
+  /* ---- pills ---- */
+  .pill{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;letter-spacing:.03em;padding:1px 7px;border-radius:9px;white-space:nowrap}
+  .pill.ok{background:var(--ok-soft);color:var(--ok)}
+  .pill.warn{background:var(--warn-soft);color:var(--warn)}
+  .pill.bad{background:var(--bad-soft);color:var(--bad)}
+  .pill.neu{background:var(--accent-soft);color:var(--accent)}
+
+  /* ---- figure ---- */
+  figure{margin:0;background:var(--surface);border:1px solid var(--rule);border-radius:2px;padding:18px 18px 12px}
+  figure svg{display:block;width:100%;height:auto}
+  figcaption{font-size:12.5px;color:var(--ink-2);margin-top:10px;padding-top:9px;border-top:1px solid var(--rule-soft);line-height:1.5}
+  .fig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px}
+
+  /* ---- decision trail ---- */
+  .trail{display:flex;flex-direction:column;gap:0;counter-reset:gate}
+  .gate{display:grid;grid-template-columns:34px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--rule-soft)}
+  .gate:last-child{border-bottom:none}
+  .gate .g{counter-increment:gate;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3);border:1px solid var(--rule);border-radius:2px;height:24px;display:flex;align-items:center;justify-content:center;background:var(--surface)}
+  .gate .g::before{content:"G" counter(gate)}
+  .gate.hit .g{background:var(--accent);border-color:var(--accent);color:#fff}
+  :root[data-theme="dark"] .gate.hit .g{color:#111319}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .gate.hit .g{color:#111319}}
+  .gate q{font-weight:600;display:block;margin-bottom:3px;quotes:none}
+  .gate .ans{font-size:14px;color:var(--ink-2);max-width:var(--measure)}
+
+  /* ---- callout ---- */
+  .note{border-left:3px solid var(--rule);padding:2px 0 2px 16px;font-size:14px;color:var(--ink-2);max-width:var(--measure)}
+  .note.flag{border-left-color:var(--warn)}
+  .note.stop{border-left-color:var(--bad)}
+  .note b{color:var(--ink)}
+
+  /* ---- equations ---- */
+  .eq{background:var(--surface);border:1px solid var(--rule);border-radius:2px;padding:14px 16px;font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.85;overflow-x:auto;white-space:pre;color:var(--ink)}
+  .eq .cm{color:var(--ink-3)}
+
+  /* ---- two col ---- */
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+  .panel{background:var(--surface);border:1px solid var(--rule);border-radius:2px;padding:16px 18px}
+  .panel h3{margin-bottom:7px}
+  .panel ul{margin:0;padding-left:18px;font-size:14px;color:var(--ink-2)}
+  .panel li{margin:4px 0}
+  .panel li b{color:var(--ink);font-weight:600}
+
+  ul.clean{margin:0;padding-left:19px;max-width:var(--measure)}
+  ul.clean li{margin:6px 0}
+  ol.clean{margin:0;padding-left:21px;max-width:var(--measure)}
+  ol.clean li{margin:6px 0}
+
+  /* ---- coverage ---- */
+  .cover{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  .cover div{background:var(--surface);padding:7px 11px;font-size:12.5px;display:flex;gap:9px;align-items:baseline}
+  .cover div i{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3);min-width:16px}
+  .cover div a{text-decoration:none;color:var(--ink)}
+  .cover div a:hover{color:var(--accent)}
+
+  footer{margin-top:64px;padding-top:26px;border-top:2px solid var(--ink)}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  @media (max-width:640px){
+    .wrap{padding:0 16px 64px}
+    .gate{grid-template-columns:28px 1fr;gap:12px}
+  }
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="mast-meta">
+    <span>Design review &mdash; pre-build gate</span>
+    <span>Rev A</span>
+    <span>3-DOF + gripper</span>
+    <span>V1 scope only</span>
+  </div>
+  <h1>Desk Arm V1 Design Review</h1>
+  <p class="lede" style="margin-top:14px">A 315&nbsp;mm tabletop arm built from four hobby servos, twenty printed parts and about sixty dollars. Every number below is worked from a mass budget, not guessed.</p>
+
+  <div class="verdict">
+    <div class="eyebrow">Recommendation</div>
+    <p style="margin-top:7px"><strong>Build Configuration B.</strong> Direct-drive revolute arm, <span class="mono">L1 = L2 = 120&nbsp;mm</span>, MG996R at shoulder and elbow, MG90S at base and gripper, SG90 as a software-slaved wrist leveller, Arduino Nano over USB serial. Worst-case shoulder safety factor is <strong>2.44</strong>. Configuration A is genuinely viable but only by shrinking the arm to 275&nbsp;mm and the payload to 30&nbsp;g &mdash; and it saves roughly <span class="mono">$8</span>. That trade is not worth taking. Configuration D is not required; the torque margins do not justify it.</p>
+  </div>
+
+  <dl class="specs">
+    <div class="spec"><dt>Reach (TCP)</dt><dd>315<small>mm from base axis</small></dd></div>
+    <div class="spec"><dt>Design payload</dt><dd>55<small>g at full reach</small></dd></div>
+    <div class="spec"><dt>Shoulder SF</dt><dd>2.44<small>4.51 of 11.0 kg&middot;cm</small></dd></div>
+    <div class="spec"><dt>Tipping SF</dt><dd>2.26<small>with 400 g ballast</small></dd></div>
+    <div class="spec"><dt>Repeatability</dt><dd>&plusmn;6<small>mm, backlash-limited</small></dd></div>
+    <div class="spec"><dt>Purchase cost</dt><dd>$59<small>CAD, typical sourcing</small></dd></div>
+  </dl>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <a href="#arch">01 Architecture</a>
+  <a href="#geom">02 Geometry</a>
+  <a href="#mass">03 Mass budget</a>
+  <a href="#torque">04 Torque</a>
+  <a href="#grip">05 Gripper</a>
+  <a href="#stab">06 Stability</a>
+  <a href="#ws">07 Workspace</a>
+  <a href="#kin">08 Kinematics</a>
+  <a href="#elec">09 Electronics</a>
+  <a href="#pwr">10 Power</a>
+  <a href="#sw">11 Software</a>
+  <a href="#mech">12 Mechanical</a>
+  <a href="#bom">13 BOM</a>
+  <a href="#cfg">14 Configurations</a>
+  <a href="#fall">15 Fallbacks</a>
+  <a href="#risk">16 Risks</a>
+  <a href="#plan">17 Timeline</a>
+  <a href="#v2">18 V2 roadmap</a>
+</nav>
+
+<!-- ============ 01 ARCHITECTURE ============ -->
+<section id="arch">
+  <div class="sec-head"><span class="n">01</span><h2>Recommended architecture</h2></div>
+  <div class="stack">
+    <p>Serial revolute arm, the classic <span class="mono">RRR</span> shoulder&ndash;elbow chain on a rotating turret. Base yaw is the only vertical axis; shoulder and elbow work in a single vertical plane that the base sweeps around. That is the simplest structure that reaches every point on a desk, and the kinematics collapse to one trig problem you can write on an index card.</p>
+
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Axis</th><th>Type</th><th>Range</th><th>Actuator</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><b>1 &mdash; Base yaw</b></td><td>Revolute, vertical</td><td class="r">&minus;90&deg; &hellip; +90&deg;</td><td class="part">MG90S</td><td>Turret rides on two 608ZZ so the servo carries torque only, never the overturning moment.</td></tr>
+          <tr><td><b>2 &mdash; Shoulder</b></td><td>Revolute, horizontal</td><td class="r">0&deg; &hellip; 110&deg;</td><td class="part">MG996R</td><td>Highest-loaded joint in the machine. Sets the whole design.</td></tr>
+          <tr><td><b>3 &mdash; Elbow</b></td><td>Revolute, horizontal</td><td class="r">&minus;130&deg; &hellip; 0&deg;</td><td class="part">MG996R</td><td>Elbow-up solution only; elbow-down collides with the table.</td></tr>
+          <tr><td>Wrist pitch <span class="pill neu">slave</span></td><td>Revolute, horizontal</td><td class="r">&minus;120&deg; &hellip; +30&deg;</td><td class="part">SG90</td><td>Not a commanded DOF. Firmware drives it to <code>&minus;(&theta;&#8321;+&theta;&#8322;)</code> so the jaws stay level in every pose.</td></tr>
+          <tr><td>Gripper</td><td>Two-finger, meshed sectors</td><td class="r">0 &hellip; 55 mm</td><td class="part">MG90S</td><td>Symmetric self-centring jaws with V-grooves.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:8px">Why a slaved wrist rather than a parallelogram linkage</h3>
+    <p>A three-DOF positioner has exactly enough freedom to hit an <span class="mono">(x, y, z)</span> target and none left over &mdash; so gripper pitch is whatever the IK happens to produce, swinging roughly 30&deg; across the workspace. Picking a pen off a desk with tilted jaws is miserable. There are three ways out:</p>
+    <div class="cols">
+      <div class="panel">
+        <h3>Twin parallelogram</h3>
+        <p class="fine">Two four-bar linkages in series hold the jaws level with no extra servo, and move the elbow actuator down to the turret. Elegant, and it is what the EEZYbotARM does.</p>
+        <p class="fine" style="margin-top:8px"><b>Cost:</b> six more printed parts, twelve more pivot pins, and slop at every one of them. <span class="pill warn">deferred</span></p>
+      </div>
+      <div class="panel">
+        <h3>SG90 slaved wrist <span class="pill ok">chosen</span></h3>
+        <p class="fine">One extra micro servo at the wrist, driven by firmware as a dependent axis. You still command three DOF; the fourth is computed, never exposed.</p>
+        <p class="fine" style="margin-top:8px"><b>Cost:</b> about <span class="mono">$3</span> and 17&nbsp;g at 250&nbsp;mm &mdash; which drops shoulder SF from 2.57 to 2.44. Cheap for level jaws.</p>
+      </div>
+      <div class="panel">
+        <h3>Fixed bracket</h3>
+        <p class="fine">Bolt the gripper on at a fixed 45&deg;. Zero cost, zero parts, and it works if you always approach objects from the side.</p>
+        <p class="fine" style="margin-top:8px"><b>Cost:</b> pose-dependent jaw tilt. The right answer for Configuration A. <span class="pill neu">fallback</span></p>
+      </div>
+    </div>
+    <p class="note">All three bolt to the <b>same 24 &times; 24 mm wrist mounting face</b> on the forearm. You can start with the fixed bracket, add the SG90 later, and try the linkage after that without touching another part in the assembly.</p>
+  </div>
+</section>
+
+<!-- ============ 02 GEOMETRY ============ -->
+<section id="geom">
+  <div class="sec-head"><span class="n">02</span><h2>Geometry</h2></div>
+  <div class="stack">
+    <p>Equal 120&nbsp;mm links. Equal lengths make the printed parts nearly identical (one parametric sketch, two configurations), maximise the folded-to-extended ratio, and put the workspace boundary where you want it. Everything is sized from the torque budget in &sect;04, not from a target that looked impressive.</p>
+
+    <figure>
+      <svg viewBox="0 0 540 392" role="img" aria-label="Side elevation of the arm showing link lengths and reach">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,1 L10,5 L0,9 z" fill="var(--ink-3)"/>
+          </marker>
+        </defs>
+
+        <!-- table -->
+        <line x1="8" y1="330" x2="532" y2="330" stroke="var(--ink-2)" stroke-width="1.6"/>
+        <g stroke="var(--rule)" stroke-width="1.2">
+          <line x1="14" y1="330" x2="6" y2="338"/><line x1="34" y1="330" x2="26" y2="338"/>
+          <line x1="54" y1="330" x2="46" y2="338"/><line x1="74" y1="330" x2="66" y2="338"/>
+          <line x1="94" y1="330" x2="86" y2="338"/><line x1="114" y1="330" x2="106" y2="338"/>
+          <line x1="134" y1="330" x2="126" y2="338"/><line x1="154" y1="330" x2="146" y2="338"/>
+          <line x1="174" y1="330" x2="166" y2="338"/><line x1="194" y1="330" x2="186" y2="338"/>
+          <line x1="214" y1="330" x2="206" y2="338"/><line x1="234" y1="330" x2="226" y2="338"/>
+          <line x1="254" y1="330" x2="246" y2="338"/><line x1="274" y1="330" x2="266" y2="338"/>
+          <line x1="294" y1="330" x2="286" y2="338"/><line x1="314" y1="330" x2="306" y2="338"/>
+          <line x1="334" y1="330" x2="326" y2="338"/><line x1="354" y1="330" x2="346" y2="338"/>
+          <line x1="374" y1="330" x2="366" y2="338"/><line x1="394" y1="330" x2="386" y2="338"/>
+          <line x1="414" y1="330" x2="406" y2="338"/><line x1="434" y1="330" x2="426" y2="338"/>
+          <line x1="454" y1="330" x2="446" y2="338"/><line x1="474" y1="330" x2="466" y2="338"/>
+          <line x1="494" y1="330" x2="486" y2="338"/><line x1="514" y1="330" x2="506" y2="338"/>
+        </g>
+
+        <!-- base -->
+        <rect x="20" y="316" width="180" height="14" fill="var(--surface-2)" stroke="var(--ink-2)" stroke-width="1.4"/>
+        <rect x="34" y="319" width="66" height="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1"/>
+        <text x="67" y="352" font-family="IBM Plex Mono,monospace" font-size="9.5" fill="var(--accent)" text-anchor="middle">ballast cavity</text>
+        <rect x="90" y="258" width="40" height="58" fill="var(--surface-2)" stroke="var(--ink-2)" stroke-width="1.4"/>
+        <!-- centreline -->
+        <line x1="110" y1="208" x2="110" y2="372" stroke="var(--ink-3)" stroke-width="0.9" stroke-dasharray="7 3 2 3"/>
+
+        <!-- links -->
+        <line x1="110" y1="255" x2="187" y2="163" stroke="var(--ink)" stroke-width="11" stroke-linecap="round"/>
+        <line x1="187" y1="163" x2="296" y2="214" stroke="var(--ink)" stroke-width="10" stroke-linecap="round"/>
+        <line x1="296" y1="214" x2="365" y2="214" stroke="var(--ink-2)" stroke-width="7" stroke-linecap="round"/>
+        <!-- jaws -->
+        <path d="M365 205 L379 199 M365 223 L379 229" stroke="var(--accent)" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+
+        <!-- joints -->
+        <circle cx="110" cy="255" r="7.5" fill="var(--surface)" stroke="var(--accent)" stroke-width="3"/>
+        <circle cx="187" cy="163" r="6.5" fill="var(--surface)" stroke="var(--accent)" stroke-width="3"/>
+        <circle cx="296" cy="214" r="5.5" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.6"/>
+        <circle cx="110" cy="258" r="4" fill="var(--accent)"/>
+
+        <!-- labels -->
+        <g font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--ink)">
+          <text x="124" y="248">shoulder</text>
+          <text x="196" y="156">elbow</text>
+          <text x="286" y="196" text-anchor="middle">wrist</text>
+          <text x="388" y="217">TCP</text>
+          <text x="135" y="277" fill="var(--ink-2)">base yaw</text>
+        </g>
+
+        <!-- dimension: h0 -->
+        <g stroke="var(--ink-3)" stroke-width="1" fill="none">
+          <line x1="52" y1="255" x2="52" y2="330" marker-start="url(#ar)" marker-end="url(#ar)"/>
+          <line x1="48" y1="255" x2="106" y2="255" stroke-dasharray="3 3"/>
+        </g>
+        <text x="46" y="296" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--ink-2)" text-anchor="end">h&#8320;=75</text>
+
+        <!-- dimension: L1 -->
+        <text x="134" y="200" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="500" fill="var(--surface)" stroke="var(--surface)" stroke-width="4" paint-order="stroke">L&#8321; = 120</text>
+        <text x="134" y="200" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="500" fill="var(--ink)">L&#8321; = 120</text>
+        <text x="216" y="202" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="500" fill="var(--surface)" stroke="var(--surface)" stroke-width="4" paint-order="stroke">L&#8322; = 120</text>
+        <text x="216" y="202" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="500" fill="var(--ink)">L&#8322; = 120</text>
+        <text x="330" y="237" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--ink-2)" text-anchor="middle">L&#8323;=75</text>
+
+        <!-- dimension: reach -->
+        <g stroke="var(--accent)" stroke-width="1.1" fill="none">
+          <line x1="110" y1="368" x2="425" y2="368" marker-start="url(#ar)" marker-end="url(#ar)"/>
+          <line x1="425" y1="362" x2="425" y2="374"/>
+        </g>
+        <text x="268" y="384" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)" text-anchor="middle">R max = 315 mm</text>
+
+        <!-- base footprint -->
+        <g stroke="var(--ink-3)" stroke-width="1" fill="none">
+          <line x1="20" y1="308" x2="200" y2="308" marker-start="url(#ar)" marker-end="url(#ar)"/>
+        </g>
+        <text x="110" y="303" font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--ink-2)" text-anchor="middle">180</text>
+      </svg>
+      <figcaption>Side elevation, 1&nbsp;px = 1&nbsp;mm, arm shown mid-stroke. The wrist stays level in every pose, which is why <span class="mono">L&#8323;</span> is a purely horizontal offset in the kinematics.</figcaption>
+    </figure>
+
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Parameter</th><th class="r">Value</th><th>Rationale</th></tr></thead>
+        <tbody>
+          <tr><td>Shoulder height <span class="mono">h&#8320;</span></td><td class="r">75 mm</td><td>Enough for the elbow to fold without hitting the turret; low enough to keep the tipping moment down.</td></tr>
+          <tr><td>Upper arm <span class="mono">L&#8321;</span></td><td class="r">120 mm</td><td>Torque-driven. 140 mm pushes shoulder SF below 2.1.</td></tr>
+          <tr><td>Forearm <span class="mono">L&#8322;</span></td><td class="r">120 mm</td><td>Equal to L&#8321; &mdash; same printed profile, fully-folded pose reaches the base.</td></tr>
+          <tr><td>Wrist&rarr;TCP <span class="mono">L&#8323;</span></td><td class="r">75 mm</td><td>Jaw depth plus clearance to grip a 30 mm object.</td></tr>
+          <tr><td>Max TCP reach</td><td class="r">315 mm</td><td>Within the 250&ndash;350 mm brief.</td></tr>
+          <tr><td>Max TCP height</td><td class="r">315 mm</td><td>Arm vertical. Overall envelope ~340 mm including the gripper.</td></tr>
+          <tr><td>Base footprint</td><td class="r">180 &times; 180 mm</td><td>Drives the tipping calculation in &sect;06.</td></tr>
+          <tr><td>Jaw opening</td><td class="r">0&ndash;55 mm</td><td>Covers a pen through a small project box.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 MASS ============ -->
+<section id="mass">
+  <div class="sec-head"><span class="n">03</span><h2>Mass budget</h2></div>
+  <div class="stack">
+    <p>Nothing else in this review is trustworthy unless this table is. Printed masses assume PLA at 1.24&nbsp;g/cm&sup3;, 4 perimeters, 30% gyroid &mdash; the settings in &sect;12. Servo masses are manufacturer figures. Distances are measured horizontally from the shoulder axis with the arm fully extended, which is the worst case for every load in the machine.</p>
+
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Item</th><th class="r">Mass</th><th class="r">Distance</th><th class="r">Moment</th></tr></thead>
+        <tbody>
+          <tr><td>Upper-arm link pair + spacers</td><td class="r">30 g</td><td class="r">60 mm</td><td class="r">1 800</td></tr>
+          <tr><td>Elbow servo (MG996R) + bracket</td><td class="r">65 g</td><td class="r">120 mm</td><td class="r">7 800</td></tr>
+          <tr><td>Forearm link pair + spacers</td><td class="r">25 g</td><td class="r">180 mm</td><td class="r">4 500</td></tr>
+          <tr><td>Wrist servo (SG90) + bracket</td><td class="r">17 g</td><td class="r">250 mm</td><td class="r">4 250</td></tr>
+          <tr><td>Gripper assembly (MG90S + jaws)</td><td class="r">32 g</td><td class="r">285 mm</td><td class="r">9 120</td></tr>
+          <tr><td>Design payload</td><td class="r">55 g</td><td class="r">320 mm</td><td class="r">17 600</td></tr>
+          <tr class="total"><td>Moving assembly</td><td class="r">224 g</td><td class="r">CoM 201 mm</td><td class="r">45 070 g&middot;mm</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fine">Below the shoulder, not carried by any joint: base plate 100&nbsp;g, column and turret 60&nbsp;g, base servo 14&nbsp;g, shoulder servo 55&nbsp;g, hardware 40&nbsp;g &mdash; <b>269&nbsp;g</b>. That figure drives &sect;06.</p>
+    <p class="note flag"><b>The elbow servo is 29% of the moving mass.</b> It is the single heaviest thing the shoulder lifts, and it sits at exactly the point where moving it costs the most. If shoulder margin ever becomes a problem, relocating that servo to the turret behind a linkage is the highest-leverage change available &mdash; worth roughly 1.4&nbsp;kg&middot;cm.</p>
+  </div>
+</section>
+
+<!-- ============ 04 TORQUE ============ -->
+<section id="torque">
+  <div class="sec-head"><span class="n">04</span><h2>Joint torque and servo selection</h2></div>
+  <div class="stack">
+    <p>Static gravity holding torque at the worst-case pose, which for a desk arm is also the working pose &mdash; fully extended, reaching for something at the far edge. Dynamic torque is small here: at the speeds this arm will move, inertial terms are under 10% of the gravity term, and the safety factor absorbs them.</p>
+
+    <div class="eq"><span class="cm">// shoulder, arm horizontal at full extension</span>
+&tau;&#8321; = g &middot; &Sigma; m&#7522;d&#7522; = 9.81 &times; 0.04507 kg&middot;m  =  0.442 N&middot;m  =  4.51 kg&middot;cm
+
+<span class="cm">// elbow, moments taken about the elbow axis</span>
+&tau;&#8322; = 9.81 &times; (0.025&times;0.060 + 0.017&times;0.130 + 0.032&times;0.165 + 0.055&times;0.200)
+   = 9.81 &times; 0.01999  =  0.196 N&middot;m  =  2.00 kg&middot;cm
+
+<span class="cm">// base yaw &mdash; no gravity term; inertia + bearing drag only</span>
+I &asymp; 0.0056 kg&middot;m&sup2;,  &alpha; = 3.5 rad/s&sup2;  &rarr;  &tau; = 0.020 N&middot;m,  +drag  &asymp;  0.30 kg&middot;cm</div>
+
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Joint</th><th>Servo</th><th class="r">Required</th><th class="r">Target &times;2</th><th class="r">Rated @6 V</th><th class="r">Actual SF</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td>Base</td><td class="part">MG90S</td><td class="r">0.30</td><td class="r">0.60</td><td class="r">2.20</td><td class="r">7.3</td><td><span class="pill ok">ample</span></td></tr>
+          <tr><td><b>Shoulder</b></td><td class="part">MG996R</td><td class="r">4.51</td><td class="r">9.02</td><td class="r">11.00</td><td class="r">2.44</td><td><span class="pill ok">sizing joint</span></td></tr>
+          <tr><td>Elbow</td><td class="part">MG996R</td><td class="r">2.00</td><td class="r">4.00</td><td class="r">11.00</td><td class="r">5.50</td><td><span class="pill ok">pass</span></td></tr>
+          <tr><td>Wrist (slave)</td><td class="part">SG90</td><td class="r">0.51</td><td class="r">1.02</td><td class="r">1.80</td><td class="r">3.5</td><td><span class="pill ok">pass</span></td></tr>
+          <tr><td>Gripper</td><td class="part">MG90S</td><td class="r">0.82</td><td class="r">1.64</td><td class="r">2.20</td><td class="r">2.7</td><td><span class="pill ok">pass</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fine">All figures in kg&middot;cm. Rated values are the common published specs for generic MG996R / MG90S / SG90 at 6.0&nbsp;V. On a 5&nbsp;V supply the MG996R drops to ~9.4&nbsp;kg&middot;cm and shoulder SF falls to <b>2.08</b> &mdash; still acceptable, which is why a 5&nbsp;V phone charger is a legitimate power fallback.</p>
+
+    <h3 style="margin-top:8px">Why the elbow is over-specified, deliberately</h3>
+    <p>An SF of 5.5 looks wasteful. It is not a choice &mdash; it is what the price ladder does. The elbow needs 2.00&nbsp;kg&middot;cm, so at SF&nbsp;2 it needs 4.0. The MG90S tops out at 2.2 and fails. The next rung up is the MG92B at 3.5&nbsp;kg&middot;cm for about <span class="mono">$8</span>, which gives SF&nbsp;1.75 &mdash; still short, and <em>more expensive than an MG996R</em>. There is nothing between them worth buying. The MG996R is the cheapest part that passes, so it wins by default and you get the margin for free.</p>
+    <p class="note"><b>A note on why the numbers are not tighter.</b> Everything here is static holding torque with a stall-rated servo. Hobby servos publish stall torque, and running a servo anywhere near stall makes it hot, slow and short-lived. SF&nbsp;2 is not conservatism &mdash; it is roughly the point at which an MG996R holds a pose indefinitely without cooking. Treat 2.0 as the floor, not a comfort margin.</p>
+  </div>
+</section>
+
+<!-- ============ 05 GRIPPER ============ -->
+<section id="grip">
+  <div class="sec-head"><span class="n">05</span><h2>Gripper: SG90 vs MG90S</h2></div>
+  <div class="stack">
+    <p>Required clamping force for a 55&nbsp;g object against gravity, with a conservative friction coefficient of 0.5 on a rubber pad, is <span class="mono">mg / 2&mu; = 0.54 N</span>. The design targets <b>4&nbsp;N</b> per jaw &mdash; about seven times what the physics demands, because real grips are off-centre and objects get bumped.</p>
+
+    <div class="eq">jaw tip force      F = 4.0 N at 30 mm from the jaw pivot
+jaw pivot torque   0.12 N&middot;m
+drive reduction    1.5 : 1   <span class="cm">(12 mm servo crank &rarr; 18 mm jaw crank)</span>
+<b>servo torque       0.080 N&middot;m = 0.82 kg&middot;cm</b>
+
+MG90S @ 6 V  2.2 kg&middot;cm  &rarr;  SF 2.7
+SG90  @ 4.8 V 1.6 kg&middot;cm  &rarr;  SF 2.0</div>
+
+    <p><strong>Both pass on torque. The decision has nothing to do with torque.</strong> It is about what happens the twentieth time the gripper closes on something it cannot close on.</p>
+
+    <div class="cols">
+      <div class="panel">
+        <h3>SG90 &mdash; nylon gears</h3>
+        <ul>
+          <li><b>9 g</b>, about <span class="mono">$2</span></li>
+          <li>Strips its output gear on a hard stall or a side impact. The gripper is the part of this robot most likely to receive both.</li>
+          <li>Fine where load is predictable and light &mdash; which is exactly the wrist-levelling axis.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>MG90S &mdash; metal gears <span class="pill ok">chosen</span></h3>
+        <ul>
+          <li><b>13.4 g</b>, about <span class="mono">$6</span></li>
+          <li><b>Identical 22.8 &times; 12.2 &times; 22.5 mm body and 32 mm hole spacing</b> &mdash; drop-in either way, so the mount is one part.</li>
+          <li>Survives the stalls and knocks that kill an SG90. The extra <span class="mono">$4</span> buys a part that does not become a consumable.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="margin-top:8px">Mechanism</h3>
+    <p>Two mirror-image printed jaws on M3 pins, with <b>meshed gear sectors</b> at their pivots &mdash; module 1.5, roughly 10 teeth of engagement, which prints cleanly on a 0.4&nbsp;mm nozzle. The servo drives one jaw through a short link; the sectors force the other to mirror it. Four printed parts, two pins, self-centring, and no way to get the jaws out of sync. Jaw faces carry a 90&deg; V-groove so pens and screwdriver shafts centre themselves, plus a glued-on rubber pad.</p>
+    <p class="note flag"><b>Design the jaws to be compliant, not just strong.</b> A hobby servo commanded to a "closed" angle it cannot reach will sit there drawing stall current until something gives. Thin the last 12&nbsp;mm of each jaw to 1.6&nbsp;mm so it flexes ~1&nbsp;mm under load. One closed angle then grips a range of object sizes without the servo ever hard-stalling. This detail matters more than the gear material.</p>
+  </div>
+</section>
+
+<!-- ============ 06 STABILITY ============ -->
+<section id="stab">
+  <div class="sec-head"><span class="n">06</span><h2>Base stability</h2></div>
+  <div class="stack">
+    <p>Tipping about the front edge of the base plate, arm fully extended, payload at maximum reach. The shoulder axis sits 10&nbsp;mm forward of the base axis, so the moving CoM is 211&nbsp;mm out.</p>
+
+    <div class="eq"><span class="cm">// overturning, about an edge 90 mm from the base axis</span>
+M_over = 0.224 &times; 9.81 &times; (0.211 &minus; 0.090) = <b>0.266 N&middot;m</b>
+
+<span class="cm">// restoring, base assembly only</span>
+M_rest = 0.269 &times; 9.81 &times; 0.090            = 0.237 N&middot;m   &rarr; SF 0.89  <span class="cm">TIPS</span>
+
+<span class="cm">// restoring, with 400 g of ballast in the base cavity</span>
+M_rest = 0.669 &times; 9.81 &times; 0.090            = <b>0.591 N&middot;m</b>  &rarr; SF 2.22  <span class="cm">OK</span></div>
+
+    <p><strong>The arm as-drawn tips over.</strong> This is the one result in the review that changes the design rather than confirming it, and it is easy to miss on paper because the arm only weighs 500&nbsp;g total. A 224&nbsp;g mass on a 211&nbsp;mm lever beats a 269&nbsp;g base on a 90&nbsp;mm lever, and no amount of careful printing fixes that.</p>
+
+    <div class="cols">
+      <div class="panel">
+        <h3>Fix: ballast the base <span class="pill ok">primary</span></h3>
+        <p class="fine">Model a sealed 66 &times; 66 &times; 18 mm cavity into the base plate with a printed snap lid. Fill with M8 washers, sand, or a bag of spare screws. <b>400 g minimum, 500 g preferred.</b> Costs nothing and lowers the CoM as well as raising the mass.</p>
+      </div>
+      <div class="panel">
+        <h3>Fix: park the supply on the plate</h3>
+        <p class="fine">A 6 V 3 A brick weighs 150&ndash;250 g. Recess it into the base plate <em>behind</em> the column and it becomes free ballast plus shorter power leads. Counts toward the 400 g.</p>
+      </div>
+      <div class="panel">
+        <h3>Fix: clamp it down <span class="pill neu">optional</span></h3>
+        <p class="fine">Two 8 mm slots at the rear of the plate take a small C-clamp. Makes tipping structurally impossible and is worth having for fast moves, but it should not be the only thing keeping the arm upright.</p>
+      </div>
+    </div>
+    <p class="note"><b>Dynamic loading is worse than this calculation.</b> Decelerating the arm at the end of a fast reach adds an inertial term the static analysis ignores. That is why the target is SF&nbsp;2.2 and not 1.2 &mdash; and why V1 firmware slew-limits every joint to 60&deg;/s.</p>
+  </div>
+</section>
+
+<!-- ============ 07 WORKSPACE ============ -->
+<section id="ws">
+  <div class="sec-head"><span class="n">07</span><h2>Workspace</h2></div>
+  <div class="stack">
+    <p>Because the wrist holds the gripper level, the TCP envelope is a circle of radius <span class="mono">L&#8321;+L&#8322; = 240&nbsp;mm</span> centred not on the shoulder but on a point offset by <span class="mono">L&#8323;</span> &mdash; at <span class="mono">(r, z) = (75, 75)</span>. Sweeping that profile through 180&deg; of base rotation gives the usable volume.</p>
+
+    <figure>
+      <svg viewBox="0 0 400 360" role="img" aria-label="Reachable workspace in the radius-height plane">
+        <!-- grid -->
+        <g stroke="var(--rule-soft)" stroke-width="1">
+          <line x1="60" y1="230" x2="360" y2="230"/>
+          <line x1="60" y1="150" x2="360" y2="150"/>
+          <line x1="60" y1="70"  x2="360" y2="70"/>
+          <line x1="140" y1="30" x2="140" y2="310"/>
+          <line x1="220" y1="30" x2="220" y2="310"/>
+          <line x1="300" y1="30" x2="300" y2="310"/>
+        </g>
+
+        <!-- envelope -->
+        <path d="M 86.7 60.9 A 192 192 0 0 1 304.8 302 L 170 301.8 A 72 72 0 0 0 107.5 179.1 Z"
+              fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/>
+
+        <!-- table surface -->
+        <line x1="60" y1="310" x2="360" y2="310" stroke="var(--ink)" stroke-width="1.8"/>
+        <line x1="60" y1="302" x2="360" y2="302" stroke="var(--warn)" stroke-width="1.3" stroke-dasharray="5 4"/>
+        <text x="356" y="297" font-family="IBM Plex Mono,monospace" font-size="9.5" fill="var(--warn)" text-anchor="end">10 mm table clearance floor</text>
+
+        <!-- shoulder -->
+        <circle cx="60" cy="250" r="4" fill="var(--ink)"/>
+        <text x="66" y="245" font-family="IBM Plex Mono,monospace" font-size="9.5" fill="var(--ink-2)">shoulder</text>
+
+        <!-- markers -->
+        <circle cx="236" cy="294" r="5" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.2"/>
+        <text x="246" y="292" font-family="IBM Plex Mono,monospace" font-size="9.5" fill="var(--ink)">typical pick (220, 20)</text>
+        <circle cx="180" cy="150" r="5" fill="var(--ink)"/>
+        <text x="190" y="147" font-family="IBM Plex Mono,monospace" font-size="9.5" fill="var(--ink)">HOME (150, 200)</text>
+
+        <!-- axes -->
+        <g stroke="var(--ink-2)" stroke-width="1.4" fill="none">
+          <line x1="60" y1="310" x2="60" y2="30"/>
+        </g>
+        <g font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--ink-2)">
+          <text x="54" y="314" text-anchor="end">0</text>
+          <text x="54" y="234" text-anchor="end">100</text>
+          <text x="54" y="154" text-anchor="end">200</text>
+          <text x="54" y="74"  text-anchor="end">300</text>
+          <text x="140" y="326" text-anchor="middle">100</text>
+          <text x="220" y="326" text-anchor="middle">200</text>
+          <text x="300" y="326" text-anchor="middle">300</text>
+          <text x="60" y="326" text-anchor="middle">0</text>
+        </g>
+        <text x="210" y="346" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="var(--ink-2)" text-anchor="middle">radial distance from base axis r (mm)</text>
+        <text x="18" y="170" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="var(--ink-2)" text-anchor="middle" transform="rotate(-90 18 170)">height above table z (mm)</text>
+      </svg>
+      <figcaption>Reachable TCP envelope in the vertical plane. The inner boundary is a software limit, not a kinematic one &mdash; with equal links the arm can fold to <span class="mono">r&nbsp;=&nbsp;0</span>, but it would fold into its own turret first.</figcaption>
+    </figure>
+
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Bound</th><th class="r">Value</th><th>Set by</th></tr></thead>
+        <tbody>
+          <tr><td>Outer radius</td><td class="r">315 mm</td><td>Kinematic: <span class="mono">L&#8321;+L&#8322;+L&#8323;</span>, reached only with the arm straight.</td></tr>
+          <tr><td>Practical outer radius</td><td class="r">290 mm</td><td>Software limit. The last 25 mm is a singularity where IK becomes ill-conditioned and tiny position errors demand huge joint changes.</td></tr>
+          <tr><td>Inner radius</td><td class="r">130 mm</td><td>Collision: the forearm would strike the turret and the base column.</td></tr>
+          <tr><td>Floor</td><td class="r">z = 10 mm</td><td>Jaw tips clear the desk. Hard limit in firmware &mdash; the most likely way to break the arm is to drive it into the table.</td></tr>
+          <tr><td>Ceiling</td><td class="r">z = 315 mm</td><td>Arm vertical.</td></tr>
+          <tr><td>Base sweep</td><td class="r">&plusmn;90&deg;</td><td>Cable wrap. A full 360&deg; needs a slip ring, which V1 does not.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fine">Usable desk area: an annular sector roughly <b>130&ndash;290&nbsp;mm</b> radius across <b>180&deg;</b> &mdash; about 0.09&nbsp;m&sup2; of desktop, which is a comfortable arc in front of a keyboard.</p>
+  </div>
+</section>
+
+<!-- ============ 08 KINEMATICS ============ -->
+<section id="kin">
+  <div class="sec-head"><span class="n">08</span><h2>Kinematics</h2></div>
+  <div class="stack">
+    <p>No DH tables, no Jacobians, no numerical solvers. The base rotation decouples completely, leaving a two-link planar problem with a closed-form solution &mdash; roughly forty lines of Python including the workspace checks.</p>
+
+    <h3>Forward</h3>
+    <div class="eq">r = L&#8321;&middot;cos&theta;&#8321; + L&#8322;&middot;cos(&theta;&#8321;+&theta;&#8322;) + L&#8323;
+z = h&#8320; + L&#8321;&middot;sin&theta;&#8321; + L&#8322;&middot;sin(&theta;&#8321;+&theta;&#8322;)
+x = r&middot;cos&theta;&#8320;       y = r&middot;sin&theta;&#8320;</div>
+    <p class="fine"><span class="mono">L&#8323;</span> adds directly to <span class="mono">r</span> with no trig term &mdash; that is the payoff from the levelled wrist. Without it, <span class="mono">L&#8323;</span> would carry a <span class="mono">cos(&theta;&#8321;+&theta;&#8322;+&theta;&#8323;)</span> factor and the inverse problem stops being closed-form.</p>
+
+    <h3 style="margin-top:6px">Inverse</h3>
+    <div class="eq">&theta;&#8320; = atan2(y, x)
+
+r&prime; = &radic;(x&sup2;+y&sup2;) &minus; L&#8323;          <span class="cm">// wrist-pivot radius</span>
+z&prime; = z &minus; h&#8320;
+
+D  = (r&prime;&sup2; + z&prime;&sup2; &minus; L&#8321;&sup2; &minus; L&#8322;&sup2;) / (2&middot;L&#8321;&middot;L&#8322;)
+<span class="cm">// |D| &gt; 1  &rarr;  target is unreachable. Check before acos().</span>
+
+&theta;&#8322; = &minus;acos(D)                                    <span class="cm">// negative root = elbow-up</span>
+&theta;&#8321; = atan2(z&prime;, r&prime;) &minus; atan2(L&#8322;&middot;sin&theta;&#8322;, L&#8321; + L&#8322;&middot;cos&theta;&#8322;)
+&theta;&#8323; = &minus;(&theta;&#8321; + &theta;&#8322;)                                 <span class="cm">// slaved wrist, jaws level</span></div>
+
+    <p>The two <span class="mono">acos</span> roots are elbow-up and elbow-down. Elbow-down puts the joint below the table on nearly every desk-height target, so the solver takes the negative root unconditionally and never has to choose.</p>
+
+    <h3 style="margin-top:6px">Validation, in order, before anything moves</h3>
+    <ol class="clean">
+      <li><b>Reachability</b> &mdash; <span class="mono">|D| &le; 1</span> and <span class="mono">130 &le; &radic;(x&sup2;+y&sup2;) &le; 290</span>.</li>
+      <li><b>Joint limits</b> &mdash; every <span class="mono">&theta;</span> inside its mechanical range from &sect;01.</li>
+      <li><b>Table clearance</b> &mdash; <span class="mono">z &ge; 10 mm</span>, and the elbow itself above the table, which the elbow-up choice does not guarantee near the inner boundary.</li>
+      <li><b>Path check</b> &mdash; for a Cartesian move, interpolate 20 waypoints and validate each. A straight line between two legal poses can pass through an illegal one.</li>
+    </ol>
+    <p class="note stop"><b>The accuracy limit is backlash, not mathematics.</b> An MG996R has 1&ndash;2&deg; of gear lash plus potentiometer deadband. At a 240&nbsp;mm lever, 1.5&deg; is <b>6&nbsp;mm at the gripper</b>. Expect &plusmn;5&ndash;8&nbsp;mm repeatability and design around it: approach every target from the same direction so the lash is always taken up the same way, and let the 55&nbsp;mm jaw opening absorb the rest. No amount of IK precision buys back a millimetre of this.</p>
+  </div>
+</section>
+
+<!-- ============ 09 ELECTRONICS ============ -->
+<section id="elec">
+  <div class="sec-head"><span class="n">09</span><h2>Electronics</h2></div>
+  <div class="stack">
+    <div class="eq">   PC ──USB──▶ Arduino Nano ──5 × PWM signal──▶ servos
+                     │                              ▲
+                     └──── GND ═══════ common ══════╪═══ GND
+                                                    │
+     6 V 3 A supply ──fuse──┬── 2 × 1000 µF ────────┘
+                            └── V+ rail to all five servos</div>
+
+    <p><strong>Arduino Nano.</strong> Not because it is powerful &mdash; it is the weakest board on the shortlist &mdash; but because it has <b>5&nbsp;V logic</b>. Hobby servos want a 5&nbsp;V pulse, and every 3.3&nbsp;V board introduces a question that has no clean answer: some servos latch reliably on 3.3&nbsp;V, some jitter, and you find out after assembly. The Nano removes the question for <span class="mono">$9</span>. It drives twelve servos from the stock <code>Servo</code> library and speaks USB serial to the PC, which is precisely the V1&rarr;V2 architecture.</p>
+
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Board</th><th class="r">Cost</th><th>Logic</th><th>Assessment</th></tr></thead>
+        <tbody>
+          <tr><td class="part">Arduino Nano <span class="pill ok">chosen</span></td><td class="r">$9</td><td>5 V</td><td>Native servo levels, <code>Servo.h</code>, USB-serial. Clone boards use a CH340 &mdash; install the driver before you need it.</td></tr>
+          <tr><td class="part">Arduino Uno</td><td class="r">&mdash;</td><td>5 V</td><td>Identical electrically, bulkier. <b>Take this if the lab has one</b> and spend the $9 elsewhere.</td></tr>
+          <tr><td class="part">Raspberry Pi Pico</td><td class="r">$7</td><td>3.3 V</td><td>Better PWM hardware, cheaper, MicroPython. Test servo latching on 3.3 V before committing, or add a level shifter.</td></tr>
+          <tr><td class="part">ESP32</td><td class="r">$12</td><td>3.3 V</td><td>Wi-Fi is not useful in V1 &mdash; the PC is on the other end of a USB cable regardless. Revisit only if V2 ends up untethered.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:8px">Deliberately not included</h3>
+    <div class="cols">
+      <div class="panel">
+        <h3>PCA9685 driver board</h3>
+        <p class="fine">Five servos fit on five Nano pins with the stock library. The board solves a problem &mdash; running out of timers &mdash; that starts at about twelve servos. <span class="mono">$6</span> and a whole I&sup2;C bus for nothing. <span class="pill warn">skipped</span></p>
+      </div>
+      <div class="panel">
+        <h3>Encoders and current sensing</h3>
+        <p class="fine">Hobby servos have no position feedback path to the MCU; adding external encoders means closing a loop the servo already closes internally. Real value, wrong project. <span class="pill warn">skipped</span></p>
+      </div>
+      <div class="panel">
+        <h3>Limit switches</h3>
+        <p class="fine">Servos are absolute-position devices &mdash; they know where they are at power-on. Homing switches solve a stepper problem this arm does not have. <span class="pill warn">skipped</span></p>
+      </div>
+    </div>
+    <p class="fine">Assembly is a small piece of perfboard on the base plate: five 3-pin servo headers, a barrel jack, the bulk capacitors, a fuse, and a 6-wire ribbon to the Nano. Under an hour of soldering.</p>
+  </div>
+</section>
+
+<!-- ============ 10 POWER ============ -->
+<section id="pwr">
+  <div class="sec-head"><span class="n">10</span><h2>Power</h2></div>
+  <div class="stack">
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Servo</th><th class="r">Qty</th><th class="r">Idle</th><th class="r">Moving</th><th class="r">Stall</th></tr></thead>
+        <tbody>
+          <tr><td class="part">MG996R</td><td class="r">2</td><td class="r">0.17 A</td><td class="r">0.6&ndash;0.9 A</td><td class="r">2.5 A</td></tr>
+          <tr><td class="part">MG90S</td><td class="r">2</td><td class="r">0.08 A</td><td class="r">0.2&ndash;0.4 A</td><td class="r">0.7 A</td></tr>
+          <tr><td class="part">SG90</td><td class="r">1</td><td class="r">0.06 A</td><td class="r">0.2 A</td><td class="r">0.65 A</td></tr>
+          <tr class="total"><td>Rail total</td><td class="r">5</td><td class="r">0.56 A</td><td class="r">1.2&ndash;1.8 A</td><td class="r">7.05 A</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The 7.05&nbsp;A all-stall figure is not a design case &mdash; it requires every joint to be jammed simultaneously, which on a desk arm means something has already gone badly wrong. The design case is <b>1.8&nbsp;A continuous with ~3.5&nbsp;A transients</b> at direction reversals.</p>
+
+    <div class="eq"><b>Specification: 6.0 V, 3 A regulated (18 W), barrel jack, 3 A fuse</b>
+
+6.0 V because MG996R torque is quoted at 6 V; at 5 V you lose 15% and shoulder SF
+falls from 2.44 to 2.08. The 4.8&ndash;6.6 V window covers all five servos.
+
+Bulk capacitance: 2 × 1000 µF across the rail, physically at the servo headers.</div>
+
+    <p class="note flag"><b>Be honest about what the capacitors do.</b> <span class="mono">C&middot;&Delta;V/I = 2000&micro;F &times; 0.5V / 2A = 0.5 ms</span>. Two thousand microfarads hold a 2&nbsp;A surge for half a millisecond before the rail sags half a volt. They kill the switching spike that resets the MCU; they are not a substitute for a supply that can actually source the current. Do not let a capacitor talk you into a 1&nbsp;A adapter.</p>
+
+    <div class="cols">
+      <div class="panel">
+        <h3>Bench supply <span class="pill ok">use for bring-up</span></h3>
+        <p class="fine">Set 6.0 V with a 3 A current limit. The ammeter is genuinely diagnostic: a joint drawing 1.5 A while holding still is a joint fighting its own mechanical limit, and you will see it before you smell it. Use this for the whole of Phase 7.</p>
+      </div>
+      <div class="panel">
+        <h3>6 V 3 A adapter <span class="pill neu">primary</span></h3>
+        <p class="fine">About <span class="mono">$14</span>. Doubles as ballast on the base plate. Buy one with a real current rating, not an optimistic one.</p>
+      </div>
+      <div class="panel">
+        <h3>5 V 3 A phone charger <span class="pill neu">fallback</span></h3>
+        <p class="fine">Free if you own a USB-C PD or old 5 V/3 A brick. Costs 15% of the torque. Shoulder SF 2.08 &mdash; acceptable, not comfortable.</p>
+      </div>
+    </div>
+
+    <p class="note stop"><b>Three rules, each of which has destroyed someone's project.</b><br>
+    1. Never feed the servo rail from the Nano's 5&nbsp;V pin or USB. The regulator sources ~500&nbsp;mA; five servos will brown it out and reset the board mid-move.<br>
+    2. Servo ground and Nano ground <b>must</b> be joined, or the PWM has no reference and the servos twitch randomly.<br>
+    3. No 7.4&nbsp;V LiPo direct to the rail. It will destroy the MG90S and SG90 within minutes.</p>
+  </div>
+</section>
+
+<!-- ============ 11 SOFTWARE ============ -->
+<section id="sw">
+  <div class="sec-head"><span class="n">11</span><h2>Software architecture</h2></div>
+  <div class="stack">
+    <p>The split is deliberate: <strong>the firmware owns safety, the PC owns intelligence.</strong> Anything that protects the hardware lives on the Nano and cannot be bypassed by a buggy Python script or, later, by a confused AI agent. Everything else lives on the PC where it is easy to change.</p>
+
+    <div class="eq">firmware/arm_firmware/        <span class="cm">// Arduino C++ — the safety layer</span>
+  arm_firmware.ino              serial parser, 50 Hz update loop
+  limits.h                      per-joint µs bounds — hard clamp, no override
+  slew.h                        60°/s rate limiter, so nothing ever slams
+
+software/robot/                 <span class="cm">// Python — the thinking layer</span>
+  config.py                     link lengths, calibration, limits (one file to tune)
+  transport.py                  serial port, line protocol, timeouts, retries
+  kinematics.py                 fk(), ik(), reachable(), path_safe()
+  trajectory.py                 eased interpolation between poses
+  arm.py                        class Arm — THE public API
+software/cli.py                 interactive shell
+software/sequences.py           demo routines
+
+<span class="cm">// V2 adds here and nowhere else:</span>
+software/vision/                camera, detector, desk-plane homography
+software/agent/                 natural language → calls to arm.py</div>
+
+    <h3 style="margin-top:8px">Serial protocol</h3>
+    <p>ASCII, line-oriented, one command per line, every command answered. Debuggable from a serial monitor with no tooling, which matters enormously on the first evening the arm does not move.</p>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Command</th><th>Reply</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td class="part">PING</td><td class="part">OK ARM v1</td><td>Port identification and liveness.</td></tr>
+          <tr><td class="part">J &lt;base&gt; &lt;sh&gt; &lt;el&gt;</td><td class="part">OK | ERR LIMIT &lt;joint&gt;</td><td>Absolute joint angles in degrees. Wrist follows automatically.</td></tr>
+          <tr><td class="part">G &lt;0-100&gt;</td><td class="part">OK</td><td>Gripper, 0 closed to 100 open.</td></tr>
+          <tr><td class="part">US &lt;ch&gt; &lt;µs&gt;</td><td class="part">OK | ERR RANGE</td><td>Raw pulse width. Calibration only &mdash; still bounded.</td></tr>
+          <tr><td class="part">HOME</td><td class="part">OK</td><td>Slew to the safe folded pose.</td></tr>
+          <tr><td class="part">STOP</td><td class="part">OK</td><td>Freeze at the current position.</td></tr>
+          <tr><td class="part">REL</td><td class="part">OK</td><td>Detach all servos. Kills holding buzz and lets you move the arm by hand.</td></tr>
+          <tr><td class="part">STAT</td><td class="part">&lt;angles&gt; &lt;µs&gt;</td><td>Current commanded state.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:8px">The one interface that matters</h3>
+    <div class="eq">arm.home()
+arm.move_joints(base, shoulder, elbow)
+arm.move_to(x, y, z)          <span class="cm">// Cartesian, validated, interpolated</span>
+arm.grip(percent)
+arm.pickup(x, y, z)           <span class="cm">// approach above → descend → close → lift</span>
+arm.place(x, y, z)</div>
+    <p class="note"><b>This is the V1&rarr;V2 contract.</b> In V2 the agent does not get its own motion code, its own limits, or its own IK &mdash; it calls exactly these six methods. Vision produces an <span class="mono">(x, y, z)</span>; the agent picks which one; <code>arm.py</code> is unchanged. If V2 ever needs to modify <code>arm.py</code> to work, the V1 API was designed wrong.</p>
+    <p class="fine">No ROS. No behaviour trees. No message bus. A 300&nbsp;mm desk arm with five servos does not have a software problem that a Python class cannot solve, and every framework added here is a week not spent making the arm work.</p>
+  </div>
+</section>
+
+<!-- ============ 12 MECHANICAL ============ -->
+<section id="mech">
+  <div class="sec-head"><span class="n">12</span><h2>Mechanical design and printing</h2></div>
+  <div class="stack">
+    <p>Roughly fourteen unique parts, twenty printed pieces, about 300&nbsp;g of filament and 18&ndash;22 hours of print time. The links are twin side plates on printed spacers &mdash; a box section that is stiff in bending, easy to print flat with no supports, and puts every bolt in double shear.</p>
+
+    <h3>Material assignment</h3>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Part</th><th>Material</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Base plate, column, turret</td><td><b>PLA</b></td><td>Stiffness and flatness. Nothing here is impact-loaded.</td></tr>
+          <tr><td>Upper arm, forearm links</td><td><b>PLA</b></td><td>E &asymp; 3.5 GPa vs PETG's 2.0 &mdash; 75% stiffer for the same section. Deflection is what matters in a link.</td></tr>
+          <tr><td>Shoulder and elbow brackets</td><td><b>PETG</b></td><td>Highest bending stress in the machine, and bending is where poor layer adhesion shows up. PETG's interlayer strength is worth the small stiffness loss.</td></tr>
+          <tr><td>Servo horn adapters</td><td><b>PETG</b></td><td>Small, bolted, and loaded in a direction that wants to peel layers apart. The one place PETG is not optional.</td></tr>
+          <tr><td>Gripper jaws</td><td><b>PETG</b></td><td>Designed to flex, and first to be dropped. PLA would snap at the compliant section.</td></tr>
+          <tr><td>Spacers, clips, tray</td><td><b>PLA</b></td><td>Unloaded. Print in whatever is on the machine.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fine">Print settings throughout: 0.4&nbsp;mm nozzle, 0.2&nbsp;mm layers, <b>4 perimeters</b>, 30% gyroid, 5 top/bottom. Perimeter count dominates strength in a thin printed part &mdash; four walls and 20% infill beats two walls and 60% every time, and weighs less.</p>
+
+    <h3 style="margin-top:8px">Layer orientation &mdash; the three rules that decide whether this works</h3>
+    <ol class="clean">
+      <li><b>Print brackets flat, never standing up.</b> A shoulder bracket printed upright has its layer planes perpendicular to the bending stress, so the load tries to peel the layers apart and the part fails at roughly 40&ndash;60% of its in-plane strength. Printed flat, the same stress runs along continuous extrusions.</li>
+      <li><b>Every bolt hole has its axis normal to the build plate.</b> Bolts then clamp <em>across</em> layers in compression, which printed plastic handles well, rather than trying to split them.</li>
+      <li><b>Never print a servo spline.</b> A printed 25-tooth spline will round off &mdash; not might, will. Bolt the metal horn that came with the servo to the printed part with two or three M2 screws and let the horn take the torque. <span class="pill bad">most common failure mode in printed arms</span></li>
+    </ol>
+
+    <h3 style="margin-top:8px">Where SolidWorks Simulation actually earns its time</h3>
+    <div class="cols">
+      <div class="panel">
+        <h3>Worth running <span class="pill ok">2 studies</span></h3>
+        <ul>
+          <li><b>Shoulder bracket</b> &mdash; 0.44 N&middot;m through a bolted interface with a stress concentration at the servo cutout. The one part where intuition is unreliable.</li>
+          <li><b>Upper arm link</b> &mdash; check the elbow-servo pocket. Expect the answer to be "add a 3 mm fillet."</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Not worth running</h3>
+        <ul>
+          <li>Everything else. The hand calculation below already answers the question.</li>
+          <li>Use orthotropic properties if you run it at all, and treat the result as a comparison between two designs rather than a number.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="eq"><span class="cm">// upper-arm tip deflection, 1.3 N at 120 mm, twin 20 × 3 mm plates</span>
+I = 2 &times; (3 &times; 20&sup3;)/12 = 4000 mm&#8308;
+&delta; = FL&sup3;/(3EI) = 1.3 &times; 120&sup3; / (3 &times; 2500 &times; 4000) = <b>0.075 mm</b></div>
+    <p class="note"><b>Seventy-five microns.</b> The structure is eighty times stiffer than the servo backlash it is bolted to. <b>Do not thicken these links.</b> Every gram added to the arm buys nothing measurable and costs shoulder safety factor directly &mdash; this is the part of the project where over-engineering makes the robot objectively worse.</p>
+
+    <h3 style="margin-top:8px">Parametric strategy for SolidWorks</h3>
+    <ul class="clean">
+      <li><b>One global variable file</b> driving <span class="mono">L1</span>, <span class="mono">L2</span>, <span class="mono">L3</span>, <span class="mono">h0</span>, plate thickness and pin diameter across every part.</li>
+      <li><b>A servo-pocket library feature</b> with a design table holding two rows &mdash; standard (40.7&times;19.7&times;42.9, 49.5&nbsp;mm holes) and micro (22.8&times;12.2&times;22.5, 32&nbsp;mm holes). Every mount references it, so swapping an MG996R for an MG90S is a configuration change, not a redesign. This is what makes Configurations A through D one robot instead of four.</li>
+      <li><b>Assembly mated to reference planes and axes</b>, never face-to-face between links. Change <span class="mono">L1</span> and the assembly rebuilds instead of erroring.</li>
+      <li><b>Configurations</b>: <span class="mono">Config-A-Short</span> (L2 = 80) and <span class="mono">Config-B-Standard</span> (L2 = 120) from the same files.</li>
+      <li><b>0.2 mm clearance</b> on every pin and pocket. Print a tolerance coupon first and adjust once &mdash; it saves a reprint of every part.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 13 BOM ============ -->
+<section id="bom">
+  <div class="sec-head"><span class="n">13</span><h2>Bill of materials</h2></div>
+  <div class="stack">
+    <p class="fine">Prices are CAD, estimated from typical Amazon.ca listings. AliExpress runs roughly 40% cheaper with a three-week wait &mdash; worth it for the servos if you are not in a hurry, not worth splitting an order over.</p>
+
+    <h3>BOM A &mdash; purchase</h3>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Item</th><th class="r">Qty</th><th class="r">Cost</th><th>Uni?</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td class="part">MG996R servo</td><td class="r">2</td><td class="r">$17</td><td><span class="pill warn">unlikely</span></td><td>Shoulder, elbow. 2-pack; a 4-pack at $26 buys spares, and you will want one.</td></tr>
+          <tr><td class="part">MG90S servo</td><td class="r">2</td><td class="r">$13</td><td><span class="pill warn">maybe</span></td><td>Base, gripper.</td></tr>
+          <tr><td class="part">SG90 servo</td><td class="r">1</td><td class="r">$3</td><td><span class="pill ok">likely</span></td><td>Wrist leveller. Lab drawers are full of these.</td></tr>
+          <tr><td class="part">6 V 3 A adapter + jack</td><td class="r">1</td><td class="r">$14</td><td><span class="pill ok">likely</span></td><td>Bench supply substitutes entirely.</td></tr>
+          <tr><td class="part">Arduino Nano (CH340)</td><td class="r">1</td><td class="r">$9</td><td><span class="pill ok">very likely</span></td><td>A lab Uno works identically.</td></tr>
+          <tr><td class="part">1000 µF 16 V electrolytic</td><td class="r">2</td><td class="r">$3</td><td><span class="pill ok">very likely</span></td><td>Any parts bin has these.</td></tr>
+          <tr><td class="part">608ZZ bearing</td><td class="r">2</td><td class="r">$4</td><td><span class="pill ok">likely</span></td><td>From a 10-pack. Or a dead skateboard.</td></tr>
+          <tr><td class="part">M3 screw / nyloc assortment</td><td class="r">1 kit</td><td class="r">$11</td><td><span class="pill ok">very likely</span></td><td>M3&times;10/12/16/25. Workshop stock.</td></tr>
+          <tr><td class="part">Dupont wire + perfboard</td><td class="r">1</td><td class="r">$8</td><td><span class="pill ok">very likely</span></td><td>Lab stock.</td></tr>
+          <tr><td class="part">PLA + PETG filament</td><td class="r">~300 g</td><td class="r">$8</td><td><span class="pill ok">likely</span></td><td>Share of a $25 spool.</td></tr>
+          <tr class="total"><td>Buy absolutely everything</td><td class="r"></td><td class="r">$90</td><td colspan="2"><span class="pill ok">under the $100 ceiling</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:14px">BOM B &mdash; university-sourced, with purchased equivalents</h3>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Component</th><th>University alternative</th><th class="r">Saves</th><th>Substitution risk</th></tr></thead>
+        <tbody>
+          <tr><td>Microcontroller</td><td>Any Uno, Nano, Mega or Pico in the teaching lab</td><td class="r">$9</td><td><span class="pill ok">none</span> &mdash; same code on any 5 V AVR</td></tr>
+          <tr><td>Power supply</td><td>Bench PSU at 6.0 V / 3 A limit</td><td class="r">$14</td><td><span class="pill ok">none</span> &mdash; better than the adapter for testing</td></tr>
+          <tr><td>Fasteners</td><td>Workshop M3 stock</td><td class="r">$11</td><td><span class="pill ok">none</span></td></tr>
+          <tr><td>Wiring, headers, perfboard</td><td>Electronics lab stock</td><td class="r">$8</td><td><span class="pill ok">none</span></td></tr>
+          <tr><td>Bearings</td><td>Mechanism-lab 608 or 625 stock</td><td class="r">$4</td><td><span class="pill ok">low</span> &mdash; 625ZZ works with a bore change</td></tr>
+          <tr><td>Filament</td><td>Makerspace PLA / PETG</td><td class="r">$8</td><td><span class="pill ok">none</span></td></tr>
+          <tr><td>Capacitors</td><td>Any parts bin</td><td class="r">$3</td><td><span class="pill ok">none</span></td></tr>
+          <tr><td>Micro servos</td><td>SG90 / MG90S from teaching kits</td><td class="r">$16</td><td><span class="pill warn">check</span> &mdash; test for stripped gears first</td></tr>
+          <tr><td><b>MG996R &times; 2</b></td><td>Unlikely to be in a drawer; usually issued per-project</td><td class="r">$17</td><td><span class="pill bad">plan to buy</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="specs" style="margin-top:22px">
+      <div class="spec"><dt>Buy everything</dt><dd>$90<small>worst case, still under ceiling</small></dd></div>
+      <div class="spec"><dt>Typical student</dt><dd>$59<small>servos + supply + filament</small></dd></div>
+      <div class="spec"><dt>Well-stocked lab</dt><dd>$33<small>MG996R + MG90S only</small></dd></div>
+      <div class="spec"><dt>AliExpress route</dt><dd>$41<small>buy-everything, 3 wk wait</small></dd></div>
+    </div>
+    <p class="note"><b>The realistic number is $59.</b> Buy the servos, the power supply and filament; source the controller, fasteners, wire, bearings and capacitors from the lab. That lands in the middle of your $50&ndash;70 target with the ceiling never in sight.</p>
+  </div>
+</section>
+
+<!-- ============ 14 CONFIGURATIONS ============ -->
+<section id="cfg">
+  <div class="sec-head"><span class="n">14</span><h2>Configuration comparison</h2></div>
+  <div class="stack">
+    <div class="scroller">
+      <table>
+        <thead><tr><th>&nbsp;</th><th>A &mdash; Ultra-budget</th><th>B &mdash; Recommended</th><th>C &mdash; University</th><th>D &mdash; Stronger</th></tr></thead>
+        <tbody>
+          <tr><td><b>Purchase cost</b></td><td class="r">$48&ndash;55</td><td class="r">$55&ndash;65</td><td class="r">$17&ndash;35</td><td class="r">$85&ndash;95</td></tr>
+          <tr><td>Reach</td><td class="r">275 mm</td><td class="r">315 mm</td><td class="r">315 mm</td><td class="r">315 mm</td></tr>
+          <tr><td>Payload</td><td class="r">30 g</td><td class="r">55 g</td><td class="r">55 g</td><td class="r">80 g</td></tr>
+          <tr><td>Base</td><td class="part">SG90</td><td class="part">MG90S</td><td class="part">lab micro servo</td><td class="part">MG90S</td></tr>
+          <tr><td>Shoulder</td><td class="part">MG996R</td><td class="part">MG996R</td><td class="part">MG996R</td><td class="part">DS3218 20 kg&middot;cm</td></tr>
+          <tr><td>Elbow</td><td class="part">MG90S</td><td class="part">MG996R</td><td class="part">MG996R</td><td class="part">MG996R</td></tr>
+          <tr><td>Gripper</td><td class="part">SG90</td><td class="part">MG90S</td><td class="part">MG90S</td><td class="part">MG90S</td></tr>
+          <tr><td>Wrist</td><td>fixed bracket</td><td class="part">SG90 slaved</td><td class="part">SG90 slaved</td><td class="part">MG90S slaved</td></tr>
+          <tr><td>Controller</td><td class="part">Nano</td><td class="part">Nano</td><td>lab Uno / Nano</td><td class="part">Nano</td></tr>
+          <tr><td>Power</td><td>5 V 3 A charger</td><td>6 V 3 A adapter</td><td>bench supply</td><td>6 V 5 A adapter</td></tr>
+          <tr><td>Shoulder SF</td><td class="r">4.1</td><td class="r">2.44</td><td class="r">2.44</td><td class="r">4.0</td></tr>
+          <tr><td>Uni components</td><td>minimal</td><td>minimal</td><td><b>high</b></td><td>optional</td></tr>
+          <tr><td>Build difficulty</td><td>lowest</td><td>low</td><td>low + sourcing time</td><td>low</td></tr>
+          <tr><td><b>Use it when</b></td><td>Cash is the binding constraint, or you want a proving build before committing.</td><td>Nothing is blocking you. Meets the brief with margin.</td><td>The lab genuinely has the parts. Same robot, less money.</td><td>B measured short after assembly &mdash; not before.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fine">Every column above is the <em>same robot</em>: same CAD files, same assembly, same firmware, same Python. A&rarr;B is a 40&nbsp;mm forearm configuration change and two servo swaps. B&rarr;D is one servo and a different mounting plate. You can start at A and arrive at D without reprinting the base, the turret, the upper arm or the gripper.</p>
+
+    <h3 style="margin-top:12px">How the decision was actually made</h3>
+    <div class="trail">
+      <div class="gate">
+        <div class="g"></div>
+        <div>
+          <q>Can the cheapest configuration meet the torque requirement?</q>
+          <div class="ans">Yes &mdash; but only at 275&nbsp;mm reach and 30&nbsp;g payload. An MG90S elbow needs the forearm cut from 120&nbsp;mm to 80&nbsp;mm to reach SF&nbsp;2.08. That satisfies torque by shrinking the robot out of the useful end of the brief's 250&ndash;350&nbsp;mm range. <span class="pill warn">conditional pass</span></div>
+        </div>
+      </div>
+      <div class="gate">
+        <div class="g"></div>
+        <div>
+          <q>Can university components close the gap at zero cost?</q>
+          <div class="ans">Partly. Controller, power, fasteners, wire, bearings and filament are all plausible lab stock &mdash; about <span class="mono">$45</span> of the BOM. MG996R-class servos are not usually sitting in a drawer. Worth asking before ordering; not worth waiting on. <span class="pill warn">partial</span></div>
+        </div>
+      </div>
+      <div class="gate hit">
+        <div class="g"></div>
+        <div>
+          <q>Is the step from A to B worth its cost?</q>
+          <div class="ans">Yes, decisively. <span class="mono">$8</span> buys <b>+40&nbsp;mm reach, +25&nbsp;g payload and a levelled wrist</b>. There is no cheaper way to buy that much capability on this project. <b>Configuration B selected.</b> <span class="pill ok">selected</span></div>
+        </div>
+      </div>
+      <div class="gate">
+        <div class="g"></div>
+        <div>
+          <q>Does B leave enough margin, or is D required?</q>
+          <div class="ans">Shoulder SF 2.44, elbow 5.50, base 7.3, gripper 2.7 &mdash; every joint clears the SF&nbsp;2.0 floor. A DS3218 would add <span class="mono">$18</span> to fix a problem that does not exist. <b>Configuration D is not required.</b> Revisit only if measured performance after assembly disagrees with this table. <span class="pill ok">not needed</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15 FALLBACKS ============ -->
+<section id="fall">
+  <div class="sec-head"><span class="n">15</span><h2>Component fallbacks</h2></div>
+  <div class="stack">
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Component</th><th>Primary</th><th>If unavailable</th><th>If too weak</th><th>University</th></tr></thead>
+        <tbody>
+          <tr><td><b>Shoulder</b></td><td class="part">MG996R</td><td class="part">MG995 (same frame, lower quality)</td><td class="part">DS3218</td><td>Any 9&ndash;20 kg&middot;cm standard-frame servo</td></tr>
+          <tr><td><b>Elbow</b></td><td class="part">MG996R</td><td class="part">MG90S + L&#8322; cut to 80 mm</td><td class="part">second MG996R from the 4-pack</td><td>Standard-frame servo</td></tr>
+          <tr><td><b>Base</b></td><td class="part">MG90S</td><td class="part">SG90 (torque is trivial here)</td><td class="part">MG996R</td><td>Any micro servo</td></tr>
+          <tr><td><b>Gripper</b></td><td class="part">MG90S</td><td class="part">SG90 + lighter jaws</td><td class="part">MG92B</td><td>Micro servo &mdash; check for stripped gears</td></tr>
+          <tr><td><b>Wrist</b></td><td class="part">SG90</td><td>fixed 45&deg; bracket</td><td class="part">MG90S</td><td>Any micro servo</td></tr>
+          <tr><td><b>Controller</b></td><td class="part">Nano</td><td class="part">Pico + level check</td><td>&mdash;</td><td>Uno, Nano, Mega, Pico &mdash; all fine</td></tr>
+          <tr><td><b>Power</b></td><td>6 V 3 A adapter</td><td>5 V 3 A charger (&minus;15% torque)</td><td>6 V 5 A adapter</td><td>Bench supply &mdash; best option for testing</td></tr>
+          <tr><td><b>Base bearing</b></td><td>2 &times; 608ZZ</td><td>625ZZ, or a printed race with 6 mm airsoft BBs</td><td>&mdash;</td><td>Lab bearing stock</td></tr>
+          <tr><td><b>Fasteners</b></td><td>M3 nyloc</td><td>M3 + threadlock</td><td>&mdash;</td><td>Workshop stock</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:10px">Geometry fallback &mdash; apply strictly in this order</h3>
+    <ol class="clean">
+      <li><b>Cut the payload.</b> 55&nbsp;g &rarr; 30&nbsp;g removes 39% of the shoulder moment for free. A 30&nbsp;g budget still picks up every pen, USB stick and small tool on the desk.</li>
+      <li><b>Shorten the forearm.</b> <span class="mono">L&#8322;</span> 120 &rarr; 80&nbsp;mm. One configuration change in SolidWorks, two reprinted parts, reach falls to 275&nbsp;mm.</li>
+      <li><b>Lighten the prints.</b> 3&nbsp;mm plates &rarr; 2.5&nbsp;mm and 30% &rarr; 20% infill. Worth about 12&nbsp;g of moving mass; deflection stays under 0.15&nbsp;mm.</li>
+      <li><b>Only then, a bigger servo.</b> And check steps 1&ndash;3 again first.</li>
+    </ol>
+    <p class="note"><b>A concrete example of why order matters.</b> A 350&nbsp;mm arm at 55&nbsp;g needs about 5.4&nbsp;kg&middot;cm at the shoulder &mdash; an MG996R at SF&nbsp;2.0, right at the edge, or a DS3218 for <span class="mono">$18</span> more. The 315&nbsp;mm arm needs 4.51 and clears it comfortably on the <span class="mono">$8</span> servo. Thirty-five millimetres of reach is not worth doubling the actuator budget.</p>
+  </div>
+</section>
+
+<!-- ============ 16 RISKS ============ -->
+<section id="risk">
+  <div class="sec-head"><span class="n">16</span><h2>Design risks</h2></div>
+  <div class="stack">
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Risk</th><th>Severity</th><th>Mitigation</th></tr></thead>
+        <tbody>
+          <tr><td><b>Printed servo-horn interface strips</b><br><span class="fine">The classic killer of printed arms.</span></td><td><span class="pill bad">high</span></td><td>Never print splines. Bolt the supplied metal horn to the printed part with 2&ndash;3 M2 screws. Designed in from part one.</td></tr>
+          <tr><td><b>Base tips forward</b></td><td><span class="pill bad">high</span></td><td>Calculated in &sect;06 &mdash; it does tip without ballast. 400&nbsp;g cavity plus the supply on the plate. Verify by hand before powering up.</td></tr>
+          <tr><td><b>Brownout resets mid-move</b></td><td><span class="pill bad">high</span></td><td>Separate 3 A servo rail, common ground, 2&times;1000&nbsp;µF at the headers, never the Nano's 5&nbsp;V pin.</td></tr>
+          <tr><td><b>Backlash limits accuracy to &plusmn;6 mm</b></td><td><span class="pill warn">medium</span></td><td>Unfixable in software. Approach every target from one direction; rely on the 55&nbsp;mm jaw opening. <b>Plan for it rather than fighting it.</b></td></tr>
+          <tr><td><b>Gripper servo cooks while holding</b></td><td><span class="pill warn">medium</span></td><td>Compliant jaw tips (&sect;05), plus <code>REL</code> to detach after a grip is established.</td></tr>
+          <tr><td><b>Arm driven into the table</b></td><td><span class="pill warn">medium</span></td><td>Firmware clamps each joint independently of the PC; Python validates <span class="mono">z &ge; 10 mm</span> on every waypoint, not just endpoints.</td></tr>
+          <tr><td><b>Print tolerances bind the joints</b></td><td><span class="pill warn">medium</span></td><td>0.2 mm nominal clearance, and print a tolerance coupon before the real parts.</td></tr>
+          <tr><td><b>Servo buzz at rest</b></td><td><span class="pill ok">low</span></td><td>Detach on idle via <code>REL</code>. Cosmetic, mildly annoying, not a fault.</td></tr>
+          <tr><td><b>PLA creep under sustained load</b></td><td><span class="pill ok">low</span></td><td>Deflection is 0.075&nbsp;mm at 5% of yield. Don't park the arm extended for days.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 17 TIMELINE ============ -->
+<section id="plan">
+  <div class="sec-head"><span class="n">17</span><h2>Build timeline</h2></div>
+  <div class="stack">
+    <p class="fine">Assumes 6&ndash;10 hours per week alongside coursework. The two estimates people always get wrong are print iteration and calibration &mdash; both are budgeted honestly here.</p>
+    <div class="scroller">
+      <table>
+        <thead><tr><th class="r">Week</th><th>Phase</th><th>Output</th><th>Done when</th></tr></thead>
+        <tbody>
+          <tr><td class="r">0</td><td>Requirements</td><td>This review, signed off</td><td>Configuration chosen, order placed, lab stock confirmed</td></tr>
+          <tr><td class="r">1&ndash;2</td><td>Mechanical design</td><td>SolidWorks parts and assembly</td><td>Assembly rebuilds cleanly when L&#8321; changes</td></tr>
+          <tr><td class="r">2&ndash;3</td><td>Print</td><td>~20 parts, 300 g</td><td>Everything fits without a file. <b>Budget two revisions</b> &mdash; nobody gets clearances right first time.</td></tr>
+          <tr><td class="r">3</td><td>Assembly + wiring</td><td>Arm on the desk, perfboard built</td><td>Every joint moves freely by hand through its full range</td></tr>
+          <tr><td class="r">4</td><td>Firmware</td><td>Serial protocol, limits, slew, HOME</td><td>Each joint sweeps its range from a serial monitor without binding</td></tr>
+          <tr><td class="r">5</td><td>Kinematics + calibration</td><td>Python layer, <code>arm.py</code></td><td><code>move_to()</code> lands within &plusmn;8&nbsp;mm across the workspace</td></tr>
+          <tr><td class="r">6</td><td>Testing</td><td>Payload, repeatability, thermal, current</td><td>Picks and places a pen 10 times running</td></tr>
+          <tr><td class="r">7</td><td>Documentation</td><td>README, docs/, CAD exported</td><td>Someone else could rebuild it from the repo</td></tr>
+          <tr class="total"><td class="r">&mdash;</td><td>V1 complete</td><td colspan="2"><b>6&ndash;8 weeks part-time.</b> Phase 5 calibration is where schedules slip &mdash; per-servo µs offsets take an evening of patient iteration.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 18 V2 ============ -->
+<section id="v2">
+  <div class="sec-head"><span class="n">18</span><h2>V1 &rarr; V2 roadmap</h2></div>
+  <div class="stack">
+    <p>Nothing here gets built now. It is listed so that V1 does not accidentally close a door.</p>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Stage</th><th>Adds</th><th class="r">Cost</th><th>Touches V1?</th></tr></thead>
+        <tbody>
+          <tr><td>2.1 Eyes</td><td>USB webcam on a printed overhead mast, bolted to the base plate</td><td class="r">$0&ndash;15</td><td>One new printed part. No electronics change.</td></tr>
+          <tr><td>2.2 Desk-plane calibration</td><td>Four-point homography: camera pixels &rarr; desk coordinates</td><td class="r">$0</td><td>New module. <b>This is the whole of the coordinate problem</b> &mdash; a desk is flat, so a 3&times;3 matrix is all you need. No depth camera, no stereo.</td></tr>
+          <tr><td>2.3 Detection</td><td>YOLO or a colour/contour detector returning object centroids</td><td class="r">$0</td><td>New module. Feeds (u,v) into 2.2.</td></tr>
+          <tr><td>2.4 Agent</td><td>Language model with <code>arm.pickup()</code> / <code>arm.place()</code> exposed as tools</td><td class="r">$0</td><td><b>Nothing.</b> The agent calls the same six methods the CLI calls.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note"><b>The three decisions V1 makes on V2's behalf</b> &mdash; each costs nothing now and would be expensive to retrofit: the PC holds the intelligence and the MCU holds the safety, so the agent physically cannot exceed a joint limit; the arm's public API is Cartesian, so vision output plugs straight in; and the base plate has mounting bosses for a camera mast, so the camera-to-robot transform can be calibrated once and stay valid.</p>
+    <p class="fine">"Pick up my screwdriver and put it beside my laptop" resolves to: detect &rarr; centroid &rarr; homography &rarr; <code>arm.pickup(x, y, z)</code> &rarr; <code>arm.place(x&prime;, y&prime;, z&prime;)</code>. Every step after the homography is V1 code that already works.</p>
+  </div>
+</section>
+
+<!-- ============ COVERAGE ============ -->
+<section id="cov">
+  <div class="sec-head"><span class="n">&mdash;</span><h2>Brief coverage</h2></div>
+  <div class="stack">
+    <p class="fine">All twenty-one items from &sect;21 of the brief, and where each is answered.</p>
+    <div class="cover">
+      <div><i>01</i><a href="#arch">Architecture</a></div>
+      <div><i>02</i><a href="#arch">Three DOFs</a></div>
+      <div><i>03</i><a href="#geom">Dimensions</a></div>
+      <div><i>04</i><a href="#torque">Servo per joint</a></div>
+      <div><i>05</i><a href="#grip">SG90 vs MG90S</a></div>
+      <div><i>06</i><a href="#mass">Payload</a></div>
+      <div><i>07</i><a href="#ws">Workspace</a></div>
+      <div><i>08</i><a href="#torque">Torque calcs</a></div>
+      <div><i>09</i><a href="#stab">Base stability</a></div>
+      <div><i>10</i><a href="#elec">Microcontroller</a></div>
+      <div><i>11</i><a href="#pwr">Power system</a></div>
+      <div><i>12</i><a href="#bom">Purchase BOM</a></div>
+      <div><i>13</i><a href="#bom">University BOM</a></div>
+      <div><i>14</i><a href="#bom">Total cost</a></div>
+      <div><i>15</i><a href="#mech">Mechanical concept</a></div>
+      <div><i>16</i><a href="#elec">Electronics</a></div>
+      <div><i>17</i><a href="#sw">Software</a></div>
+      <div><i>18</i><a href="#kin">Kinematics</a></div>
+      <div><i>19</i><a href="#risk">Design risks</a></div>
+      <div><i>20</i><a href="#v2">V1 &rarr; V2</a></div>
+      <div><i>21</i><a href="#plan">Timeline</a></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="eyebrow">Decision gate</div>
+  <h2 style="margin-top:8px">Four answers and the design is locked</h2>
+  <p style="margin-top:12px">Nothing gets implemented until you confirm these. Everything downstream &mdash; CAD, firmware, kinematics &mdash; follows from them.</p>
+  <ol class="clean" style="margin-top:14px">
+    <li><b>Configuration B?</b> Or do you want to start at A and upgrade, which costs one reprint of the forearm.</li>
+    <li><b>The SG90 slaved wrist &mdash; in or out?</b> In gives level jaws for <span class="mono">$3</span> and 0.13 of shoulder safety factor. Out is one fewer part and a fixed 45&deg; bracket.</li>
+    <li><b>What is actually in the lab?</b> Specifically: a spare Uno or Nano, a bench supply, M3 stock, 608 bearings, and any servos above 8&nbsp;kg&middot;cm. That answer moves the cost between <span class="mono">$33</span> and <span class="mono">$90</span>.</li>
+    <li><b>Is 315 mm and 55 g the right target?</b> If you already know you want to lift a 150&nbsp;g stapler, that changes the shoulder servo and it is much cheaper to change now.</li>
+  </ol>
+  <p class="fine" style="margin-top:20px">Rev A &mdash; every figure derived from the mass budget in &sect;03. Servo ratings are published manufacturer specs for generic parts; verify against what you actually receive, since MG996R quality varies considerably between sellers.</p>
+</footer>
+
+</div>
