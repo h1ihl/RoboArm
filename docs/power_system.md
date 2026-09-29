@@ -42,6 +42,7 @@ capacitor talk you into a 1 A adapter.
 | **Bench supply** (use for bring-up) | Set 6.0 V with a 3 A current limit. The ammeter is genuinely diagnostic — a joint drawing 1.5 A while holding still is a joint fighting its own mechanical limit, and you'll see it before you smell it. Use for the whole of Phase 7 (testing). |
 | **6 V 3 A adapter (primary purchase)** | ~$14. Doubles as ballast on the base plate — see `docs/mechanical_design.md` / stability calc in the planning guide §6. |
 | **5 V 3 A phone charger (fallback)** | Free if you already own a USB-C PD or old 5 V/3 A brick. Costs ~15% of torque; shoulder SF 2.08 — acceptable, not comfortable. |
+| **4×AA batteries (rejected)** | Nominal voltage is fine — 4 fresh alkaline cells land around 6.4 V, inside the 4.8–6.6 V window. The problem is internal resistance, not voltage: alkaline AAs run ~0.15–0.3 Ω each, so ~0.6–1.2 Ω for the pack. At the 1.8 A design-case draw that's 1.1–2.2 V of sag before the 3.5 A transient case makes it worse — the same failure mode as the capacitor note above, a source that can't hold voltage under real load. Expect soft/inconsistent moves or brownouts, not a clean fault. NiMH cells have lower internal resistance and are the better chemistry *if* a battery pack is ever used for real, but even then treat it as good for a single-joint bench check, not for running the assembled arm. |
 
 ## Three rules, each of which has ended someone's project
 

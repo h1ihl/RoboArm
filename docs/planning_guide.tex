@@ -497,6 +497,8 @@ The 7.05~A all-stall figure is not a design case --- it requires every joint jam
 
 \textbf{Specification: 6.0~V, 3~A regulated (18~W), barrel jack, 3~A fuse.} 6.0~V because MG996R torque is quoted at 6~V; at 5~V shoulder SF falls from 2.44 to 2.08. Bulk capacitance: 2$\times$1000~\micro F at the servo headers. $C\Delta V/I = 2000~\micro\text{F}\times0.5\text{V}/2\text{A} = 0.5$~ms --- enough to kill a switching spike, \emph{not} a substitute for a supply that can source the current.
 
+\textbf{Rejected: 4$\times$AA batteries.} Nominal voltage is fine --- 4 fresh alkaline cells land around 6.4~V, inside the 4.8--6.6~V window --- but internal resistance is not: alkaline AAs run \textasciitilde0.15--0.3~$\Omega$ each, so \textasciitilde0.6--1.2~$\Omega$ for the pack. At the 1.8~A design-case draw that is 1.1--2.2~V of sag before the 3.5~A transient case makes it worse --- the same failure mode as the capacitor note above, a source that cannot hold voltage under real load. NiMH cells have lower internal resistance and are the better chemistry if a battery pack is ever used for real, but even then treat it as good for a single-joint bench check, not for running the assembled arm.
+
 \textbf{Three rules, each of which has ended someone's project:} never feed the servo rail from the ESP32's 5V/VIN pin or USB (that pin sits upstream of the board's own 3.3~V logic regulator and reflects whatever the USB port can source, typically \textasciitilde500~mA; five servos will brown it out mid-move); servo ground and ESP32 ground must be joined, or the PWM has no reference and servos twitch randomly; no 7.4~V LiPo direct to the rail --- it will destroy the MG90S and SG90 within minutes.
 
 % =======================================================================
