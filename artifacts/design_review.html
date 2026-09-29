@@ -209,7 +209,7 @@
 
   <div class="verdict">
     <div class="eyebrow">Recommendation</div>
-    <p style="margin-top:7px"><strong>Build Configuration B.</strong> Direct-drive revolute arm, <span class="mono">L1 = L2 = 120&nbsp;mm</span>, MG996R at shoulder and elbow, MG90S at base and gripper, SG90 as a software-slaved wrist leveller, Arduino Nano over USB serial. Worst-case shoulder safety factor is <strong>2.44</strong>. Configuration A is genuinely viable but only by shrinking the arm to 275&nbsp;mm and the payload to 30&nbsp;g &mdash; and it saves roughly <span class="mono">$8</span>. That trade is not worth taking. Configuration D is not required; the torque margins do not justify it.</p>
+    <p style="margin-top:7px"><strong>Build Configuration B.</strong> Direct-drive revolute arm, <span class="mono">L1 = L2 = 120&nbsp;mm</span>, MG996R at shoulder and elbow, MG90S at base and gripper, SG90 as a software-slaved wrist leveller, ESP32 over USB serial. Worst-case shoulder safety factor is <strong>2.44</strong>. Configuration A is genuinely viable but only by shrinking the arm to 275&nbsp;mm and the payload to 30&nbsp;g &mdash; and it saves roughly <span class="mono">$8</span>. That trade is not worth taking. Configuration D is not required; the torque margins do not justify it.</p>
   </div>
 
   <dl class="specs">
@@ -648,23 +648,23 @@ D  = (r&prime;&sup2; + z&prime;&sup2; &minus; L&#8321;&sup2; &minus; L&#8322;&su
 <section id="elec">
   <div class="sec-head"><span class="n">09</span><h2>Electronics</h2></div>
   <div class="stack">
-    <div class="eq">   PC ──USB──▶ Arduino Nano ──5 × PWM signal──▶ servos
+    <div class="eq">   PC ──USB──▶ ESP32 ──────5 × PWM signal──▶ servos
                      │                              ▲
                      └──── GND ═══════ common ══════╪═══ GND
                                                     │
      6 V 3 A supply ──fuse──┬── 2 × 1000 µF ────────┘
                             └── V+ rail to all five servos</div>
 
-    <p><strong>Arduino Nano.</strong> Not because it is powerful &mdash; it is the weakest board on the shortlist &mdash; but because it has <b>5&nbsp;V logic</b>. Hobby servos want a 5&nbsp;V pulse, and every 3.3&nbsp;V board introduces a question that has no clean answer: some servos latch reliably on 3.3&nbsp;V, some jitter, and you find out after assembly. The Nano removes the question for <span class="mono">$9</span>. It drives twelve servos from the stock <code>Servo</code> library and speaks USB serial to the PC, which is precisely the V1&rarr;V2 architecture.</p>
+    <p><strong>ESP32 &mdash; revised from an original Arduino Nano choice.</strong> The Nano's edge was native <b>5&nbsp;V logic</b>: hobby servos want a 5&nbsp;V pulse, and a 3.3&nbsp;V board introduces a question with no clean answer on paper &mdash; some servos latch reliably on 3.3&nbsp;V, some jitter, and you find out after assembly. In practice the SG90/MG90S/MG996R family used here decodes PWM through an analog RC input stage that a 3.3&nbsp;V high clears &mdash; a well-worn combination, not a gamble. <b>Test each servo before final assembly</b>; the documented fallback for a unit that jitters is a 74HCT125/74AHCT125 level shifter (~$1, one chip covers all five signal lines), not a controller change. In exchange: a dual-core chip with far more flash/RAM/GPIO than this project needs, a similar street price to the Nano, and Wi-Fi/BT already on board if V2 ever wants the arm untethered (unused in V1 either way &mdash; the PC is on the other end of a USB cable regardless). Requires the <code>ESP32Servo</code> library in place of the stock <code>Servo.h</code>; same <code>attach()</code>/<code>writeMicroseconds()</code> API, backed by the chip's LEDC PWM peripheral instead of a hardware timer.</p>
 
     <div class="scroller">
       <table>
         <thead><tr><th>Board</th><th class="r">Cost</th><th>Logic</th><th>Assessment</th></tr></thead>
         <tbody>
-          <tr><td class="part">Arduino Nano <span class="pill ok">chosen</span></td><td class="r">$9</td><td>5 V</td><td>Native servo levels, <code>Servo.h</code>, USB-serial. Clone boards use a CH340 &mdash; install the driver before you need it.</td></tr>
-          <tr><td class="part">Arduino Uno</td><td class="r">&mdash;</td><td>5 V</td><td>Identical electrically, bulkier. <b>Take this if the lab has one</b> and spend the $9 elsewhere.</td></tr>
-          <tr><td class="part">Raspberry Pi Pico</td><td class="r">$7</td><td>3.3 V</td><td>Better PWM hardware, cheaper, MicroPython. Test servo latching on 3.3 V before committing, or add a level shifter.</td></tr>
-          <tr><td class="part">ESP32</td><td class="r">$12</td><td>3.3 V</td><td>Wi-Fi is not useful in V1 &mdash; the PC is on the other end of a USB cable regardless. Revisit only if V2 ends up untethered.</td></tr>
+          <tr><td class="part">ESP32 DevKit <span class="pill ok">chosen</span></td><td class="r">$12</td><td>3.3 V</td><td><code>ESP32Servo</code> library, USB-serial via onboard CP2102/CH340 &mdash; install its driver before you need it. Test 3.3 V servo latching per-unit; level-shifter fallback above.</td></tr>
+          <tr><td class="part">Arduino Nano</td><td class="r">$9</td><td>5 V</td><td>Native servo levels, no latching question, stock <code>Servo.h</code>. The straightforward fallback if an ESP32 isn't available or a servo won't latch cleanly at 3.3 V.</td></tr>
+          <tr><td class="part">Arduino Uno</td><td class="r">&mdash;</td><td>5 V</td><td>Electrically identical to the Nano, bulkier. Take this if the lab has one.</td></tr>
+          <tr><td class="part">Raspberry Pi Pico</td><td class="r">$7</td><td>3.3 V</td><td>Better PWM hardware, cheaper, MicroPython. Same 3.3 V latching consideration as the ESP32.</td></tr>
         </tbody>
       </table>
     </div>
@@ -673,7 +673,7 @@ D  = (r&prime;&sup2; + z&prime;&sup2; &minus; L&#8321;&sup2; &minus; L&#8322;&su
     <div class="cols">
       <div class="panel">
         <h3>PCA9685 driver board</h3>
-        <p class="fine">Five servos fit on five Nano pins with the stock library. The board solves a problem &mdash; running out of timers &mdash; that starts at about twelve servos. <span class="mono">$6</span> and a whole I&sup2;C bus for nothing. <span class="pill warn">skipped</span></p>
+        <p class="fine">Five servos fit on five ESP32 GPIOs with the <code>ESP32Servo</code> library. The board solves a problem &mdash; running out of timers &mdash; that starts at about twelve servos. <span class="mono">$6</span> and a whole I&sup2;C bus for nothing. <span class="pill warn">skipped</span></p>
       </div>
       <div class="panel">
         <h3>Encoders and current sensing</h3>
@@ -684,7 +684,7 @@ D  = (r&prime;&sup2; + z&prime;&sup2; &minus; L&#8321;&sup2; &minus; L&#8322;&su
         <p class="fine">Servos are absolute-position devices &mdash; they know where they are at power-on. Homing switches solve a stepper problem this arm does not have. <span class="pill warn">skipped</span></p>
       </div>
     </div>
-    <p class="fine">Assembly is a small piece of perfboard on the base plate: five 3-pin servo headers, a barrel jack, the bulk capacitors, a fuse, and a 6-wire ribbon to the Nano. Under an hour of soldering.</p>
+    <p class="fine">Assembly is a small piece of perfboard on the base plate: five 3-pin servo headers, a barrel jack, the bulk capacitors, a fuse, and jumper wires to the ESP32's GPIO/GND header pins. Under an hour of soldering. Full pin-out: <code>docs/wiring_diagram.svg</code>.</p>
   </div>
 </section>
 
@@ -731,8 +731,8 @@ Bulk capacitance: 2 × 1000 µF across the rail, physically at the servo headers
     </div>
 
     <p class="note stop"><b>Three rules, each of which has destroyed someone's project.</b><br>
-    1. Never feed the servo rail from the Nano's 5&nbsp;V pin or USB. The regulator sources ~500&nbsp;mA; five servos will brown it out and reset the board mid-move.<br>
-    2. Servo ground and Nano ground <b>must</b> be joined, or the PWM has no reference and the servos twitch randomly.<br>
+    1. Never feed the servo rail from the ESP32's 5V/VIN pin or USB. That pin sits upstream of the board's own 3.3&nbsp;V logic regulator and reflects whatever the USB port can source (typically ~500&nbsp;mA); five servos will brown it out and reset the board mid-move.<br>
+    2. Servo ground and ESP32 ground <b>must</b> be joined, or the PWM has no reference and the servos twitch randomly.<br>
     3. No 7.4&nbsp;V LiPo direct to the rail. It will destroy the MG90S and SG90 within minutes.</p>
   </div>
 </section>
@@ -741,9 +741,9 @@ Bulk capacitance: 2 × 1000 µF across the rail, physically at the servo headers
 <section id="sw">
   <div class="sec-head"><span class="n">11</span><h2>Software architecture</h2></div>
   <div class="stack">
-    <p>The split is deliberate: <strong>the firmware owns safety, the PC owns intelligence.</strong> Anything that protects the hardware lives on the Nano and cannot be bypassed by a buggy Python script or, later, by a confused AI agent. Everything else lives on the PC where it is easy to change.</p>
+    <p>The split is deliberate: <strong>the firmware owns safety, the PC owns intelligence.</strong> Anything that protects the hardware lives on the ESP32 and cannot be bypassed by a buggy Python script or, later, by a confused AI agent. Everything else lives on the PC where it is easy to change.</p>
 
-    <div class="eq">firmware/arm_firmware/        <span class="cm">// Arduino C++ — the safety layer</span>
+    <div class="eq">firmware/arm_firmware/        <span class="cm">// ESP32 (Arduino C++) — the safety layer</span>
   arm_firmware.ino              serial parser, 50 Hz update loop
   limits.h                      per-joint µs bounds — hard clamp, no override
   slew.h                        60°/s rate limiter, so nothing ever slams
@@ -868,13 +868,13 @@ I = 2 &times; (3 &times; 20&sup3;)/12 = 4000 mm&#8308;
           <tr><td class="part">MG90S servo</td><td class="r">2</td><td class="r">$13</td><td><span class="pill warn">maybe</span></td><td>Base, gripper.</td></tr>
           <tr><td class="part">SG90 servo</td><td class="r">1</td><td class="r">$3</td><td><span class="pill ok">likely</span></td><td>Wrist leveller. Lab drawers are full of these.</td></tr>
           <tr><td class="part">6 V 3 A adapter + jack</td><td class="r">1</td><td class="r">$14</td><td><span class="pill ok">likely</span></td><td>Bench supply substitutes entirely.</td></tr>
-          <tr><td class="part">Arduino Nano (CH340)</td><td class="r">1</td><td class="r">$9</td><td><span class="pill ok">very likely</span></td><td>A lab Uno works identically.</td></tr>
+          <tr><td class="part">ESP32 DevKit (CP2102/CH340)</td><td class="r">1</td><td class="r">$12</td><td><span class="pill warn">maybe</span></td><td>A Nano works as a $9 fallback &mdash; see &sect;09.</td></tr>
           <tr><td class="part">1000 µF 16 V electrolytic</td><td class="r">2</td><td class="r">$3</td><td><span class="pill ok">very likely</span></td><td>Any parts bin has these.</td></tr>
           <tr><td class="part">608ZZ bearing</td><td class="r">2</td><td class="r">$4</td><td><span class="pill ok">likely</span></td><td>From a 10-pack. Or a dead skateboard.</td></tr>
           <tr><td class="part">M3 screw / nyloc assortment</td><td class="r">1 kit</td><td class="r">$11</td><td><span class="pill ok">very likely</span></td><td>M3&times;10/12/16/25. Workshop stock.</td></tr>
           <tr><td class="part">Dupont wire + perfboard</td><td class="r">1</td><td class="r">$8</td><td><span class="pill ok">very likely</span></td><td>Lab stock.</td></tr>
           <tr><td class="part">PLA + PETG filament</td><td class="r">~300 g</td><td class="r">$8</td><td><span class="pill ok">likely</span></td><td>Share of a $25 spool.</td></tr>
-          <tr class="total"><td>Buy absolutely everything</td><td class="r"></td><td class="r">$90</td><td colspan="2"><span class="pill ok">under the $100 ceiling</span></td></tr>
+          <tr class="total"><td>Buy absolutely everything</td><td class="r"></td><td class="r">$93</td><td colspan="2"><span class="pill ok">under the $100 ceiling</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -884,7 +884,7 @@ I = 2 &times; (3 &times; 20&sup3;)/12 = 4000 mm&#8308;
       <table>
         <thead><tr><th>Component</th><th>University alternative</th><th class="r">Saves</th><th>Substitution risk</th></tr></thead>
         <tbody>
-          <tr><td>Microcontroller</td><td>Any Uno, Nano, Mega or Pico in the teaching lab</td><td class="r">$9</td><td><span class="pill ok">none</span> &mdash; same code on any 5 V AVR</td></tr>
+          <tr><td>Microcontroller</td><td>Any ESP32 dev board in the lab, or a Nano/Uno/Mega/Pico fallback</td><td class="r">$12</td><td><span class="pill warn">low</span> &mdash; confirm servo signal quality on whichever board turns up</td></tr>
           <tr><td>Power supply</td><td>Bench PSU at 6.0 V / 3 A limit</td><td class="r">$14</td><td><span class="pill ok">none</span> &mdash; better than the adapter for testing</td></tr>
           <tr><td>Fasteners</td><td>Workshop M3 stock</td><td class="r">$11</td><td><span class="pill ok">none</span></td></tr>
           <tr><td>Wiring, headers, perfboard</td><td>Electronics lab stock</td><td class="r">$8</td><td><span class="pill ok">none</span></td></tr>
@@ -898,12 +898,12 @@ I = 2 &times; (3 &times; 20&sup3;)/12 = 4000 mm&#8308;
     </div>
 
     <div class="specs" style="margin-top:22px">
-      <div class="spec"><dt>Buy everything</dt><dd>$90<small>worst case, still under ceiling</small></dd></div>
+      <div class="spec"><dt>Buy everything</dt><dd>$93<small>worst case, still under ceiling</small></dd></div>
       <div class="spec"><dt>Typical student</dt><dd>$59<small>servos + supply + filament</small></dd></div>
       <div class="spec"><dt>Well-stocked lab</dt><dd>$33<small>MG996R + MG90S only</small></dd></div>
-      <div class="spec"><dt>AliExpress route</dt><dd>$41<small>buy-everything, 3 wk wait</small></dd></div>
+      <div class="spec"><dt>AliExpress route</dt><dd>$42<small>buy-everything, 3 wk wait</small></dd></div>
     </div>
-    <p class="note"><b>The realistic number is $59.</b> Buy the servos, the power supply and filament; source the controller, fasteners, wire, bearings and capacitors from the lab. That lands in the middle of your $50&ndash;70 target with the ceiling never in sight.</p>
+    <p class="note"><b>The realistic number is $59.</b> Buy the servos, the power supply and filament; source the controller, fasteners, wire, bearings and capacitors from the lab. That lands in the middle of your $50&ndash;70 target with the ceiling never in sight, and is unaffected by the ESP32 swap since the controller is lab-sourced in this scenario either way.</p>
   </div>
 </section>
 
@@ -923,7 +923,7 @@ I = 2 &times; (3 &times; 20&sup3;)/12 = 4000 mm&#8308;
           <tr><td>Elbow</td><td class="part">MG90S</td><td class="part">MG996R</td><td class="part">MG996R</td><td class="part">MG996R</td></tr>
           <tr><td>Gripper</td><td class="part">SG90</td><td class="part">MG90S</td><td class="part">MG90S</td><td class="part">MG90S</td></tr>
           <tr><td>Wrist</td><td>fixed bracket</td><td class="part">SG90 slaved</td><td class="part">SG90 slaved</td><td class="part">MG90S slaved</td></tr>
-          <tr><td>Controller</td><td class="part">Nano</td><td class="part">Nano</td><td>lab Uno / Nano</td><td class="part">Nano</td></tr>
+          <tr><td>Controller</td><td class="part">ESP32</td><td class="part">ESP32</td><td>lab ESP32 / Uno / Nano</td><td class="part">ESP32</td></tr>
           <tr><td>Power</td><td>5 V 3 A charger</td><td>6 V 3 A adapter</td><td>bench supply</td><td>6 V 5 A adapter</td></tr>
           <tr><td>Shoulder SF</td><td class="r">4.1</td><td class="r">2.44</td><td class="r">2.44</td><td class="r">4.0</td></tr>
           <tr><td>Uni components</td><td>minimal</td><td>minimal</td><td><b>high</b></td><td>optional</td></tr>
@@ -981,7 +981,7 @@ I = 2 &times; (3 &times; 20&sup3;)/12 = 4000 mm&#8308;
           <tr><td><b>Base</b></td><td class="part">MG90S</td><td class="part">SG90 (torque is trivial here)</td><td class="part">MG996R</td><td>Any micro servo</td></tr>
           <tr><td><b>Gripper</b></td><td class="part">MG90S</td><td class="part">SG90 + lighter jaws</td><td class="part">MG92B</td><td>Micro servo &mdash; check for stripped gears</td></tr>
           <tr><td><b>Wrist</b></td><td class="part">SG90</td><td>fixed 45&deg; bracket</td><td class="part">MG90S</td><td>Any micro servo</td></tr>
-          <tr><td><b>Controller</b></td><td class="part">Nano</td><td class="part">Pico + level check</td><td>&mdash;</td><td>Uno, Nano, Mega, Pico &mdash; all fine</td></tr>
+          <tr><td><b>Controller</b></td><td class="part">ESP32</td><td class="part">Nano/Uno (5 V, no level check needed)</td><td>&mdash;</td><td>ESP32, Uno, Nano, Mega, Pico &mdash; all fine</td></tr>
           <tr><td><b>Power</b></td><td>6 V 3 A adapter</td><td>5 V 3 A charger (&minus;15% torque)</td><td>6 V 5 A adapter</td><td>Bench supply &mdash; best option for testing</td></tr>
           <tr><td><b>Base bearing</b></td><td>2 &times; 608ZZ</td><td>625ZZ, or a printed race with 6 mm airsoft BBs</td><td>&mdash;</td><td>Lab bearing stock</td></tr>
           <tr><td><b>Fasteners</b></td><td>M3 nyloc</td><td>M3 + threadlock</td><td>&mdash;</td><td>Workshop stock</td></tr>
@@ -1010,7 +1010,8 @@ I = 2 &times; (3 &times; 20&sup3;)/12 = 4000 mm&#8308;
         <tbody>
           <tr><td><b>Printed servo-horn interface strips</b><br><span class="fine">The classic killer of printed arms.</span></td><td><span class="pill bad">high</span></td><td>Never print splines. Bolt the supplied metal horn to the printed part with 2&ndash;3 M2 screws. Designed in from part one.</td></tr>
           <tr><td><b>Base tips forward</b></td><td><span class="pill bad">high</span></td><td>Calculated in &sect;06 &mdash; it does tip without ballast. 400&nbsp;g cavity plus the supply on the plate. Verify by hand before powering up.</td></tr>
-          <tr><td><b>Brownout resets mid-move</b></td><td><span class="pill bad">high</span></td><td>Separate 3 A servo rail, common ground, 2&times;1000&nbsp;µF at the headers, never the Nano's 5&nbsp;V pin.</td></tr>
+          <tr><td><b>Brownout resets mid-move</b></td><td><span class="pill bad">high</span></td><td>Separate 3 A servo rail, common ground, 2&times;1000&nbsp;µF at the headers, never the ESP32's 5V/VIN pin.</td></tr>
+          <tr><td><b>Servo jitters on the ESP32's 3.3 V signal</b></td><td><span class="pill warn">medium</span></td><td>Test each servo before final assembly. Add a 74HCT125 level shifter (~$1) on that signal line if it doesn't settle, or fall back to a Nano (&sect;09).</td></tr>
           <tr><td><b>Backlash limits accuracy to &plusmn;6 mm</b></td><td><span class="pill warn">medium</span></td><td>Unfixable in software. Approach every target from one direction; rely on the 55&nbsp;mm jaw opening. <b>Plan for it rather than fighting it.</b></td></tr>
           <tr><td><b>Gripper servo cooks while holding</b></td><td><span class="pill warn">medium</span></td><td>Compliant jaw tips (&sect;05), plus <code>REL</code> to detach after a grip is established.</td></tr>
           <tr><td><b>Arm driven into the table</b></td><td><span class="pill warn">medium</span></td><td>Firmware clamps each joint independently of the PC; Python validates <span class="mono">z &ge; 10 mm</span> on every waypoint, not just endpoints.</td></tr>
@@ -1106,7 +1107,7 @@ I = 2 &times; (3 &times; 20&sup3;)/12 = 4000 mm&#8308;
   <ol class="clean" style="margin-top:14px">
     <li><b>Configuration B?</b> Or do you want to start at A and upgrade, which costs one reprint of the forearm.</li>
     <li><b>The SG90 slaved wrist &mdash; in or out?</b> In gives level jaws for <span class="mono">$3</span> and 0.13 of shoulder safety factor. Out is one fewer part and a fixed 45&deg; bracket.</li>
-    <li><b>What is actually in the lab?</b> Specifically: a spare Uno or Nano, a bench supply, M3 stock, 608 bearings, and any servos above 8&nbsp;kg&middot;cm. That answer moves the cost between <span class="mono">$33</span> and <span class="mono">$90</span>.</li>
+    <li><b>What is actually in the lab?</b> Specifically: a spare ESP32, Uno or Nano, a bench supply, M3 stock, 608 bearings, and any servos above 8&nbsp;kg&middot;cm. That answer moves the cost between <span class="mono">$33</span> and <span class="mono">$93</span>.</li>
     <li><b>Is 315 mm and 55 g the right target?</b> If you already know you want to lift a 150&nbsp;g stapler, that changes the shoulder servo and it is much cheaper to change now.</li>
   </ol>
   <p class="fine" style="margin-top:20px">Rev A &mdash; every figure derived from the mass budget in &sect;03. Servo ratings are published manufacturer specs for generic parts; verify against what you actually receive, since MG996R quality varies considerably between sellers.</p>
