@@ -39,6 +39,35 @@ filament / 18–22 h print time total for the arm.
 | Servo horn adapters | PETG | Small, bolted, loaded in a direction that wants to peel layers apart |
 | Gripper jaws | PETG | Designed to flex (see compliant tip, actuator_selection.md); PLA would snap at the flex section |
 | Spacers, clips, tray | PLA | Unloaded — print in whatever's on the machine |
+| Ballast block | Mild steel, milled | Not printed — see Ballast below |
+
+## Ballast
+
+A solid milled block, not loose fill (sand, washers, etc.) — a fixed,
+known mass at a fixed position matches the stability calc's assumption
+exactly, and doesn't shift the CoM as the base rotates the way loose fill
+can.
+
+**Mild steel, ~50–55 cm³ for the 400 g target** (density ≈ 7.85 g/cm³):
+a 60 × 60 × 15 mm block is ≈424 g, comfortably clearing the minimum with
+margin to spare for the mass the stability calc doesn't otherwise account
+for (hardware, wiring, ballast-cavity lid). Steel over aluminium here
+specifically for the footprint: at the same mass, aluminium
+(≈2.70 g/cm³) needs ~3× the volume, and the ballast cavity is already
+competing for space with the column and base-servo mount inside the
+180 × 180 mm base. Weigh the actual cut block before final install and
+trim (or pick a slightly larger blank) to clear 400 g — mild steel density
+varies enough between alloys (7.75–7.87 g/cm³) that this is a
+measure-don't-assume step, consistent with the rest of this project's
+philosophy on anything safety-factor-adjacent.
+
+**Bolt or press-fit it into the cavity** — don't let it sit loose. A block
+free to slide during the base's rotation defeats the fixed-CoM assumption
+above, and turns a designed-in stability margin into an unmeasured one.
+
+Design the ballast cavity pocket to the block's actual milled dimensions
+once cut, not the other way around — CAD (Phase 2) hasn't started yet, so
+there's no existing pocket geometry to retrofit.
 
 Print settings throughout: 0.4 mm nozzle, 0.2 mm layers, **4 perimeters**,
 30% gyroid infill, 5 top/bottom layers. Perimeter count dominates strength in

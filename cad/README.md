@@ -46,6 +46,7 @@ an MG996R for an MG90S (or vice versa, per the fallback configurations in
 |---|---:|---|---|
 | Base plate | 1 | `parts/base_plate.SLDPRT` | Includes ballast cavity + snap-lid feature, camera-mast mounting bosses for V2 |
 | Ballast cavity lid | 1 | `parts/ballast_lid.SLDPRT` | Snap-fit |
+| Ballast block | 1 | `parts/ballast_block.SLDPRT` | Milled mild steel, not printed — size the cavity pocket to this part once it's cut (`docs/mechanical_design.md` §Ballast); bolt or press-fit, don't leave it loose |
 | Column | 1 | `parts/column.SLDPRT` | Carries the two 608ZZ bearings |
 | Turret | 1 | `parts/turret.SLDPRT` | Bolts to base-servo horn |
 | Shoulder bracket | 1 | `parts/shoulder_bracket.SLDPRT` | Print flat — see mechanical_design.md rule 1. FEA candidate. |

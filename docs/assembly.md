@@ -24,9 +24,11 @@ are easy to get wrong in a way that's expensive to undo.
      turret underside — do not glue.
    - Test-rotate the turret by hand through its full range before any other
      part goes on. It should turn freely with no bearing preload.
-   - Fill the ballast cavity (400 g minimum — see the stability calc in
-     `docs/planning_guide.pdf` §6) **before** closing the snap lid; the
-     robot will tip without it once the arm goes on.
+   - Bolt or press-fit the milled steel ballast block (400 g minimum,
+     `docs/mechanical_design.md` §Ballast — see the stability calc in
+     `docs/planning_guide.pdf` §6) into the cavity **before** closing the
+     snap lid; secured, not loose, so it can't shift during base rotation.
+     The robot will tip without it once the arm goes on.
 
 2. **Shoulder**
    - Mount the shoulder servo (MG996R) to the shoulder bracket. Bracket

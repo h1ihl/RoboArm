@@ -3,6 +3,11 @@
 Nothing here gets built now. It's recorded so V1's decisions don't
 accidentally close a door V2 needs open.
 
+This covers two decoupled tracks: the AI/vision stages below (2.1–2.4,
+added on top of an *unchanged* V1 chassis — the original scope), and a
+separate payload/actuator upgrade path (§Payload upgrade path) that's a
+different axis entirely and not implied by "V2."
+
 ## Stages
 
 | Stage | Adds | Cost | Touches V1? |
@@ -32,6 +37,53 @@ has Wi-Fi/BT on board, unused in V1 and not a reason to change anything
 here — the PC↔arm link stays USB serial. If V2 ever wants the arm
 untethered, that option now exists without a controller swap; it is not
 otherwise part of this plan.
+
+## Payload upgrade path — gearmotors + encoders
+
+A different axis from 2.1–2.4 above: actuation/payload, not perception.
+Not part of "V2" as the original brief scoped it (camera/vision/AI on an
+*unchanged* chassis) — recorded here as its own track so it isn't implied
+by, or confused with, the AI stages.
+
+**What changes vs V1:**
+
+- **Actuator.** Hobby servo (closed-loop internally, absolute position at
+  power-on) → DC gearmotor + planetary gearbox (open-loop mechanically,
+  needs external position feedback). This is the whole reason it's a
+  bigger step than it looks: servos hide their control loop from you,
+  gearmotors don't.
+- **Firmware.** Needs an encoder-read + PID position loop per joint,
+  replacing the current angle → microsecond → `Servo`/`ESP32Servo` mapping.
+  Genuinely new firmware, not a config change.
+- **Homing.** Motors don't know where they are at power-on the way servos
+  do. Needs a homing routine (limit switch or encoder index pulse) — this
+  reverses the "servos are absolute-position devices, so we don't need
+  limit switches" decision in `docs/electronics.md`. A motor-based build
+  does need them.
+- **Driver hardware.** PWM-to-servo-signal wiring is replaced by a motor
+  driver (H-bridge) per joint — new electronics, and the current budget in
+  `docs/power_system.md` needs redoing from scratch; gearmotors under load
+  pull meaningfully more than the current 1.8 A design case.
+- **Mechanical.** Gearmotors + planetary stages are much bigger and
+  heavier than micro servos — a new mechanical design, not a bracket swap.
+  Mass budget, torque calcs, and print-orientation rules all get redone
+  for the new actuator envelope.
+- **Protocol.** The low-level serial commands (`J`, `US`) are
+  servo-microsecond-specific and would need a new command set (target
+  angle/velocity through the PID loop).
+
+**What doesn't change:** `robot.arm.Arm`'s six public calls
+(`home`, `move_joints`, `move_to`, `grip`, `pickup`, `place`) and the
+Cartesian API contract — that boundary was deliberately drawn
+actuator-agnostic (see "The three decisions V1 makes on V2's behalf"
+above), so this upgrade plugs into the same PC-side software. The
+"firmware owns safety, PC owns intelligence" split also holds, though the
+safety firmware itself gets substantially more complex.
+
+**Not scoped or budgeted yet.** Servo/motor selection, gear ratio, encoder
+choice, driver IC, and a new power budget all need their own design
+review before this is a real plan — the same gate V1 went through in
+`docs/requirements.md`, not an assumption to build against yet.
 
 ## Worked example
 

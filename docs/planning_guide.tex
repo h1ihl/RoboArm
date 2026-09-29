@@ -127,6 +127,7 @@ Configuration A (ultra-budget, 275~mm reach, \$48--55) is viable but saves only 
 
 % =======================================================================
 \section{Requirements}
+\label{sec:req}
 % =======================================================================
 
 \subsection{Scope}
@@ -430,6 +431,7 @@ The two $\arccos$ roots are elbow-up and elbow-down. Elbow-down puts the elbow b
 
 % =======================================================================
 \section{Electronics}
+\label{sec:elec}
 % =======================================================================
 
 \begin{center}
@@ -550,10 +552,14 @@ Shoulder / elbow brackets & PETG & Highest bending stress; layer adhesion matter
 Servo horn adapters & PETG & Small, bolted, loaded to peel layers apart \\
 Gripper jaws & PETG & Designed to flex; PLA would snap at the flex section \\
 Spacers, clips, tray & PLA & Unloaded \\
+Ballast block & Mild steel, milled & Not printed --- see below \\
 \bottomrule
 \end{tabular}
 \end{center}
 Print settings: 0.4~mm nozzle, 0.2~mm layers, \textbf{4 perimeters}, 30\% gyroid, 5 top/bottom --- perimeter count dominates strength in a thin printed part.
+
+\subsection{Ballast}
+A solid milled block, not loose fill --- a fixed, known mass at a fixed position matches the stability calc's assumption exactly and cannot shift the CoM as the base rotates. \textbf{Mild steel, \textasciitilde50--55~cm\textsuperscript{3} for the 400~g target} ($\rho\approx7.85$~g/cm\textsuperscript{3}): a 60$\times$60$\times$15~mm block is \textasciitilde424~g, clearing the minimum with margin. Steel over aluminium specifically for the footprint --- aluminium ($\rho\approx2.70$) needs \textasciitilde3$\times$ the volume for the same mass, and the ballast cavity already competes for space with the column and base-servo mount inside the 180$\times$180~mm base. Weigh the actual cut block and trim (or size up the blank) to clear 400~g --- mild steel density varies enough between alloys (7.75--7.87~g/cm\textsuperscript{3}) that this is measure-don't-assume, same as everything else safety-factor-adjacent in this guide. Bolt or press-fit it into the cavity; a block free to slide during base rotation turns a designed-in stability margin into an unmeasured one.
 
 \subsection{Layer orientation --- three rules that decide whether this works}
 \begin{enumerate}
@@ -621,6 +627,7 @@ Filament (makerspace stock) & \$8 & None \\
 Capacitors & \$3 & None \\
 Micro servos (teaching kits) & \$16 & Check for stripped gears first \\
 \textbf{MG996R $\times$2} & \$17 & \textbf{Plan to buy} --- unlikely on the shelf \\
+Ballast stock (mild steel remnant, milled to size, \S\ref{sec:mechanical}) & \$5--8 & Low --- any mild steel blank $\geq$55~cm\textsuperscript{3} works \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -782,6 +789,9 @@ Nothing here gets built now --- it is recorded so V1's decisions do not close a 
 \textbf{Three decisions V1 makes on V2's behalf}, each free now and expensive to retrofit: the PC holds intelligence and the MCU holds safety, so an agent physically cannot exceed a joint limit; the arm's public API is Cartesian, so vision output plugs straight in; the base plate has camera-mast mounting provision, so the camera-to-robot transform calibrates once and stays valid.
 
 ``Pick up my screwdriver and put it beside my laptop'' resolves to: detect $\to$ centroid $\to$ homography $\to$ \code{arm.pickup(x,y,z)} $\to$ agent picks a target $\to$ \code{arm.place(x',y',z')}. Every step after the homography is V1 code that already works.
+
+\subsection{Payload upgrade path --- gearmotors + encoders (a separate track)}
+A different axis from the AI stages above: actuation/payload, not perception. Not part of ``V2'' as the brief scoped it (vision/AI on an \emph{unchanged} chassis) --- recorded separately so it is not implied by, or confused with, the AI stages. Hobby servos are closed-loop internally and absolute-position at power-on; DC gearmotors are not, so this swap needs an encoder + PID position loop per joint in firmware (new work, not a config change), a homing routine (reversing the ``servos are absolute-position, no limit switches needed'' decision in \S\ref{sec:elec}), a motor driver per joint in place of direct PWM-to-servo wiring, a power budget redone from scratch (\S\ref{sec:power}), and a new mechanical design sized for gearmotor+gearbox envelopes rather than micro servos. What does \emph{not} change: \code{robot.arm.Arm}'s six public calls and the Cartesian API contract, since that boundary was already drawn actuator-agnostic. Not scoped or budgeted yet --- needs its own design review (motor/gear/encoder/driver selection) before it is a real plan, the same gate V1 went through in \S\ref{sec:req}.
 
 % =======================================================================
 \section{Decision gate}

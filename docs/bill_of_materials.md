@@ -37,6 +37,7 @@ not in a hurry, not worth splitting an order over for everything else.
 | Capacitors | Any parts bin | $3 | None |
 | Micro servos | SG90/MG90S from teaching kits | $16 | Check — test for stripped gears first |
 | **MG996R × 2** | Unlikely to be in a drawer; usually issued per-project | $17 | Plan to buy |
+| Ballast stock (mild steel bar/plate, milled to size — `docs/mechanical_design.md` §Ballast) | Metal-shop remnant bin | ~$5–8 | Low — any mild steel blank ≥55 cm³ works, exact stock shape doesn't matter |
 
 ## Cost summary
 
