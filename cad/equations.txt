@@ -7,3 +7,4 @@
 "c_fit"= 0.2mm'Nominal clearance
 "L2"= 120mm'Forearm
 "c_fit_pivot"= "c_fit" + 0.1mm'Gripper pivot clearance
+"d_pin_gripper"= 3mm'Gripper pivot diameter
