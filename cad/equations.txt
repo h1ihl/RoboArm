@@ -1,0 +1,9 @@
+﻿"L1"= 120mm'Upper arm
+"L3"= 75mm'Wrist→TCP
+"h0"= 75mm'Shoulder height
+"t_link"= 3mm'Link plate thickness
+"t_bracket"= 4mm'Bracket thickness
+"d_pin"= 4mm'Pin diameter (M4)
+"c_fit"= 0.2mm'Nominal clearance
+"L2"= 120mm'Forearm
+"c_fit_pivot"= "c_fit" + 0.1mm'Gripper pivot clearance
