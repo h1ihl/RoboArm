@@ -4,7 +4,7 @@
 "t_link"= 3mm'Link plate thickness
 "t_bracket"= 4mm'Bracket thickness
 "d_pin"= 4mm'Pin diameter (M4)
-"c_fit"= 0.2mm'Nominal clearance
+"c_fit"= 0.2mm'Nominal clearance - measured PLA 2026-10-01
 "L2"= 120mm'Forearm
-"c_fit_pivot"= "c_fit" + 0.1mm'Gripper pivot clearance
+"c_fit_pivot"= "c_fit" + 0.05mm'Gripper pivot clearance - chosen 0.25 mm 2026-10-01
 "d_pin_gripper"= 3mm'Gripper pivot diameter

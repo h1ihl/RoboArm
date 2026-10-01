@@ -11,12 +11,17 @@ part list in sync as the source of truth for what should exist.
 
 ```
 cad/
+├── equations.txt     global variables, exported from SolidWorks — import into every new part
 ├── parts/            individual part files (.SLDPRT)
 ├── assemblies/        sub- and top-level assemblies (.SLDASM)
 └── exports/           STEP/STL exports for printing and sharing
 ```
 
 ## Global parameters (one equations/variables file, referenced everywhere)
+
+`equations.txt` is the exported copy of this table. Import it
+(Tools > Equations > Import) into each new part; when a value changes,
+change it once, re-export, and re-import into existing parts.
 
 | Parameter | Symbol | Default (Config B) |
 |---|---|---:|
@@ -27,7 +32,19 @@ cad/
 | Link plate thickness | `t_link` | 3 mm |
 | Bracket thickness | `t_bracket` | 4 mm |
 | Pin diameter | `d_pin` | 4 mm (M4) |
-| Nominal clearance | `c_fit` | 0.2 mm |
+| Gripper pivot pin diameter | `d_pin_gripper` | 3 mm (M3) |
+| Nominal clearance | `c_fit` | 0.2 mm — **measured**, PLA (see below) |
+| Gripper pivot clearance | `c_fit_pivot` | `c_fit` + 0.05 mm = 0.25 mm — chosen, not coupon-verified for free spin |
+
+`c_fit` was confirmed with the tolerance coupon on 2026-10-01: Prusa
+Core One, Prusament PLA, 0.4 mm nozzle, 0.2 mm layers — +0.20 mm gave the
+best snug fit on both the M4 and M3 hole rows. PETG is still untested;
+re-run the coupon in PETG before printing PETG parts (brackets, jaws, horn
+adapters) and add a separate `c_fit_petg` if it lands somewhere else.
+`c_fit_pivot` is the free-rotation clearance for the gripper jaw pins,
+set to 0.25 mm (`c_fit` + 0.05 mm) — a chosen value between the snug 0.2 mm
+fit and the original 0.3 mm estimate. Check a pin for free spin in the
+printed 3.25 mm coupon hole before relying on it.
 
 ## Servo-pocket library feature (two-row design table)
 
@@ -70,6 +87,7 @@ an MG996R for an MG90S (or vice versa, per the fallback configurations in
 
 ## Before printing anything
 
-Print the tolerance coupon described in `docs/mechanical_design.md` and
-confirm `c_fit = 0.2 mm` is actually right for your printer before
+Done for PLA (see Global parameters above). For PETG parts, print the
+tolerance coupon described in `docs/mechanical_design.md` in PETG and
+confirm `c_fit = 0.2 mm` is actually right for that material before
 committing it globally.

@@ -138,6 +138,16 @@ design variants, not an absolute number.
   coupon first (a small test part with a few pin/hole pairs at different
   clearances) and adjust once, globally, via the variables file — cheaper
   than reprinting full parts to find the right fit.
+  **Measured 2026-10-01** (Prusa Core One, Prusament PLA, 0.4 mm nozzle,
+  0.2 mm layers, 3 mm plate, holes axis-normal to the bed): +0.20 mm gave
+  the best snug fit on both the M4 (`d_pin`) and M3 (`d_pin_gripper`) hole
+  rows, so `c_fit = 0.2 mm` stands as a measured value, not an assumption.
+  The calculated estimate beforehand was ~0.15 mm for PLA structural fits —
+  close, but the measurement wins. Still open: PETG (untested, needs its own
+  coupon) and the free-rotation `c_fit_pivot`, set to 0.25 mm
+  (`c_fit` + 0.05 mm) by choice for the gripper jaw pins — it still wants a
+  spin-freely check in the printed 3.25 mm coupon hole rather than the
+  snug-fit one used for `c_fit`.
 
 ## Suggested file layout (see `cad/README.md`)
 
