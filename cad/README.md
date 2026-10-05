@@ -30,6 +30,8 @@ change it once, re-export, and re-import into existing parts.
 | Forearm length | `L2` | 120 mm |
 | Wrist→TCP length | `L3` | 75 mm |
 | Link plate thickness | `t_link` | 3 mm |
+| Link plate depth (bending direction) | `w_link` | 20 mm — matches the deflection calc in `calculations/engineering_calcs.py` |
+| Twin-plate gap | `w_gap` | 20 mm — provisional, set by the elbow servo mount design |
 | Bracket thickness | `t_bracket` | 4 mm |
 | Pin diameter | `d_pin` | 4 mm (M4) |
 | Gripper pivot pin diameter | `d_pin_gripper` | 3 mm (M3) |
@@ -68,9 +70,23 @@ an MG996R for an MG90S (or vice versa, per the fallback configurations in
 | Turret | 1 | `parts/turret.SLDPRT` | Bolts to base-servo horn |
 | Shoulder bracket | 1 | `parts/shoulder_bracket.SLDPRT` | Print flat — see mechanical_design.md rule 1. FEA candidate. |
 | Elbow bracket | 1 | `parts/elbow_bracket.SLDPRT` | Print flat, same rule. |
-| Upper-arm side plate | 2 | `parts/upper_arm_plate.SLDPRT` | Mirror pair; twin-plate box section |
-| Forearm side plate | 2 | `parts/forearm_plate.SLDPRT` | Mirror pair; identical profile to upper-arm at `L2=L1` |
-| Link spacers | qty per BOM | `parts/link_spacer.SLDPRT` | Parametric length |
+| Upper-arm side plate | 2 | `parts/upper_arm_plate.SLDPRT` | Twin-plate box section; symmetric, so one part printed twice. Spec below. |
+| Forearm side plate | 2 | `parts/forearm_plate.SLDPRT` | Save As from the upper-arm plate, `L1` → `L2`; keep as a separate file so Config-A-Short (`L2 = 80 mm`) works |
+| Link spacers | qty per BOM | `parts/link_spacer.SLDPRT` | Parametric tube, length = `w_gap`; bolt size is a free choice (M3 keeps it clear of the M4 pivots) |
+
+### Link side plate spec (upper arm; forearm identical with `L2`)
+
+- Profile: `w_link` (20 mm) deep slot, both ends rounded at radius
+  `w_link / 2`, concentric with the pivot holes. Overall ≈ 140 × 20 mm
+  at `L1 = 120 mm`.
+- Thickness `t_link` (3 mm), printed flat, hole axes normal to the bed.
+- Two pivot holes, diameter `d_pin + c_fit` (4.2 mm), centre-to-centre
+  `L1` — all driven from variables, nothing typed in.
+- A few spacer-bolt holes along the plate; the gap between the twin
+  plates is `w_gap`, which the servo mount design drives.
+- Symmetric profile so one file prints twice with no mirrored copy.
+- Check: print one plate, pass an M4 bolt through both pivot holes and
+  caliper the centre distance — 120 ± 0.2 mm.
 | Servo-horn adapter | 3 | `parts/horn_adapter.SLDPRT` | Bolts to the servo's metal horn — never a printed spline |
 | Wrist mounting face | 1 | `parts/wrist_face.SLDPRT` | Common 24×24 mm interface — fixed bracket / SG90 slave / future linkage all mount here |
 | Fixed wrist bracket | 1 (alt.) | `parts/wrist_fixed.SLDPRT` | Configuration-A fallback |

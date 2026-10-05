@@ -8,3 +8,5 @@
 "L2"= 120mm'Forearm
 "c_fit_pivot"= "c_fit" + 0.05mm'Gripper pivot clearance - chosen 0.25 mm 2026-10-01
 "d_pin_gripper"= 3mm'Gripper pivot diameter
+"w_link"= 20mm'Link plate depth (bending direction)
+"w_gap"= 20mm'Twin-plate gap - provisional, set by elbow servo mount
