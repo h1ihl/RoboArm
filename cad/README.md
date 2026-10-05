@@ -73,6 +73,12 @@ an MG996R for an MG90S (or vice versa, per the fallback configurations in
 | Upper-arm side plate | 2 | `parts/upper_arm_plate.SLDPRT` | Twin-plate box section; symmetric, so one part printed twice. Spec below. |
 | Forearm side plate | 2 | `parts/forearm_plate.SLDPRT` | Save As from the upper-arm plate, `L1` → `L2`; keep as a separate file so Config-A-Short (`L2 = 80 mm`) works |
 | Link spacers | qty per BOM | `parts/link_spacer.SLDPRT` | Parametric tube, length = `w_gap`; bolt size is a free choice (M3 keeps it clear of the M4 pivots) |
+| Servo-horn adapter | 3 | `parts/horn_adapter.SLDPRT` | Bolts to the servo's metal horn — never a printed spline |
+| Wrist mounting face | 1 | `parts/wrist_face.SLDPRT` | Common 24×24 mm interface — fixed bracket / SG90 slave / future linkage all mount here |
+| Fixed wrist bracket | 1 (alt.) | `parts/wrist_fixed.SLDPRT` | Configuration-A fallback |
+| Gripper jaw | 2 | `parts/gripper_jaw.SLDPRT` | Mirror pair, meshed gear sectors, compliant tip |
+| Gripper drive link | 1 | `parts/gripper_link.SLDPRT` | |
+| Cable clip | qty as needed | `parts/cable_clip.SLDPRT` | Unloaded, PLA, print in whatever's on the machine |
 
 ### Link side plate spec (upper arm; forearm identical with `L2`)
 
@@ -87,12 +93,6 @@ an MG996R for an MG90S (or vice versa, per the fallback configurations in
 - Symmetric profile so one file prints twice with no mirrored copy.
 - Check: print one plate, pass an M4 bolt through both pivot holes and
   caliper the centre distance — 120 ± 0.2 mm.
-| Servo-horn adapter | 3 | `parts/horn_adapter.SLDPRT` | Bolts to the servo's metal horn — never a printed spline |
-| Wrist mounting face | 1 | `parts/wrist_face.SLDPRT` | Common 24×24 mm interface — fixed bracket / SG90 slave / future linkage all mount here |
-| Fixed wrist bracket | 1 (alt.) | `parts/wrist_fixed.SLDPRT` | Configuration-A fallback |
-| Gripper jaw | 2 | `parts/gripper_jaw.SLDPRT` | Mirror pair, meshed gear sectors, compliant tip |
-| Gripper drive link | 1 | `parts/gripper_link.SLDPRT` | |
-| Cable clip | qty as needed | `parts/cable_clip.SLDPRT` | Unloaded, PLA, print in whatever's on the machine |
 
 ## Configurations to define in the top-level assembly
 

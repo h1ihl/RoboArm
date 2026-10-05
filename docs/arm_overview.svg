@@ -1,0 +1,172 @@
+<svg viewBox="0 0 1100 680" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+    <marker id="arrb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2b6fd9"/>
+    </marker>
+  </defs>
+  <style>
+    .t   { font-size: 13px; fill: #1a1a1a; }
+    .tb  { font-size: 13px; font-weight: 700; fill: #1a1a1a; }
+    .s   { font-size: 11.5px; fill: #444; }
+    .dim { font-size: 12px; fill: #2b6fd9; font-weight: 700; }
+    .pla { fill: #d9dde3; stroke: #5d6470; stroke-width: 1.5; }
+    .petg{ fill: #bcd4f5; stroke: #2b4a7a; stroke-width: 1.5; }
+    .steel{fill: #5b6068; stroke: #222; stroke-width: 1.5; }
+    .srv { fill: #f6b26b; stroke: #a35a00; stroke-width: 1.5; }
+    .badge { fill: #1a1a1a; }
+    .bt  { font-size: 12px; font-weight: 700; fill: #fff; text-anchor: middle; }
+  </style>
+
+  <rect width="1100" height="680" fill="#ffffff"/>
+  <text x="24" y="34" font-size="22" font-weight="700" fill="#1a1a1a">Desk Arm V1 — what you are building (side view, rough, not to scale)</text>
+  <text x="24" y="54" class="s">Pose is illustrative: upper arm raised, forearm level, gripper kept level by the slaved wrist servo. Numbers match the parts list.</text>
+
+  <!-- table -->
+  <line x1="20" y1="560" x2="690" y2="560" stroke="#222" stroke-width="2"/>
+  <text x="24" y="578" class="s">table</text>
+
+  <!-- base yaw axis -->
+  <line x1="200" y1="395" x2="200" y2="560" stroke="#888" stroke-width="1.2" stroke-dasharray="6,4"/>
+  <text x="246" y="406" class="s">base yaw axis (turret rotates ±90°)</text>
+
+  <!-- 1 base plate -->
+  <rect x="56" y="532" width="288" height="28" rx="3" class="pla"/>
+  <!-- 2 ballast block -->
+  <rect x="68" y="538" width="96" height="16" class="steel"/>
+  <!-- V2 mast bosses -->
+  <circle cx="318" cy="536" r="4" fill="none" stroke="#888" stroke-dasharray="2,2"/>
+  <text x="270" y="526" class="s" fill="#888">V2 mast bosses</text>
+
+  <!-- 3 column + bearings + base servo -->
+  <rect x="176" y="478" width="48" height="54" class="pla"/>
+  <rect x="176" y="480" width="48" height="6" class="steel"/>
+  <rect x="176" y="524" width="48" height="6" class="steel"/>
+  <rect x="184" y="490" width="32" height="30" class="srv"/>
+  <text x="200" y="509" text-anchor="middle" font-size="9" fill="#1a1a1a">MG90S</text>
+
+  <!-- 4 turret -->
+  <rect x="166" y="452" width="68" height="26" rx="3" class="pla"/>
+
+  <!-- 5 shoulder bracket + servo -->
+  <rect x="164" y="418" width="72" height="36" rx="3" class="petg"/>
+  <rect x="172" y="426" width="56" height="20" class="srv"/>
+  <text x="200" y="440" text-anchor="middle" font-size="9" fill="#1a1a1a">MG996R</text>
+
+  <!-- 6 upper arm (twin plates) -->
+  <line x1="200" y1="440" x2="296" y2="274" stroke="#5d6470" stroke-width="18" stroke-linecap="round"/>
+  <line x1="200" y1="440" x2="296" y2="274" stroke="#d9dde3" stroke-width="13" stroke-linecap="round"/>
+
+  <!-- 7 elbow bracket + servo -->
+  <rect x="268" y="252" width="56" height="44" rx="3" class="petg"/>
+  <rect x="274" y="258" width="44" height="22" class="srv"/>
+  <text x="296" y="273" text-anchor="middle" font-size="9" fill="#1a1a1a">MG996R</text>
+
+  <!-- 8 forearm (twin plates) -->
+  <line x1="296" y1="274" x2="488" y2="274" stroke="#5d6470" stroke-width="18" stroke-linecap="round"/>
+  <line x1="296" y1="274" x2="488" y2="274" stroke="#d9dde3" stroke-width="13" stroke-linecap="round"/>
+
+  <!-- wrist servo -->
+  <rect x="472" y="262" width="34" height="24" rx="3" class="srv"/>
+  <text x="489" y="277" text-anchor="middle" font-size="9" fill="#1a1a1a">SG90</text>
+
+  <!-- 9 wrist face -->
+  <rect x="508" y="260" width="14" height="28" class="pla"/>
+
+  <!-- 10 gripper: servo, link, jaws -->
+  <rect x="522" y="262" width="40" height="24" rx="3" class="srv"/>
+  <text x="542" y="277" text-anchor="middle" font-size="9" fill="#1a1a1a">MG90S</text>
+  <line x1="562" y1="268" x2="608" y2="254" stroke="#2b4a7a" stroke-width="7" stroke-linecap="round"/>
+  <line x1="562" y1="280" x2="608" y2="294" stroke="#2b4a7a" stroke-width="7" stroke-linecap="round"/>
+  <line x1="562" y1="268" x2="608" y2="254" stroke="#bcd4f5" stroke-width="4" stroke-linecap="round"/>
+  <line x1="562" y1="280" x2="608" y2="294" stroke="#bcd4f5" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- joint pins -->
+  <circle cx="200" cy="440" r="9" fill="#fff" stroke="#222" stroke-width="2"/>
+  <circle cx="296" cy="274" r="9" fill="#fff" stroke="#222" stroke-width="2"/>
+  <circle cx="489" cy="274" r="7" fill="#fff" stroke="#222" stroke-width="2"/>
+  <!-- TCP -->
+  <line x1="600" y1="274" x2="620" y2="274" stroke="#c0392b" stroke-width="2"/>
+  <line x1="610" y1="264" x2="610" y2="284" stroke="#c0392b" stroke-width="2"/>
+  <text x="624" y="278" class="tb" fill="#c0392b" style="fill:#c0392b">TCP</text>
+
+  <!-- joint labels -->
+  <text x="246" y="456" class="tb">Shoulder</text>
+  <text x="246" y="470" class="s">pitch, MG996R</text>
+  <text x="332" y="244" class="tb">Elbow</text>
+  <text x="332" y="258" class="s">pitch, MG996R</text>
+  <text x="430" y="298" class="tb">Wrist</text>
+  <text x="430" y="311" class="s">SG90, slaved: keeps jaws level</text>
+
+  <!-- dimensions -->
+  <line x1="128" y1="560" x2="128" y2="440" stroke="#2b6fd9" stroke-width="1.5" marker-start="url(#arrb)" marker-end="url(#arrb)"/>
+  <text x="60" y="504" class="dim">h0 = 75 mm</text>
+  <text x="206" y="352" class="dim" transform="rotate(-60 206 352)">L1 = 120 mm</text>
+  <line x1="296" y1="322" x2="488" y2="322" stroke="#2b6fd9" stroke-width="1.5" marker-start="url(#arrb)" marker-end="url(#arrb)"/>
+  <text x="352" y="340" class="dim">L2 = 120 mm</text>
+  <line x1="489" y1="322" x2="610" y2="322" stroke="#2b6fd9" stroke-width="1.5" marker-start="url(#arrb)" marker-end="url(#arrb)"/>
+  <text x="508" y="340" class="dim">L3 = 75 mm</text>
+  <text x="330" y="388" class="s">Max reach 315 mm (arm straight out). Shown pose ≈ 255 mm.</text>
+
+  <!-- callout badges -->
+  <g>
+    <circle cx="46" cy="520" r="11" class="badge"/><text x="46" y="524" class="bt">1</text>
+    <circle cx="116" cy="578" r="11" class="badge"/><text x="116" y="582" class="bt">2</text>
+    <line x1="116" y1="567" x2="116" y2="552" stroke="#1a1a1a"/>
+    <circle cx="150" cy="500" r="11" class="badge"/><text x="150" y="504" class="bt">3</text>
+    <line x1="161" y1="500" x2="176" y2="500" stroke="#1a1a1a"/>
+    <circle cx="140" cy="466" r="11" class="badge"/><text x="140" y="470" class="bt">4</text>
+    <line x1="151" y1="466" x2="166" y2="466" stroke="#1a1a1a"/>
+    <circle cx="140" cy="418" r="11" class="badge"/><text x="140" y="422" class="bt">5</text>
+    <line x1="151" y1="420" x2="164" y2="424" stroke="#1a1a1a"/>
+    <circle cx="292" cy="362" r="11" class="badge"/><text x="292" y="366" class="bt">6</text>
+    <line x1="281" y1="361" x2="252" y2="358" stroke="#1a1a1a"/>
+    <circle cx="262" cy="214" r="11" class="badge"/><text x="262" y="218" class="bt">7</text>
+    <line x1="270" y1="222" x2="280" y2="252" stroke="#1a1a1a"/>
+    <circle cx="392" cy="214" r="11" class="badge"/><text x="392" y="218" class="bt">8</text>
+    <line x1="392" y1="225" x2="392" y2="265" stroke="#1a1a1a"/>
+    <circle cx="515" cy="226" r="11" class="badge"/><text x="515" y="230" class="bt">9</text>
+    <line x1="515" y1="237" x2="515" y2="260" stroke="#1a1a1a"/>
+    <circle cx="578" cy="226" r="11" class="badge"/><text x="578" y="230" class="bt">10</text>
+    <line x1="578" y1="237" x2="578" y2="258" stroke="#1a1a1a"/>
+  </g>
+
+  <!-- legend -->
+  <g transform="translate(716,84)">
+    <rect width="364" height="516" rx="8" fill="#fafafa" stroke="#bbb"/>
+    <text x="14" y="26" class="tb" font-size="15">Parts to design (numbers match the drawing)</text>
+    <g font-size="12.5" fill="#1a1a1a">
+      <circle cx="22" cy="52" r="9" class="badge"/><text x="22" y="56" class="bt" font-size="11">1</text>
+      <text x="40" y="56">Base plate — ballast cavity, bearing pocket, mast bosses</text>
+      <circle cx="22" cy="78" r="9" class="badge"/><text x="22" y="82" class="bt" font-size="11">2</text>
+      <text x="40" y="82">Ballast block (milled steel) + cavity lid</text>
+      <circle cx="22" cy="104" r="9" class="badge"/><text x="22" y="108" class="bt" font-size="11">3</text>
+      <text x="40" y="108">Column — carries the two 608ZZ bearings</text>
+      <circle cx="22" cy="130" r="9" class="badge"/><text x="22" y="134" class="bt" font-size="11">4</text>
+      <text x="40" y="134">Turret — bolts to base-servo horn, spins</text>
+      <circle cx="22" cy="156" r="9" class="badge"/><text x="22" y="160" class="bt" font-size="11">5</text>
+      <text x="40" y="160">Shoulder bracket (+ horn adapter) — FEA part</text>
+      <circle cx="22" cy="182" r="9" class="badge"/><text x="22" y="186" class="bt" font-size="11">6</text>
+      <text x="40" y="186">Upper-arm side plates ×2 + link spacers</text>
+      <circle cx="22" cy="208" r="9" class="badge"/><text x="22" y="212" class="bt" font-size="11">7</text>
+      <text x="40" y="212">Elbow bracket (+ horn adapter)</text>
+      <circle cx="22" cy="234" r="9" class="badge"/><text x="22" y="238" class="bt" font-size="11">8</text>
+      <text x="40" y="238">Forearm side plates ×2 + link spacers</text>
+      <circle cx="22" cy="260" r="9" class="badge"/><text x="22" y="264" class="bt" font-size="11">9</text>
+      <text x="40" y="264">Wrist mounting face (24 × 24 mm) + horn adapter</text>
+      <circle cx="22" cy="286" r="10" class="badge"/><text x="22" y="290" class="bt" font-size="10">10</text>
+      <text x="40" y="290">Gripper jaws ×2 + drive link (+ servo mount)</text>
+    </g>
+    <text x="14" y="322" class="s">Also: cable clips (as needed). Fallback only: fixed wrist bracket.</text>
+
+    <text x="14" y="356" class="tb">Colour key</text>
+    <rect x="14" y="366" width="22" height="14" class="pla"/><text x="44" y="378" class="s">PLA (plates, base, column, turret, spacers)</text>
+    <rect x="14" y="388" width="22" height="14" class="petg"/><text x="44" y="400" class="s">PETG (brackets, horn adapters, gripper jaws)</text>
+    <rect x="14" y="410" width="22" height="14" class="steel"/><text x="44" y="422" class="s">Milled steel (ballast) / bearings</text>
+    <rect x="14" y="432" width="22" height="14" class="srv"/><text x="44" y="444" class="s">Bought servos (not designed — you model pockets)</text>
+    <text x="14" y="476" class="s">Blue dimensions are the CAD variables (h0, L1, L2, L3).</text>
+    <text x="14" y="494" class="s">TCP = tool centre point, the gripper tip the IK aims at.</text>
+  </g>
+</svg>
