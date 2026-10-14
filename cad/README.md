@@ -79,7 +79,7 @@ an MG996R for an MG90S (or vice versa, per the fallback configurations in
 | Elbow bracket | 1 | `parts/elbow_bracket.SLDPRT` | Print flat, same rule. |
 | Upper-arm side plate | 2 | `parts/upper_arm_plate.SLDPRT` | Twin-plate box section; symmetric, so one part printed twice. Spec below. |
 | Forearm side plate | 2 | `parts/forearm_plate.SLDPRT` | Save As from the upper-arm plate, `L1` → `L2`; keep as a separate file so Config-A-Short (`L2 = 80 mm`) works |
-| Link spacers | qty per BOM | `parts/link_spacer.SLDPRT` | Parametric tube, length = `w_gap`; bolt size is a free choice (M3 keeps it clear of the M4 pivots) |
+| Link spacers | 4 per link | `parts/upper_arm_spacer.SLDPRT` | Tube: Ø7 mm OD, bore `d_hole_m3`, length `w_gap`. Same part serves the forearm while its gap equals `w_gap`. Print standing up; M3×30 bolts with plain nuts (M3×35 with nyloc) |
 | Servo-horn adapter | 3 | `parts/horn_adapter.SLDPRT` | Bolts to the servo's metal horn — never a printed spline |
 | Wrist mounting face | 1 | `parts/wrist_face.SLDPRT` | Common 24×24 mm interface — fixed bracket / SG90 slave / future linkage all mount here |
 | Fixed wrist bracket | 1 (alt.) | `parts/wrist_fixed.SLDPRT` | Configuration-A fallback |
