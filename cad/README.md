@@ -35,8 +35,8 @@ change it once, re-export, and re-import into existing parts.
 | Servo output boss diameter | `d_boss` | 13 mm — from the downloaded MG996R model, verify with calipers |
 | Boss radial clearance | `c_boss` | 1 mm |
 | Plate hole for servo boss | `d_servo_hole` | `d_boss` + 2 × `c_boss` = 15 mm |
-| Min rim around servo hole | `t_rim` | 7.5 mm — room for the M3 bolt ring plus edge |
-| Link plate end width (servo end) | `w_link_end` | `d_servo_hole` + 2 × `t_rim` = 30 mm |
+| Min rim around servo hole | `t_rim` | 9.5 mm — holds an M3 hole with about 3 mm of material on each side (7.5 mm was too little) |
+| Link plate end width (servo end) | `w_link_end` | `d_servo_hole` + 2 × `t_rim` = 34 mm |
 | M3 bolt clearance hole | `d_hole_m3` | `d_pin_gripper` + `c_fit` = 3.2 mm |
 | M4 pivot hole (pin rotates) | `d_hole_pivot` | `d_pin` + `c_fit_pivot` = 4.25 mm |
 | Bracket thickness | `t_bracket` | 4 mm |

@@ -13,7 +13,7 @@
 "d_boss"= 13mm'MG996R output boss dia - from downloaded model, verify with calipers
 "c_boss"= 1mm'Radial clearance around servo boss
 "d_servo_hole"= "d_boss" + 2 * "c_boss"'Plate clearance hole for servo boss (15 mm)
-"t_rim"= 7.5mm'Min material around servo hole (M3 bolt ring + edge)
-"w_link_end"= "d_servo_hole" + 2 * "t_rim"'Link plate end width at servo end (30 mm)
+"t_rim"= 9.5mm'Min material around servo hole (M3 hole + 3 mm webs each side)
+"w_link_end"= "d_servo_hole" + 2 * "t_rim"'Link plate end width at servo end (34 mm)
 "d_hole_m3"= "d_pin_gripper" + "c_fit"'M3 bolt clearance hole (spacer and adapter bolts)
 "d_hole_pivot"= "d_pin" + "c_fit_pivot"'M4 pivot hole where the pin rotates (4.25 mm)
