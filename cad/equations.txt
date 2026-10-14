@@ -1,4 +1,16 @@
-﻿"d_boss"= 13mm'MG996R output boss dia - from downloaded model, verify with calipers
+﻿"L1"= 120mm'Upper arm
+"L3"= 75mm'Wrist→TCP
+"h0"= 75mm'Shoulder height
+"t_link"= 3mm'Link plate thickness
+"t_bracket"= 4mm'Bracket thickness
+"d_pin"= 4mm'Pin diameter (M4)
+"c_fit"= 0.2mm'Nominal clearance - measured PLA 2026-10-01
+"L2"= 120mm'Forearm
+"c_fit_pivot"= "c_fit" + 0.05mm'Gripper pivot clearance - chosen 0.25 mm 2026-10-01
+"d_pin_gripper"= 3mm'Gripper pivot diameter
+"w_link"= 20mm'Link plate depth (bending direction)
+"w_gap"= 20mm'Twin-plate gap - provisional, set by elbow servo mount
+"d_boss"= 13mm'MG996R output boss dia - from downloaded model, verify with calipers
 "c_boss"= 1mm'Radial clearance around servo boss
 "d_servo_hole"= "d_boss" + 2 * "c_boss"'Plate clearance hole for servo boss (15 mm)
 "t_rim"= 7.5mm'Min material around servo hole (M3 bolt ring + edge)
