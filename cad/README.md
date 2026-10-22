@@ -39,6 +39,22 @@ change it once, re-export, and re-import into existing parts.
 | Link plate end width (servo end) | `w_link_end` | `d_servo_hole` + 2 × `t_rim` = 34 mm |
 | M3 bolt clearance hole | `d_hole_m3` | `d_pin_gripper` + `c_fit` = 3.2 mm |
 | M4 pivot hole (pin rotates) | `d_hole_pivot` | `d_pin` + `c_fit_pivot` = 4.25 mm |
+| Horn disc diameter / thickness | `d_horn` / `t_horn` | 20 / 2.3 mm — from the MG996R model (circular horn) |
+| Horn disc to plate 2 gap | `g_horn` | 2.2 mm — from MockShoulder |
+| Adapter horn pocket | `d_horn_pocket` / `h_horn_pocket` | `d_horn` + `c_fit` = 20.2 / `g_horn` + `t_horn` = 4.5 mm |
+| Horn centre-screw recess | `d_horn_screw_cb` / `h_horn_screw_cb` | 8.5 / 2.6 mm |
+| Adapter diameter / length | `d_adapter` / `h_adapter` | 26 mm / `w_gap` = 20 mm |
+| Adapter floor under horn | `t_adapter_floor` | 2 mm |
+| Horn screw hole / radius | `d_horn_screw_hole` / `r_horn_screw` | 2.2 / 7 mm (M2 self-tappers, ≤6 mm) |
+| Horn screw access bore | `d_access` | 4 mm, from the plate-1 side |
+| M3 heat-set insert hole | `d_insert_m3` / `h_insert_m3` | 4.2 / 6 mm — check the insert maker's spec |
+| Adapter bolt offset from pin | `x_adapter_bolt` / `y_adapter_bolt` | 6 mm along the arm, ±5 mm across |
+| Plate 1 countersink (M3 flat head) | `d_csk_m3` | 6.4 mm, 90° |
+| M4 pin depth in adapter | `h_pin_bore` | 10 mm |
+
+The horn adapter bolts to plate 1 (the pin-side plate at the shoulder), not plate
+2: the servo case sits 0.5 mm off plate 2 and plate 2 turns under it, so no bolt
+head fits there. Layout and assembly order: `docs/horn_adapter.svg`.
 | Bracket thickness | `t_bracket` | 4 mm |
 | Pin diameter | `d_pin` | 4 mm (M4) |
 | Gripper pivot pin diameter | `d_pin_gripper` | 3 mm (M3) |

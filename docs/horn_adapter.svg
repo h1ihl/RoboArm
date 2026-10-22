@@ -1,0 +1,174 @@
+<svg viewBox="0 0 1160 760" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+  <style>
+    .t   { font-size: 13px; fill: #1a1a1a; }
+    .tb  { font-size: 13px; font-weight: 700; fill: #1a1a1a; }
+    .s   { font-size: 11.5px; fill: #444; }
+    .dim { font-size: 11.5px; fill: #2b6fd9; font-weight: 700; }
+    .pla { fill: #d9dde3; stroke: #5d6470; stroke-width: 1.2; }
+    .adp { fill: #bcd4f5; stroke: #2b4a7a; stroke-width: 1.4; }
+    .brk { fill: #cfe3c4; stroke: #4f7a3a; stroke-width: 1.2; }
+    .srv { fill: #f6b26b; stroke: #a35a00; stroke-width: 1.2; }
+    .hrn { fill: #6d6d6d; stroke: #222; stroke-width: 1; }
+    .stl { fill: #3d4148; stroke: #111; stroke-width: 0.8; }
+    .ins { fill: #d4a53c; stroke: #7a5a12; stroke-width: 0.8; }
+    .cut { fill: #ffffff; stroke: #2b4a7a; stroke-width: 1; }
+    .ax  { stroke: #888; stroke-width: 1; stroke-dasharray: 6,4; }
+    .lead{ stroke: #1a1a1a; stroke-width: 0.9; fill: none; }
+    .badge { fill: #1a1a1a; }
+    .bt  { font-size: 11px; font-weight: 700; fill: #fff; text-anchor: middle; }
+  </style>
+  <rect width="1160" height="760" fill="#fff"/>
+
+  <text x="24" y="32" font-size="21" font-weight="700" fill="#1a1a1a">Shoulder horn adapter — proposed layout (drawn to scale from the CAD model)</text>
+  <text x="24" y="52" class="s">Left: section through the shoulder axis (6 px = 1 mm). Right: the adapter's plate-1 face, plate 1 removed (7 px = 1 mm). Horn, boss and gap sizes are measured from your MockShoulder assembly.</text>
+
+  <!-- ================= SECTION VIEW ================= -->
+  <!-- axis at y=330, a=0 (plate-2 outer face) at x=420; px = 420 + 6a ; py = 330 -/+ 6r -->
+  <line x1="150" y1="330" x2="650" y2="330" class="ax"/>
+  <text x="150" y="350" class="s">axis</text>
+
+  <!-- servo case body (a -37.5..-0.5, r 10.15) and boss (a -0.5..1.5, Ø13) -->
+  <rect x="195" y="269.1" width="222" height="121.8" class="srv"/>
+  <text x="290" y="334" class="tb" text-anchor="middle">MG996R</text>
+  <rect x="417" y="291" width="12" height="78" class="srv"/>
+  <!-- ears resting on wall A (a -10.7..-8.4) -->
+  <rect x="355.8" y="244" width="13.8" height="25" class="srv"/>
+  <rect x="355.8" y="391" width="13.8" height="25" class="srv"/>
+  <!-- wall A (a -8.4..-4.4), pocket around the case -->
+  <rect x="369.6" y="200" width="24" height="66.4" class="brk"/>
+  <rect x="369.6" y="393.6" width="24" height="66.4" class="brk"/>
+
+  <!-- plate 2 (a 0..3), big end ±17, Ø15 hole -->
+  <rect x="420" y="228" width="18" height="57" class="pla"/>
+  <rect x="420" y="375" width="18" height="57" class="pla"/>
+
+  <!-- adapter body (a 3..23, Ø26) -->
+  <rect x="438" y="252" width="120" height="156" class="adp"/>
+  <!-- cut-outs -->
+  <rect x="438" y="269.4" width="27" height="121.2" class="cut"/>       <!-- horn pocket Ø20.2, 4.5 deep -->
+  <rect x="465" y="304.5" width="15.6" height="51" class="cut"/>        <!-- counterbore Ø8.5 for horn centre screw -->
+  <rect x="498" y="317.25" width="60" height="25.5" class="cut"/>       <!-- pin bore Ø4.25, 10 deep -->
+  <rect x="477" y="276" width="81" height="24" class="cut"/>            <!-- access bore Ø4 at r=7 (top) -->
+  <rect x="465" y="281.4" width="12" height="13.2" class="cut"/>        <!-- Ø2.2 screw hole through 2 mm floor -->
+  <rect x="522" y="364.2" width="36" height="25.2" class="ins"/>        <!-- M3 heat-set insert at r=7.8 (bottom) -->
+
+  <!-- horn: hub Ø8.8 (a 2..5.2) and disc Ø20 (a 5.2..7.5) -->
+  <rect x="432" y="303.6" width="19.2" height="52.8" class="hrn"/>
+  <rect x="451.2" y="270" width="13.8" height="120" class="hrn"/>
+  <!-- horn centre screw head Ø7.5 (a 7.5..9.85) -->
+  <rect x="465" y="307.5" width="14.1" height="45" class="stl"/>
+  <!-- M2 horn screw: head in access bore, shank through floor and disc -->
+  <rect x="477" y="277.5" width="7.8" height="21" class="stl"/>
+  <rect x="447" y="282" width="30" height="12" class="stl"/>
+
+  <!-- plate 1 (a 23..26), pin end ±10, pin hole Ø4.25, countersunk M3 at r=7.8 -->
+  <rect x="558" y="270" width="18" height="47.25" class="pla"/>
+  <rect x="558" y="342.75" width="18" height="47.25" class="pla"/>
+  <!-- M3 countersunk bolt: shank r 6.3..9.3 from a 17.5 to 26, head flush in plate 1 -->
+  <rect x="525" y="367.8" width="51" height="18" class="stl"/>
+  <polygon points="576,360.3 576,393.3 562,385.8 562,367.8" class="stl"/>
+
+  <!-- wall B (a 27..31) with M4 pin -->
+  <rect x="582" y="200" width="24" height="117.4" class="brk"/>
+  <rect x="582" y="342.6" width="24" height="117.4" class="brk"/>
+  <rect x="576" y="316.5" width="6" height="27" class="stl" opacity="0.55"/> <!-- washer -->
+  <rect x="510" y="318" width="96" height="24" class="stl"/>              <!-- M4 pin shank a 15..31 -->
+  <rect x="606" y="309" width="16" height="42" class="stl"/>              <!-- head -->
+
+  <!-- gap dimension -->
+  <line x1="438" y1="440" x2="558" y2="440" stroke="#2b6fd9" stroke-width="1.3"/>
+  <polygon points="438,440 446,436 446,444" fill="#2b6fd9"/><polygon points="558,440 550,436 550,444" fill="#2b6fd9"/>
+  <text x="498" y="456" class="dim" text-anchor="middle">w_gap = 20</text>
+  <line x1="451" y1="250" x2="451" y2="236" stroke="#2b6fd9" stroke-width="1"/>
+  <line x1="438" y1="250" x2="438" y2="236" stroke="#2b6fd9" stroke-width="1"/>
+  <text x="444" y="230" class="dim" text-anchor="middle">2.2</text>
+
+  <!-- callouts -->
+  <circle cx="300" cy="245" r="10" class="badge"/><text x="300" y="249" class="bt">1</text><line class="lead" x1="300" y1="255" x2="300" y2="269"/>
+  <circle cx="380" cy="186" r="10" class="badge"/><text x="380" y="190" class="bt">2</text><line class="lead" x1="380" y1="196" x2="380" y2="200"/>
+  <circle cx="429" cy="210" r="10" class="badge"/><text x="429" y="214" class="bt">3</text><line class="lead" x1="429" y1="220" x2="429" y2="228"/>
+  <circle cx="470" cy="214" r="10" class="badge"/><text x="470" y="218" class="bt">4</text><line class="lead" x1="466" y1="223" x2="458" y2="270"/>
+  <circle cx="520" cy="236" r="10" class="badge"/><text x="520" y="240" class="bt">5</text><line class="lead" x1="520" y1="246" x2="520" y2="252"/>
+  <circle cx="500" cy="488" r="10" class="badge"/><text x="500" y="492" class="bt">6</text><line class="lead" x1="500" y1="478" x2="482" y2="294"/>
+  <circle cx="546" cy="420" r="10" class="badge"/><text x="546" y="424" class="bt">7</text><line class="lead" x1="546" y1="410" x2="546" y2="389"/>
+  <circle cx="567" cy="240" r="10" class="badge"/><text x="567" y="244" class="bt">8</text><line class="lead" x1="567" y1="250" x2="567" y2="270"/>
+  <circle cx="594" cy="186" r="10" class="badge"/><text x="594" y="190" class="bt">9</text><line class="lead" x1="594" y1="196" x2="594" y2="200"/>
+  <circle cx="630" cy="300" r="10" class="badge"/><text x="630" y="304" class="bt">10</text><line class="lead" x1="624" y1="308" x2="616" y2="316"/>
+
+  <text x="150" y="520" class="s">Section shows one horn screw (top) and one plate bolt (bottom) rotated into the cut for clarity.</text>
+  <text x="150" y="536" class="s">The four spacers sit 30 mm further along the arm, outside this view.</text>
+
+  <!-- ================= END VIEW ================= -->
+  <!-- centre (880,330); px = 880 + 7u ; py = 330 - 7v ; u = along the arm toward plate end -->
+  <text x="742" y="96" class="tb" font-size="14">Adapter face on the plate-1 side</text>
+  <text x="742" y="113" class="s">plate 1 outline dashed; arm body runs to the left</text>
+  <!-- plate 1 pin-end outline: v=±10 from u=-22 to 0, R10 end -->
+  <path d="M726,260 L880,260 A70,70 0 0 1 880,400 L726,400" fill="none" stroke="#5d6470" stroke-width="1.4" stroke-dasharray="6,4"/>
+  <!-- adapter OD 26 -->
+  <circle cx="880" cy="330" r="91" class="adp"/>
+  <!-- hidden horn hole pattern (12 x Ø1.5 on the 14 mm square) -->
+  <g fill="none" stroke="#7a7a7a" stroke-width="0.9" stroke-dasharray="2,2">
+    <circle cx="929" cy="330" r="5.25"/><circle cx="831" cy="330" r="5.25"/>
+    <circle cx="880" cy="281" r="5.25"/><circle cx="880" cy="379" r="5.25"/>
+    <circle cx="929" cy="309" r="5.25"/><circle cx="929" cy="351" r="5.25"/>
+    <circle cx="831" cy="309" r="5.25"/><circle cx="831" cy="351" r="5.25"/>
+    <circle cx="859" cy="281" r="5.25"/><circle cx="901" cy="281" r="5.25"/>
+    <circle cx="859" cy="379" r="5.25"/><circle cx="901" cy="379" r="5.25"/>
+  </g>
+  <!-- access bores Ø4 at (7,0), (0,7), (0,-7) -->
+  <circle cx="929" cy="330" r="14" class="cut"/>
+  <circle cx="880" cy="281" r="14" class="cut"/>
+  <circle cx="880" cy="379" r="14" class="cut"/>
+  <circle cx="929" cy="330" r="7.7" class="stl"/>
+  <circle cx="880" cy="281" r="7.7" class="stl"/>
+  <circle cx="880" cy="379" r="7.7" class="stl"/>
+  <!-- pin bore Ø4.25 -->
+  <circle cx="880" cy="330" r="14.9" class="cut"/>
+  <circle cx="880" cy="330" r="14" class="stl"/>
+  <!-- heat-set inserts at (-6,±5) -->
+  <circle cx="838" cy="295" r="14.7" class="ins"/><circle cx="838" cy="295" r="5.6" fill="#fff" stroke="#7a5a12"/>
+  <circle cx="838" cy="365" r="14.7" class="ins"/><circle cx="838" cy="365" r="5.6" fill="#fff" stroke="#7a5a12"/>
+  <!-- spacer direction note -->
+  <line x1="740" y1="430" x2="790" y2="430" stroke="#5d6470" stroke-width="1.2"/>
+  <polygon points="740,430 748,426 748,434" fill="#5d6470"/>
+  <text x="796" y="434" class="s">to the spacers at 30 mm</text>
+  <!-- labels -->
+  <text x="964" y="334" class="s">horn screw</text>
+  <text x="900" y="258" class="s">horn screw</text>
+  <text x="900" y="410" class="s">horn screw</text>
+  <text x="742" y="290" class="s" text-anchor="start">M3 insert</text>
+  <text x="742" y="372" class="s" text-anchor="start">M3 insert</text>
+  <text x="880" y="452" class="dim" text-anchor="middle">Ø26 adapter · pin at centre</text>
+  <text x="880" y="468" class="s" text-anchor="middle">inserts at (−6, ±5) mm from the pin · horn screws at 7 mm radius</text>
+
+  <!-- ================= KEY ================= -->
+  <g transform="translate(24,560)">
+    <rect width="1112" height="186" rx="8" fill="#fafafa" stroke="#bbb"/>
+    <g font-size="12" fill="#1a1a1a">
+      <circle cx="20" cy="22" r="9" class="badge"/><text x="20" y="26" class="bt">1</text><text x="36" y="26">Servo, fixed in the bracket</text>
+      <circle cx="20" cy="46" r="9" class="badge"/><text x="20" y="50" class="bt">2</text><text x="36" y="50">Bracket wall A — ears bolt here</text>
+      <circle cx="20" cy="70" r="9" class="badge"/><text x="20" y="74" class="bt">3</text><text x="36" y="74">Plate 2, Ø15 hole only clears the boss — no bolts</text>
+      <circle cx="20" cy="94" r="9" class="badge"/><text x="20" y="98" class="bt">4</text><text x="36" y="98">Horn (Ø20 disc) sits in a Ø20.2 × 4.5 pocket</text>
+      <circle cx="20" cy="118" r="9" class="badge"/><text x="20" y="122" class="bt">5</text><text x="36" y="122">Adapter, Ø26 × 20 collar filling the gap</text>
+      <circle cx="380" cy="22" r="9" class="badge"/><text x="380" y="26" class="bt">6</text><text x="396" y="26">3 × M2 self-tappers (≤6 mm) through the floor into the horn</text>
+      <circle cx="380" cy="46" r="9" class="badge"/><text x="380" y="50" class="bt">7</text><text x="396" y="50">2 × M3 heat-set inserts in the adapter</text>
+      <circle cx="380" cy="70" r="9" class="badge"/><text x="380" y="74" class="bt">8</text><text x="396" y="74">Plate 1 — 2 × M3 countersunk screws, flush</text>
+      <circle cx="380" cy="94" r="9" class="badge"/><text x="380" y="98" class="bt">9</text><text x="396" y="98">Bracket wall B</text>
+      <circle cx="380" cy="118" r="10" class="badge"/><text x="380" y="122" class="bt">10</text><text x="396" y="122">M4 pin, fixed in wall B; plate 1 + adapter turn on it</text>
+    </g>
+    <text x="760" y="26" class="tb">Torque path</text>
+    <text x="760" y="46" class="t">horn → M2 screws → adapter</text>
+    <text x="760" y="64" class="t">→ M3 screws → plate 1 → spacers → plate 2</text>
+    <text x="760" y="92" class="tb">Why plate 1, not plate 2</text>
+    <text x="760" y="112" class="s">The servo case sits 0.5 mm off plate 2 and plate 2 turns under it,</text>
+    <text x="760" y="128" class="s">so no bolt head can go on plate 2's outside. Plate 1's outside</text>
+    <text x="760" y="144" class="s">faces wall B, where the bracket sets the clearance.</text>
+    <rect x="20" y="152" width="14" height="9" class="pla"/><text x="40" y="160" class="s">PLA plate</text>
+    <rect x="110" y="152" width="14" height="9" class="adp"/><text x="130" y="160" class="s">adapter</text>
+    <rect x="190" y="152" width="14" height="9" class="brk"/><text x="210" y="160" class="s">bracket</text>
+    <rect x="270" y="152" width="14" height="9" class="srv"/><text x="290" y="160" class="s">servo</text>
+    <rect x="340" y="152" width="14" height="9" class="hrn"/><text x="360" y="160" class="s">horn (plastic)</text>
+    <rect x="450" y="152" width="14" height="9" class="stl"/><text x="470" y="160" class="s">steel</text>
+    <rect x="520" y="152" width="14" height="9" class="ins"/><text x="540" y="160" class="s">brass insert</text>
+  </g>
+</svg>
