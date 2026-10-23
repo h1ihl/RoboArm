@@ -34,7 +34,7 @@ MG90S base and gripper, SG90 wrist. Shoulder safety factor 2.44.
 
 ```
 CLAUDE.md                      this file
-README.md                      overview (its "Status" line is stale — see §9)
+README.md                      overview (its "Status" line is stale — see §7)
 desktop_robot_arm_claude_prompt.md   original brief, do not edit
 docs/                          requirements, actuators, mechanical, electronics,
                                power, kinematics, BOM, assembly, testing, V2,
@@ -158,7 +158,8 @@ Licence unknown — the repo is public; flag if it must be removed.
 Measured from the model: case 54 long (ear tip to tip) × 20 wide × 39 tall;
 ear holes 4 × Ø4 keyhole slots (open to the ear tip, 2.4 wide) at
 **48.6 × 10 mm** — the old "Ø3.0 at 51 × 15" was the ears' R1.5 corner
-rounds, corrected 2026-10-23; each ear has a centre rib 1 wide × up to 1.5
+rounds, corrected 2026-10-23; Haseeb calipered the real servo's ear holes
+the same day and they match; each ear has a centre rib 1 wide × up to 1.5
 tall on its seating face (case X 20.45–26.8); ear thickness 2.3; ear seating
 face 9.7 mm below the top of the output boss (9.9 was measured to the 0.2 mm
 edge round — that error made `a_ear` 8.4 instead of 8.2); shaft 10.45 off the case centre
@@ -190,7 +191,7 @@ middle** (that is where plate 1's holes are). Print with Z = 0 on the bed.
 Torque path: horn → M2 screws → adapter → M3 countersunk screws → plate 1 →
 spacers → plate 2.
 
-### `shoulder_bracket.SLDPRT` — done 2026-10-23 (34.8 g solid), checked in MockShoulder
+### `shoulder_bracket.SLDPRT` — done 2026-10-23 (35.5 g solid), checked in MockShoulder
 One body. Origin on the shoulder axis; Front Plane = wall A's outer face
 (the ear seating face); +Z toward the arm; +Y toward the servo's long end.
 - Wall A: Z 0–4, 30 wide, Y −28 to +41.5, R10 top corners. Window 20.6 × 41.5
@@ -201,13 +202,13 @@ One body. Origin on the shoulder axis; Front Plane = wall A's outer face
 - Wall B: Z 35.2–39.2 (after `a_ear` = 8.2 → exactly 1.0 to plate 1), R15
   top on the axis; boss Ø12 × 4 outside (to Z 43.2); Ø4 pin hole through
   boss + wall B (sized for a 4 mm press-fit dowel).
-- Foot: Y −28 to −34, X ±25, Z −10.6 to 49.2 (59.8 × 50 × 6). 4 × Ø4.2 M3
-  heat-set insert holes at X ±20, Z −6.8 / 45.4; screws come up from the
-  turret. R4 wall-to-foot fillets. **Open:** the holes are 3.8 mm from the
-  foot ends → only **1.7 mm** of plastic outside each insert (an earlier
-  "2.9 mm" claim was an arithmetic error). Fix: extend the foot ~1 mm more at
-  each end, keep the holes (→ ~2.7 mm); moving the holes inward would cut
-  the R4 fillets. Check the insert maker's minimum wall.
+- Foot: Y −28 to −34, X ±25, Z −11.6 to 50.2 (61.8 × 50 × 6). 4 × Ø4.2 M3
+  heat-set insert holes at X ±20, Z −6.8 / 45.4 (40 × 52.2 pattern); screws
+  come up from the turret. R4 wall-to-foot fillets. Foot extended 1 mm at
+  each end on 2026-10-23 → **2.7 mm** of plastic outside each insert (was
+  1.7). The lower holes are now dimensioned from the origin, not the foot
+  edge; Sketch5's far end is set by its 61.8 length. Still check the insert
+  maker's minimum wall. Mass 35.5 g solid.
 - `d_axis_turret` (34) is a **placeholder** — the turret sets it.
 - Not yet: FEA, test print, pin hardware decision.
 
@@ -222,7 +223,7 @@ adapter 11.2–31.2, plate 1 31.2–34.2 → 4.2 mm behind wall A (ear screw hea
 get ~2.2 mm), 1.0 mm to wall B.
 Interference check: 32 hits, all inside the vendor servo model; **0 in our
 parts** (an earlier run found the two ear ribs, 4.32 mm³ each — fixed by the
-notches). Horn mate re-checked after the rebuild: horn holes sit exactly on
+notches). Re-run after the foot extension on 2026-10-23: still 0 in our parts. Horn mate re-checked after the rebuild: horn holes sit exactly on
 the adapter's access bores (0.00° off). Final check 2026-10-23: all of the
 above confirmed. On the real arm the horn angle is set at assembly; the arm's zero
 is trimmed by spline tooth choice (~14.4° steps) + `angle_offset` in
@@ -249,10 +250,10 @@ after). SolidWorks lock files (`~$*`) are git-ignored.
 
 ## 6. Next steps (in order)
 
-1. **Close out the shoulder CAD:** extend the bracket foot ~1 mm at each end
-   so the insert holes get ~2.7 mm of edge material (see §5); caliper the
-   real servo's ear-hole centres (expect 48.6 × 10). (Horn mate and the
-   1.0 mm wall B gap are done.)
+1. ~~Close out the shoulder CAD~~ — **done 2026-10-23**: foot extended
+   (2.7 mm at the inserts), real ear holes calipered (match 48.6 × 10),
+   MockShoulder re-checked (0 interferences in our parts). Horn mate and the
+   1.0 mm wall B gap were already done.
 2. **Decide the shoulder pin:** recommended a 4 mm steel dowel (drill rod /
    silver steel, ~22 mm) pressed into wall B's Ø4 hole, running in the
    adapter's Ø4.25 bore. A partially-threaded M4 bolt doesn't work cleanly:

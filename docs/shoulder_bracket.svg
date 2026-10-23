@@ -143,7 +143,7 @@
 <polygon points="855.2,390.0 851.2,382.0 859.2,382.0" fill="#2b6fd9"/>
 <text x="849.2" y="274.0" class="dim" text-anchor="end" >40</text>
 <text x="871.2" y="112.0" class="s" text-anchor="start" >M3 heat-set inserts (4×), screws come up from the turret</text>
-<text x="871.2" y="476.0" class="s" text-anchor="start" >foot 60 × 50 × 6 mm</text>
+<text x="871.2" y="476.0" class="s" text-anchor="start" >foot 61.8 × 50 × 6 mm</text>
 <g transform="translate(24,612)"><rect width="1232" height="190" rx="8" fill="#fafafa" stroke="#bbb"/>
 <circle cx="20" cy="20" r="9" class="badge"/><text x="20" y="24" class="bt">1</text><text x="36" y="24" class="t" font-size="12.5">Servo: long end up, short end down. Case drops through the window from the outside; the ears seat on wall A's outer face</text>
 <circle cx="20" cy="42" r="9" class="badge"/><text x="20" y="46" class="bt">2</text><text x="36" y="46" class="t" font-size="12.5">Wall A, 4 mm (t_bracket), window 41.5 × 20.6; top 41.5 above the axis; 1.6 wide notches at both window ends clear the ear ribs</text>

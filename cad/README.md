@@ -66,9 +66,10 @@ change it once, re-export, and re-import into existing parts.
 | Wall B pin boss | `t_boss_b` / `d_boss_b` | 4 mm extra thickness / Ø12 mm |
 
 Bracket layout and dimensions: `docs/shoulder_bracket.svg`. As built in
-`shoulder_bracket.SLDPRT`: foot 60 × 50 × 6 mm (overhangs wall A by 10.6 and
-wall B by 10), 4 × Ø4.2 M3 insert holes on a 52 × 40 mm pattern, 4 mm from
-each end of the foot; R4 fillets where the walls meet the foot.
+`shoulder_bracket.SLDPRT`: foot 61.8 × 50 × 6 mm (overhangs wall A by 11.6 and
+wall B by 11), 4 × Ø4.2 M3 insert holes on a 52.2 × 40 mm pattern, centres
+4.8 mm from each end of the foot (2.7 mm of plastic outside each insert);
+R4 fillets where the walls meet the foot.
 
 The horn adapter bolts to plate 1 (the pin-side plate at the shoulder), not plate
 2: the servo case sits 0.5 mm off plate 2 and plate 2 turns under it, so no bolt
