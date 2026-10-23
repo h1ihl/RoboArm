@@ -41,9 +41,9 @@
 "w_servo"= 20mm'MG996R case width - from the model
 "r_servo_short"= 10mm'Shaft axis to the short end of the case - from the model
 "r_servo_long"= "l_servo" - "r_servo_short"'Shaft axis to the long end of the case (30.9 mm)
-"l_ear_holes"= 51mm'MG996R ear hole spacing along the case - from the model
-"w_ear_holes"= 15mm'MG996R ear hole spacing across the case - from the model
-"a_ear"= 8.4mm'Servo ear seating face to plate-2 outer face - from MockShoulder
+"l_ear_holes"= 48.6mm'MG996R ear hole (keyhole slot) spacing along the case - from the model
+"w_ear_holes"= 10mm'MG996R ear hole spacing across the case - from the model
+"a_ear"= 8.2mm'Servo ear seating face to plate-2 outer face - from MockShoulder (ear face incl. 0.2 edge round)
 "l_window"= "l_servo" + 2 * "c_win"'Wall A window length (41.5 mm)
 "w_window"= "w_servo" + 2 * "c_win"'Wall A window width (20.6 mm)
 "g_wall_a"= "a_ear" - "t_bracket"'Gap behind wall A to plate 2 (4.4 mm) - ear screw heads sit here

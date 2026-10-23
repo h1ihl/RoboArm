@@ -1,7 +1,7 @@
 # CLAUDE.md — Desk Arm project handoff
 
 Read this first. It records what has been decided, what exists, how to work
-in this repo, and what comes next. Last updated 2026-10-22.
+in this repo, and what comes next. Last updated 2026-10-23.
 
 The owner is Haseeb (GitHub `h1ihl`), an engineering student at the
 University of Calgary, with access to the Schulich makerspace (3D printers,
@@ -43,6 +43,7 @@ docs/                          requirements, actuators, mechanical, electronics,
   arm_overview.svg             side view of the whole arm, numbered parts
   arm_joint_detail.svg         early joint concept — SUPERSEDED by horn_adapter.svg
   horn_adapter.svg             current shoulder joint, to scale from the CAD
+  shoulder_bracket.svg         shoulder bracket: section, wall A, foot (to scale)
 cad/
   README.md                    parameter table + part list (source of truth for parts)
   equations.txt                SolidWorks global variables — see §4, handle with care
@@ -80,6 +81,7 @@ Rebuild the PDF after editing the .tex:
 | Elbow layout | **Option A — nested** (forearm plates sit inside the upper-arm gap, forearm gap ~10 mm) | Deferred; shoulder first. Means the forearm is NOT identical to the upper arm (own spacer length, own wrist end). |
 | Horn adapter | **Bolts to plate 1** (the pin-side plate at the shoulder), not plate 2 | Servo case is 0.5 mm off plate 2's outer face and plate 2 turns under it — no bolt head fits there. |
 | PCB | Considered (makerspace PCB mill), **not decided** | Perfboard is the documented default. |
+| Shoulder servo orientation | **Short end down, long end up** in the bracket | The servo cable leaves from the short end, so it exits low toward the turret; keeps the bracket's lower half compact. |
 
 Purchases: AliExpress order placed 2026-10-05 and **received 2026-10-22**:
 2× MG996R (4.9★ "MG996R 13kg High Torque Metal Gear" listing — an IBUW
@@ -141,9 +143,9 @@ Current variables (values in mm):
 | `d_csk_m3` | 6.4 | 90° countersink for M3 flat heads in plate 1 |
 | `h_pin_bore` | 10 | M4 pin depth in the adapter |
 | `l_servo`, `w_servo`, `r_servo_short`, `r_servo_long` | 40.9, 20, 10, 30.9 | MG996R case (no ears) and shaft-to-end distances, from the model |
-| `l_ear_holes`, `w_ear_holes`, `a_ear` | 51, 15, 8.4 | Ear hole spacing; ear seating face to plate-2 outer face |
+| `l_ear_holes`, `w_ear_holes`, `a_ear` | 48.6, 10, 8.2 | Ear hole spacing; ear seating face to plate-2 outer face |
 | `c_win`, `l_window`, `w_window` | 0.3, 41.5, 20.6 | Bracket wall A window (clearance is a starting value) |
-| `g_wall_a`, `g_wall_b` | 4.4, 1 | Wall A to plate 2 gap; plate 1 to wall B (washer) |
+| `g_wall_a`, `g_wall_b` | 4.2, 1 | Wall A to plate 2 gap; plate 1 to wall B (washer) |
 | `d_axis_turret`, `t_foot`, `w_foot`, `h_wall_top`, `w_wall` | 34, 6, 50, 41.5, 30 | Bracket envelope — `d_axis_turret` is a **placeholder** until the turret exists |
 | `t_boss_b`, `d_boss_b` | 4, 12 | Pin boss on wall B |
 
@@ -154,8 +156,12 @@ Current variables (values in mm):
 ### MG996R model (`cad/parts/MG996R Servo Motor/`, downloaded)
 Licence unknown — the repo is public; flag if it must be removed.
 Measured from the model: case 54 long (ear tip to tip) × 20 wide × 39 tall;
-ear holes 4 × Ø3.0 at 51 × 15 mm spacing; ear thickness 2.3; ear top face
-9.9 mm below the top of the output boss; shaft 10.45 off the case centre
+ear holes 4 × Ø4 keyhole slots (open to the ear tip, 2.4 wide) at
+**48.6 × 10 mm** — the old "Ø3.0 at 51 × 15" was the ears' R1.5 corner
+rounds, corrected 2026-10-23; each ear has a centre rib 1 wide × up to 1.5
+tall on its seating face (case X 20.45–26.8); ear thickness 2.3; ear seating
+face 9.7 mm below the top of the output boss (9.9 was measured to the 0.2 mm
+edge round — that error made `a_ear` 8.4 instead of 8.2); shaft 10.45 off the case centre
 (16.55 from the nearer end); 25-tooth spline Ø5.8 with M3 centre hole;
 output boss Ø13. Horn config used: **"Circular Horn"** — Ø20 × 2.3 disc,
 Ø8.8 × 3.2 hub pointing toward the servo, 12 × Ø1.5 holes (4 at r = 7 on
@@ -184,71 +190,95 @@ middle** (that is where plate 1's holes are). Print with Z = 0 on the bed.
 Torque path: horn → M2 screws → adapter → M3 countersunk screws → plate 1 →
 spacers → plate 2.
 
-### `shoulder_bracket.SLDPRT` — modelled 2026-10-23 (34.9 g solid)
+### `shoulder_bracket.SLDPRT` — done 2026-10-23 (34.8 g solid), checked in MockShoulder
 One body. Origin on the shoulder axis; Front Plane = wall A's outer face
-(the ear seating face); +Z toward the arm; +Y toward the servo's long end
-(servo short end down, so its cable exits low). Wall A Z 0–4, 30 wide,
-Y −28 to +41.5, R10 top corners, window 20.6 × 41.5 (Y −10.3 to 31.2),
-4 × Ø3.2 ear holes at (±7.5, −15.05) and (±7.5, 35.95). Wall B Z 35.4–39.4
-(1 mm from plate 1), R15 top on the axis; boss Ø12 × 4 outside (to Z 43.4);
-Ø4 pin hole through boss + wall B. Foot Y −28 to −34, X ±25, Z −10.6 to 49.4;
-4 × Ø4.2 insert holes at X ±20, Z −6.6 / 45.4. R4 wall-to-foot fillets.
-Not yet: placed in MockShoulder / interference check, FEA, test print.
-`d_axis_turret` (34) is still a placeholder.
+(the ear seating face); +Z toward the arm; +Y toward the servo's long end.
+- Wall A: Z 0–4, 30 wide, Y −28 to +41.5, R10 top corners. Window 20.6 × 41.5
+  (X ±10.3, Y −10.3 to 31.2) with 1.66-wide rib notches at both ends (to
+  Y −16.7 and +37.6; 0.33 mm beside each ear rib). 4 × Ø3.2 ear holes at
+  (±5, −13.85) and (±5, +34.75) — exactly on the servo slots. Only 1.95 mm
+  of wall between the lower holes and the window: watch it on the test print.
+- Wall B: Z 35.4–39.4, R15 top on the axis; boss Ø12 × 4 outside (to Z 43.4);
+  Ø4 pin hole through boss + wall B (sized for a 4 mm press-fit dowel).
+  With the corrected `a_ear` (8.2) the gap to plate 1 is **1.2**, not 1.0 —
+  the part still uses 35.4; set `a_ear` = 8.2 in the part's equations (or
+  Plane1 = 35.2) to get 1.0. Optional.
+- Foot: Y −28 to −34, X ±25, Z −10.6 to 49.4 (60 × 50 × 6). 4 × Ø4.2 M3
+  heat-set insert holes at X ±20, Z −6.6 / 45.4 (52 × 40 pattern, 4 mm from
+  each end); screws come up from the turret. R4 wall-to-foot fillets.
+- `d_axis_turret` (34) is a **placeholder** — the turret sets it.
+- Not yet: FEA, test print, pin hardware decision.
 
-### `MockShoulder.SLDASM` — checked
-Two plates 20 mm apart (Z 0–3 and 23–26), 4 spacers, adapter, MG996R.
-Servo shaft concentric with plate 2's Ø15 hole; servo lid 0.5 mm off
-plate 2's outer face; horn disc Z 18.5–20.8 sitting on the pocket floor.
-Interference check: **no collisions in our parts** (32 reported, all inside
-the vendor servo model). Horn mate **fixed 2026-10-23** (adapter–servo
-`Concentric5`): horn holes now line up with the adapter's access bores
-(horn rotation matrix exact 0/±1). Re-checked: still 0 collisions in our
-parts. On the real arm this angle is set at assembly; the arm's zero is then
-trimmed by spline tooth choice (~14.4° steps) + `angle_offset` in
+### `MockShoulder.SLDASM` — rebuilt around the bracket 2026-10-23, checked
+The bracket is now the fixed base part (`shoulder_bracket-1` at the origin,
+so assembly coords = bracket coords). Components: `MG996R Servo Motor-2`,
+`upper_arm_plate-3` (plate 1) / `-4` (plate 2), `upper_arm_horn_adapter-2`,
+4 spacers (`-9, -10, -12, -13`). Servo mates: shaft concentric with the
+bracket's Ø4 pin hole, ear seating face coincident with wall A's outer face,
+case side parallel to the window side. Stack along Z: plate 2 8.2–11.2,
+adapter 11.2–31.2, plate 1 31.2–34.2 → 4.2 mm behind wall A (ear screw heads
+get ~2.2 mm), 1.2 mm to wall B.
+Interference check: 32 hits, all inside the vendor servo model; **0 in our
+parts** (an earlier run found the two ear ribs, 4.32 mm³ each — fixed by the
+notches). **Re-check the horn mate** — the old fix (adapter–servo
+`Concentric5`, horn holes on the access bores) was in the pre-rebuild
+assembly. On the real arm the horn angle is set at assembly; the arm's zero
+is trimmed by spline tooth choice (~14.4° steps) + `angle_offset` in
 `software/robot/config.py`.
 
 Assembly order at the shoulder: servo into bracket → plate 2 over the boss
 (before the horn — Ø20 horn won't pass Ø15) → horn + centre screw →
 adapter over horn, M2 screws from below → spacers + plate 1, M3 countersunk
-screws → wall B + M4 pin.
+screws → wall B + shoulder pin (4 mm dowel recommended, see §6 step 2).
+Servo into bracket: ear screws go in from the plate-2 side (heads in the
+4.2 mm gap), nuts on top of the ears — so do it before plate 2 goes on.
 
-Two-machine setup: laptop has the repo at
-`C:\Users\hasee\OneDrive\Desktop\Robo Arm` (OneDrive) with SolidWorks and the
-SolidWorks MCP server; the PC has a plain git clone (`Desktop\RoboArm`, no
-OneDrive) and SolidWorks. **Sync only through git** (`git pull` before
-work, push after). SolidWorks lock files (`~$*`) are git-ignored.
+Machines: laptop has the repo at `C:\Users\hasee\OneDrive\Desktop\Robo Arm`
+(OneDrive) with SolidWorks and the full SolidWorks MCP server; a PC had a
+plain clone at `Desktop\RoboArm`. Since 2026-10-22 there is also a new
+computer with the repo at `C:\Users\hasee\Downloads\RoboArm` and
+SolidWorks 2026 SP3.2 **running from the external drive `G:`** (Samsung SSD,
+`G:\SOLIDWORKS\SLDWORKS.exe`, registered as the COM server — plug it in
+first). Claude Code chats are local to each machine, so this file is the
+only shared memory. **Sync only through git** (`git pull` before work, push
+after). SolidWorks lock files (`~$*`) are git-ignored.
 
 ---
 
 ## 6. Next steps (in order)
 
-1. **Check the real hardware:** servo dimensions caliper-verified against
-   the CAD (done 2026-10-23); still to do: confirm the horn type/material and
-   bench-test each servo on the ESP32 (`PING` → `OK ARM v1`, then `J`/`G`) per `docs/assembly.md` — watch
-   for 3.3 V jitter.
-2. **Print and test:** 2 plates, 4–8 spacers, 1 adapter (PLA, 4 perimeters,
-   flat). Check the 120 mm pivot spacing with an M4 bolt (±0.2), spacer
-   length, M3 fit, heat-set inserts, and the free-spin check for
-   `c_fit_pivot`. Watch the plate's thin webs for cracks.
-3. ~~Fix the horn mate in MockShoulder~~ — done.
-4. **Shoulder bracket** (next real part, the FEA candidate): U-shape —
-   wall A with a pocket for the servo body and the ear screws (ears rest on
-   wall A's outer face; servo ear face is 8.4 mm from plate 2's outer face,
-   so with a 4 mm wall there is 4.4 mm to plate 2), wall B carrying the fixed
-   M4 pin coaxial with the servo shaft (≤0.2 mm), base bolting to the turret.
-   One rigid printed part so the two walls stay aligned.
-5. **M4 pin detail:** partially-threaded M4 so the smooth shank is the
-   bearing; fix it in wall B (insert or tapped hole); plate 1 + adapter turn
-   on it.
+1. **Close out the shoulder CAD:** re-check the horn mate in the rebuilt
+   MockShoulder; optionally set `a_ear` = 8.2 in the bracket (wall B gap
+   1.2 → 1.0); caliper the real servo's ear-hole centres (expect 48.6 × 10).
+2. **Decide the shoulder pin:** recommended a 4 mm steel dowel (drill rod /
+   silver steel, ~22 mm) pressed into wall B's Ø4 hole, running in the
+   adapter's Ø4.25 bore. A partially-threaded M4 bolt doesn't work cleanly:
+   its thread is at the tip, so the thread ends up in the bearing bore, and
+   the bore can't be deepened (the horn pocket floor is in the way). Add a
+   1 mm thrust washer between plate 1 and wall B.
+3. **Print and test the shoulder set:** 2 plates, 4–8 spacers, 1 adapter,
+   1 bracket (PLA, 4 perimeters). Bracket foot-down first (no supports); if
+   wall A flexes, reprint on its side with support under wall B. Check:
+   servo slides through the window (`c_win` 0.3), M3×10 ear screws + nuts,
+   heat-set inserts (foot + adapter), the 1.95 mm bridge under the lower
+   ear holes, 120 mm pivot spacing with an M4 bolt (±0.2), spacer length,
+   free spin for `c_fit_pivot`, plate webs for cracks.
+4. **Bench-test the servos** on the ESP32 (`PING` → `OK ARM v1`, then `J`/`G`)
+   per `docs/assembly.md` — watch for 3.3 V jitter; confirm horn material.
+5. **FEA on the bracket** (SolidWorks Simulation): servo stall-torque
+   reaction through the ears + arm weight/payload through the pin.
 6. **Elbow + forearm** (layout A, nested): forearm plates inside the
    upper-arm gap, forearm gap ~10 mm, own spacer length, SG90 wrist end.
    Draw a section diagram first (as done for the shoulder).
-7. **Base, column (2 × 608ZZ), turret**, ballast pocket for the steel block,
-   V2 camera-mast bosses.
+7. **Base, column (2 × 608ZZ), turret**: sets `d_axis_turret`
+   (= 75 − turret top height); must match the bracket's 52 × 40 M3 pattern;
+   ballast pocket for the steel block; V2 camera-mast bosses.
 8. **Gripper** (PETG jaws, compliant tips, gear-sector mesh, MG90S).
 9. Electronics (perfboard or PCB), firmware bring-up, calibration, testing
    per `docs/testing.md`.
+
+Also to buy: M3×10 screws + M3 nuts for the servo ears (4 per MG996R), a
+4 mm steel dowel, 1 mm M4 thrust washers.
 
 ---
 
@@ -270,8 +300,9 @@ work, push after). SolidWorks lock files (`~$*`) are git-ignored.
 
 ---
 
-## 8. Working with SolidWorks from Claude (laptop)
+## 8. Working with SolidWorks from Claude
 
+### Laptop
 A SolidWorks MCP server is configured on the laptop
 (`C:\Users\hasee\Downloads\solidworks-mcp`). Notes:
 - `connect_solidworks` works. `list_open_documents` and `get_document_info`
@@ -290,10 +321,34 @@ A SolidWorks MCP server is configured on the laptop
 - Interference: `mgr = doc.InterferenceDetectionManager`,
   `val(mgr.GetInterferences)`, each item's `val(it.Components)` and
   `val(it.Volume)` (m³), then `mgr.Done()`. Ignore pairs that are all inside
-  `MG996R Servo Motor-1/` (the vendor model self-intersects).
+  `MG996R Servo Motor-*/` (the vendor model self-intersects — expect
+  exactly 32 such hits; if a run reports 0 of those, the check didn't
+  really run: rerun it).
 - **Read only** unless Haseeb asks for changes; he models the parts himself.
   Report what was checked with real numbers, and say which numbers come from
   the downloaded model vs. measurements.
+
+### New computer (Downloads\RoboArm, SolidWorks on G:)
+- The SolidWorks MCP here is Sam-Of-The-Arth/SolidWorks-MCP, cloned to
+  `C:\Users\hasee\mcp-servers\SolidWorks-MCP` (patched: logs to stderr,
+  `mcp>=1.0,<2` — 2.x removed its decorator API). Registered as `solidworks`
+  in `~/.claude.json` and in Claude Desktop's MSIX config
+  (`%LOCALAPPDATA%\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\Claude\claude_desktop_config.json`).
+  It only has sketch/extrude tools — **useless for inspection**.
+- Inspect instead with read-only pywin32 scripts against the running
+  SolidWorks (`GetActiveObject("SldWorks.Application")`). Run them with
+  `C:\Python313\python.exe` (the `python` on Git Bash's PATH lacks pywin32)
+  and **without `-I`** (pywin32 is in the user site-packages). Keep the
+  scripts in the scratchpad, not the repo.
+- Late-binding quirks here ("Member not found"): `doc.FirstFeature`,
+  `doc.GetEquationMgr`, `feat.GetSpecificFeature2`, `comp.GetModelDoc2`,
+  `face.GetSurface`. Workarounds: `doc.FeatureManager.GetFeatures(True)`;
+  get part documents from `sw.GetDocuments` by title; infer geometry from
+  `val(face.GetBox)` (a box flat in one axis = a plane; a hole shows as a
+  curved face whose box is the hole's diameter wide). Child components'
+  `Transform2` is in top-level assembly coordinates. Equation values can't
+  be read here — trust the Σ dimensions in Haseeb's screenshots or check the
+  resulting geometry.
 
 ---
 

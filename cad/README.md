@@ -53,11 +53,11 @@ change it once, re-export, and re-import into existing parts.
 | M4 pin depth in adapter | `h_pin_bore` | 10 mm |
 | MG996R case length / width | `l_servo` / `w_servo` | 40.9 / 20 mm — from the model, without ears |
 | Shaft to short / long end of case | `r_servo_short` / `r_servo_long` | 10 / `l_servo` − `r_servo_short` = 30.9 mm |
-| MG996R ear hole spacing | `l_ear_holes` / `w_ear_holes` | 51 mm along × 15 mm across — from the model |
-| Ear seating face to plate-2 outer face | `a_ear` | 8.4 mm — from MockShoulder |
+| MG996R ear hole spacing | `l_ear_holes` / `w_ear_holes` | 48.6 mm along × 10 mm across — Ø4 keyhole slots, from the model (51 × 15 was the ear corner rounds) |
+| Ear seating face to plate-2 outer face | `a_ear` | 8.2 mm — from MockShoulder (seating face includes the 0.2 mm edge round; 8.4 was wrong) |
 | Bracket window clearance | `c_win` | 0.3 mm per side — starting value, tune after a test print |
 | Bracket wall A window | `l_window` / `w_window` | `l_servo` + 2 × `c_win` = 41.5 / `w_servo` + 2 × `c_win` = 20.6 mm |
-| Gap behind wall A to plate 2 | `g_wall_a` | `a_ear` − `t_bracket` = 4.4 mm — ear screw heads sit here |
+| Gap behind wall A to plate 2 | `g_wall_a` | `a_ear` − `t_bracket` = 4.2 mm — ear screw heads sit here |
 | Plate 1 to wall B | `g_wall_b` | 1 mm — thrust washer |
 | Shoulder axis to turret face | `d_axis_turret` | 34 mm — **placeholder** until the turret is designed |
 | Bracket foot thickness / width | `t_foot` / `w_foot` | 6 / 50 mm |
