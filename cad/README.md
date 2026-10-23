@@ -51,6 +51,21 @@ change it once, re-export, and re-import into existing parts.
 | Adapter bolt offset from pin | `x_adapter_bolt` / `y_adapter_bolt` | 6 mm along the arm, ±5 mm across |
 | Plate 1 countersink (M3 flat head) | `d_csk_m3` | 6.4 mm, 90° |
 | M4 pin depth in adapter | `h_pin_bore` | 10 mm |
+| MG996R case length / width | `l_servo` / `w_servo` | 40.9 / 20 mm — from the model, without ears |
+| Shaft to short / long end of case | `r_servo_short` / `r_servo_long` | 10 / `l_servo` − `r_servo_short` = 30.9 mm |
+| MG996R ear hole spacing | `l_ear_holes` / `w_ear_holes` | 51 mm along × 15 mm across — from the model |
+| Ear seating face to plate-2 outer face | `a_ear` | 8.4 mm — from MockShoulder |
+| Bracket window clearance | `c_win` | 0.3 mm per side — starting value, tune after a test print |
+| Bracket wall A window | `l_window` / `w_window` | `l_servo` + 2 × `c_win` = 41.5 / `w_servo` + 2 × `c_win` = 20.6 mm |
+| Gap behind wall A to plate 2 | `g_wall_a` | `a_ear` − `t_bracket` = 4.4 mm — ear screw heads sit here |
+| Plate 1 to wall B | `g_wall_b` | 1 mm — thrust washer |
+| Shoulder axis to turret face | `d_axis_turret` | 34 mm — **placeholder** until the turret is designed |
+| Bracket foot thickness / width | `t_foot` / `w_foot` | 6 / 50 mm |
+| Wall A top above the axis | `h_wall_top` | 41.5 mm — long-end ear holes + 4 mm |
+| Bracket wall width (A and B) | `w_wall` | 30 mm |
+| Wall B pin boss | `t_boss_b` / `d_boss_b` | 4 mm extra thickness / Ø12 mm |
+
+Bracket layout and dimensions: `docs/shoulder_bracket.svg`.
 
 The horn adapter bolts to plate 1 (the pin-side plate at the shoulder), not plate
 2: the servo case sits 0.5 mm off plate 2 and plate 2 turns under it, so no bolt

@@ -112,7 +112,7 @@ links). Both times it was restored from git.
   reference variables defined on earlier lines, and **no `@` links**.
   Edit with a byte-level script (Python `rb`/`wb`), not a text editor that
   normalises line endings.
-- Before committing, check: 38 lines (as of now), BOM present, no `@`,
+- Before committing, check: 57 lines (as of now), BOM present, no `@`,
   no forward references. If the working copy has fewer variables than HEAD,
   it was clobbered by an export — restore with `git checkout -- cad/equations.txt`
   (after confirming it adds nothing new).
@@ -140,6 +140,12 @@ Current variables (values in mm):
 | `x_adapter_bolt`, `y_adapter_bolt` | 6, 5 | Adapter bolts relative to the pin |
 | `d_csk_m3` | 6.4 | 90° countersink for M3 flat heads in plate 1 |
 | `h_pin_bore` | 10 | M4 pin depth in the adapter |
+| `l_servo`, `w_servo`, `r_servo_short`, `r_servo_long` | 40.9, 20, 10, 30.9 | MG996R case (no ears) and shaft-to-end distances, from the model |
+| `l_ear_holes`, `w_ear_holes`, `a_ear` | 51, 15, 8.4 | Ear hole spacing; ear seating face to plate-2 outer face |
+| `c_win`, `l_window`, `w_window` | 0.3, 41.5, 20.6 | Bracket wall A window (clearance is a starting value) |
+| `g_wall_a`, `g_wall_b` | 4.4, 1 | Wall A to plate 2 gap; plate 1 to wall B (washer) |
+| `d_axis_turret`, `t_foot`, `w_foot`, `h_wall_top`, `w_wall` | 34, 6, 50, 41.5, 30 | Bracket envelope — `d_axis_turret` is a **placeholder** until the turret exists |
+| `t_boss_b`, `d_boss_b` | 4, 12 | Pin boss on wall B |
 
 ---
 

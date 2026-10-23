@@ -1,0 +1,155 @@
+<svg viewBox="0 0 1280 825" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+<style>
+  .t   { font-size: 13px; fill: #1a1a1a; }
+  .tb  { font-size: 13px; font-weight: 700; fill: #1a1a1a; }
+  .s   { font-size: 11.5px; fill: #444; }
+  .dim { font-size: 11.5px; fill: #2b6fd9; font-weight: 700; }
+  .pla { fill: #d9dde3; stroke: #5d6470; stroke-width: 1.2; }
+  .adp { fill: #bcd4f5; stroke: #2b4a7a; stroke-width: 1.4; }
+  .brk { fill: #cfe3c4; stroke: #4f7a3a; stroke-width: 1.4; }
+  .srv { fill: #f6b26b; stroke: #a35a00; stroke-width: 1.2; }
+  .hrn { fill: #6d6d6d; stroke: #222; stroke-width: 1; }
+  .stl { fill: #3d4148; stroke: #111; stroke-width: 0.8; }
+  .ins { fill: #d4a53c; stroke: #7a5a12; stroke-width: 0.8; }
+  .cut { fill: #ffffff; stroke: #2b4a7a; stroke-width: 1; }
+  .ax  { stroke: #888; stroke-width: 1; stroke-dasharray: 6,4; }
+  .hid { fill: none; stroke: #7a7a7a; stroke-width: 1; stroke-dasharray: 5,3; }
+  .lead{ stroke: #1a1a1a; stroke-width: 0.9; fill: none; }
+  .badge { fill: #1a1a1a; }
+  .bt  { font-size: 11px; font-weight: 700; fill: #fff; text-anchor: middle; }
+</style>
+<rect x="0.0" y="0.0" width="1280.0" height="825.0" class="" fill="#fff" stroke="none"/>
+<text x="24.0" y="32.0" class="tb" font-size="21">Shoulder bracket — proposed layout (drawn to scale from the MockShoulder CAD, 6 px = 1 mm)</text>
+<text x="24.0" y="52.0" class="s" >Three views of one U-shaped part. Servo dimensions are measured from the MG996R model; the foot height is a placeholder until the turret is designed.</text>
+<text x="24.0" y="72.0" class="tb" font-size="14">A — Section through the shoulder axis</text>
+<line x1="20.0" y1="345.0" x2="505.0" y2="345.0" class="ax" />
+<text x="26.0" y="339.0" class="s" >shoulder axis</text>
+<rect x="30.0" y="159.6" width="222.0" height="245.4" class="srv" />
+<text x="111.0" y="343.0" class="tb" text-anchor="middle" >MG996R</text>
+<rect x="252.0" y="306.0" width="12.0" height="78.0" class="srv" />
+<rect x="190.8" y="120.3" width="13.8" height="39.3" class="srv" />
+<rect x="190.8" y="405.0" width="13.8" height="39.3" class="srv" />
+<rect x="204.6" y="96.0" width="24.0" height="61.8" class="brk" />
+<polygon points="204.6,406.8 204.6,513.0 147.0,513.0 147.0,549.0 495.0,549.0 495.0,513.0 441.0,513.0 441.0,381.0 465.0,381.0 465.0,309.0 441.0,309.0 441.0,255.0 417.0,255.0 417.0,513.0 228.6,513.0 228.6,406.8" class="brk"/>
+<rect x="255.0" y="243.0" width="18.0" height="57.0" class="pla" />
+<rect x="255.0" y="390.0" width="18.0" height="57.0" class="pla" />
+<rect x="393.0" y="285.0" width="18.0" height="47.2" class="pla" />
+<rect x="393.0" y="357.8" width="18.0" height="47.2" class="pla" />
+<text x="264.0" y="237.0" class="s" text-anchor="middle" >plate 2</text>
+<text x="414.0" y="267.0" class="s" text-anchor="end" >plate 1</text>
+<rect x="273.0" y="267.0" width="120.0" height="156.0" class="adp" />
+<rect x="273.0" y="284.4" width="27.0" height="121.2" class="cut" />
+<rect x="300.0" y="319.5" width="15.6" height="51.0" class="cut" />
+<rect x="333.0" y="332.2" width="60.0" height="25.5" class="cut" />
+<rect x="267.0" y="318.6" width="19.2" height="52.8" class="hrn" />
+<rect x="286.2" y="285.0" width="13.8" height="120.0" class="hrn" />
+<rect x="300.0" y="322.5" width="14.1" height="45.0" class="stl" />
+<text x="345.0" y="288.0" class="s" text-anchor="middle" >adapter</text>
+<rect x="411.0" y="315.0" width="6.0" height="60.0" class="stl" opacity="0.55"/>
+<rect x="336.0" y="333.0" width="129.0" height="24.0" class="stl" />
+<line x1="228.6" y1="478.0" x2="255.0" y2="478.0" stroke="#2b6fd9" stroke-width="1.3"/>
+<polygon points="228.6,478.0 236.6,474.0 236.6,482.0" fill="#2b6fd9"/>
+<polygon points="255.0,478.0 247.0,474.0 247.0,482.0" fill="#2b6fd9"/>
+<text x="241.8" y="472.0" class="dim" text-anchor="middle" >4.4</text>
+<text x="226.6" y="497.0" class="s" text-anchor="start" >heads of the 4 ear screws live here</text>
+<line x1="513.0" y1="345.0" x2="513.0" y2="549.0" stroke="#2b6fd9" stroke-width="1.3"/>
+<polygon points="513.0,345.0 509.0,353.0 517.0,353.0" fill="#2b6fd9"/>
+<polygon points="513.0,549.0 509.0,541.0 517.0,541.0" fill="#2b6fd9"/>
+<text x="519.0" y="451.0" class="dim" text-anchor="start" >34</text>
+<text x="499.0" y="565.0" class="s" text-anchor="start" >to turret top</text>
+<circle cx="75.0" cy="129.0" r="10" class="badge"/><text x="75.0" y="133.0" class="bt">1</text>
+<line x1="75.0" y1="139.0" x2="75.0" y2="159.6" class="lead" />
+<circle cx="273.0" cy="111.0" r="10" class="badge"/><text x="273.0" y="115.0" class="bt">2</text>
+<line x1="263.0" y1="111.0" x2="228.6" y2="111.0" class="lead" />
+<circle cx="181.8" cy="465.0" r="10" class="badge"/><text x="181.8" y="469.0" class="bt">3</text>
+<line x1="181.8" y1="455.0" x2="181.8" y2="443.4" class="lead" />
+<circle cx="429.0" cy="239.0" r="10" class="badge"/><text x="429.0" y="243.0" class="bt">4</text>
+<line x1="429.0" y1="249.0" x2="429.0" y2="256.0" class="lead" />
+<circle cx="453.0" cy="239.0" r="10" class="badge"/><text x="453.0" y="243.0" class="bt">5</text>
+<line x1="453.0" y1="249.0" x2="459.0" y2="333.0" class="lead" />
+<circle cx="315.0" cy="531.0" r="10" class="badge"/><text x="315.0" y="535.0" class="bt">6</text>
+<circle cx="400.2" cy="435.0" r="10" class="badge"/><text x="400.2" y="439.0" class="bt">7</text>
+<line x1="400.2" y1="425.0" x2="414.0" y2="375.0" class="lead" />
+<text x="540.0" y="72.0" class="tb" font-size="14">B — Wall A seen from the servo side</text>
+<rect x="550.0" y="513.0" width="300.0" height="36.0" class="brk" />
+<path d="M610.0,513.0 L610.0,106.0 Q610.0,96.0 620.0,96.0 L780.0,96.0 Q790.0,96.0 790.0,106.0 L790.0,513.0 Z" class="brk"/>
+<rect x="638.2" y="157.8" width="123.6" height="249.0" class="cut" />
+<circle cx="700.0" cy="345.0" r="102.0" class="hid"/>
+<circle cx="700.0" cy="345.0" r="78.0" class="hid"/>
+<rect x="640.0" y="159.6" width="120.0" height="245.4" class="srv" />
+<rect x="646.0" y="120.3" width="108.0" height="39.3" class="srv" />
+<rect x="646.0" y="405.0" width="108.0" height="39.3" class="srv" />
+<circle cx="700.0" cy="345.0" r="39.0" fill="#e69138" stroke="#a35a00" stroke-width="1.2"/>
+<circle cx="700.0" cy="345.0" r="17.4" fill="#fff" stroke="#a35a00" stroke-width="1"/>
+<polygon points="671.5,444.8 655.0,454.3 638.5,444.8 638.5,425.8 655.0,416.3 671.5,425.8" class="stl"/>
+<circle cx="655.0" cy="435.3" r="9.6" fill="#fff" stroke="#111" stroke-width="0.8"/>
+<polygon points="761.5,444.8 745.0,454.3 728.5,444.8 728.5,425.8 745.0,416.3 761.5,425.8" class="stl"/>
+<circle cx="745.0" cy="435.3" r="9.6" fill="#fff" stroke="#111" stroke-width="0.8"/>
+<polygon points="671.5,138.8 655.0,148.3 638.5,138.8 638.5,119.8 655.0,110.3 671.5,119.8" class="stl"/>
+<circle cx="655.0" cy="129.3" r="9.6" fill="#fff" stroke="#111" stroke-width="0.8"/>
+<polygon points="761.5,138.8 745.0,148.3 728.5,138.8 728.5,119.8 745.0,110.3 761.5,119.8" class="stl"/>
+<circle cx="745.0" cy="129.3" r="9.6" fill="#fff" stroke="#111" stroke-width="0.8"/>
+<line x1="688.0" y1="345.0" x2="712.0" y2="345.0" class="ax" />
+<line x1="700.0" y1="333.0" x2="700.0" y2="357.0" class="ax" />
+<line x1="700.0" y1="453.0" x2="700.0" y2="495.0" stroke="#a35a00" stroke-width="2"/>
+<polygon points="700.0,504.0 695.0,486.0 705.0,486.0" fill="#a35a00"/>
+<text x="710.0" y="471.0" class="s" text-anchor="start" >servo cable exits at this end</text>
+<line x1="586.0" y1="157.8" x2="586.0" y2="406.8" stroke="#2b6fd9" stroke-width="1.3"/>
+<polygon points="586.0,157.8 582.0,165.8 590.0,165.8" fill="#2b6fd9"/>
+<polygon points="586.0,406.8 582.0,398.8 590.0,398.8" fill="#2b6fd9"/>
+<text x="580.0" y="286.3" class="dim" text-anchor="end" >41.5</text>
+<line x1="638.2" y1="492.0" x2="761.8" y2="492.0" stroke="#2b6fd9" stroke-width="1.3"/>
+<polygon points="638.2,492.0 646.2,488.0 646.2,496.0" fill="#2b6fd9"/>
+<polygon points="761.8,492.0 753.8,488.0 753.8,496.0" fill="#2b6fd9"/>
+<text x="700.0" y="508.0" class="dim" text-anchor="middle" >20.6</text>
+<line x1="826.0" y1="129.3" x2="826.0" y2="435.3" stroke="#2b6fd9" stroke-width="1.3"/>
+<polygon points="826.0,129.3 822.0,137.3 830.0,137.3" fill="#2b6fd9"/>
+<polygon points="826.0,435.3 822.0,427.3 830.0,427.3" fill="#2b6fd9"/>
+<text x="832.0" y="286.3" class="dim" text-anchor="start" >51</text>
+<line x1="655.0" y1="101.3" x2="745.0" y2="101.3" stroke="#2b6fd9" stroke-width="1.3"/>
+<polygon points="655.0,101.3 663.0,97.3 663.0,105.3" fill="#2b6fd9"/>
+<polygon points="745.0,101.3 737.0,97.3 737.0,105.3" fill="#2b6fd9"/>
+<text x="700.0" y="95.3" class="dim" text-anchor="middle" >15</text>
+<text x="610.0" y="567.0" class="s" text-anchor="start" >foot 50 wide, wall 30 wide</text>
+<text x="546.0" y="106.0" class="tb" text-anchor="end" >wall A</text>
+<text x="546.0" y="120.0" class="s" text-anchor="end" >(servo side)</text>
+<text x="700.0" y="581.0" class="s" text-anchor="middle" >window = case + 0.3 per side (print, then tune)</text>
+<text x="700.0" y="377.0" class="s" text-anchor="middle" opacity="0.0">plate 2 outline (behind)</text>
+<text x="880.0" y="72.0" class="tb" font-size="14">C — Foot, seen from above</text>
+<rect x="876.0" y="120.0" width="348.0" height="300.0" class="brk" />
+<rect x="933.6" y="180.0" width="24.0" height="180.0" class="brk" fill="#b5d3a6"/>
+<rect x="1146.0" y="180.0" width="24.0" height="180.0" class="brk" fill="#b5d3a6"/>
+<rect x="1170.0" y="234.0" width="24.0" height="72.0" class="brk" fill="#b5d3a6"/>
+<line x1="868.0" y1="270.0" x2="1232.0" y2="270.0" class="ax" />
+<circle cx="906.0" cy="390.0" r="12.6" class="ins"/>
+<circle cx="906.0" cy="390.0" r="6.0" fill="#fff" stroke="#7a5a12" stroke-width="0.8"/>
+<circle cx="906.0" cy="150.0" r="12.6" class="ins"/>
+<circle cx="906.0" cy="150.0" r="6.0" fill="#fff" stroke="#7a5a12" stroke-width="0.8"/>
+<circle cx="1200.0" cy="390.0" r="12.6" class="ins"/>
+<circle cx="1200.0" cy="390.0" r="6.0" fill="#fff" stroke="#7a5a12" stroke-width="0.8"/>
+<circle cx="1200.0" cy="150.0" r="12.6" class="ins"/>
+<circle cx="1200.0" cy="150.0" r="6.0" fill="#fff" stroke="#7a5a12" stroke-width="0.8"/>
+<text x="953.6" y="172.0" class="s" text-anchor="end" >wall A</text>
+<text x="1150.0" y="172.0" class="s" text-anchor="start" >wall B</text>
+<text x="1200.0" y="266.0" class="s" text-anchor="start" >pin boss</text>
+<line x1="906.0" y1="446.0" x2="1200.0" y2="446.0" stroke="#2b6fd9" stroke-width="1.3"/>
+<polygon points="906.0,446.0 914.0,442.0 914.0,450.0" fill="#2b6fd9"/>
+<polygon points="1200.0,446.0 1192.0,442.0 1192.0,450.0" fill="#2b6fd9"/>
+<text x="1053.0" y="462.0" class="dim" text-anchor="middle" >49</text>
+<line x1="860.0" y1="150.0" x2="860.0" y2="390.0" stroke="#2b6fd9" stroke-width="1.3"/>
+<polygon points="860.0,150.0 856.0,158.0 864.0,158.0" fill="#2b6fd9"/>
+<polygon points="860.0,390.0 856.0,382.0 864.0,382.0" fill="#2b6fd9"/>
+<text x="854.0" y="274.0" class="dim" text-anchor="end" >40</text>
+<text x="876.0" y="112.0" class="s" text-anchor="start" >M3 heat-set inserts (4×), screws come up from the turret</text>
+<text x="876.0" y="476.0" class="s" text-anchor="start" >foot 58 × 50 × 6 mm</text>
+<g transform="translate(24,612)"><rect width="1232" height="190" rx="8" fill="#fafafa" stroke="#bbb"/>
+<circle cx="20" cy="20" r="9" class="badge"/><text x="20" y="24" class="bt">1</text><text x="36" y="24" class="t" font-size="12.5">Servo: long end up, short end down. Case drops through the window from the outside; the ears seat on wall A's outer face</text>
+<circle cx="20" cy="42" r="9" class="badge"/><text x="20" y="46" class="bt">2</text><text x="36" y="46" class="t" font-size="12.5">Wall A, 4 mm (t_bracket), window 41.5 × 20.6; top is 41.5 above the axis so the long-end ear holes have 4 mm of material</text>
+<circle cx="20" cy="64" r="9" class="badge"/><text x="20" y="68" class="bt">3</text><text x="36" y="68" class="t" font-size="12.5">4 × M3×10, heads in the 4.4 mm gap behind wall A (installed before plate 2), plain or nyloc nut on top of each ear</text>
+<circle cx="20" cy="86" r="9" class="badge"/><text x="20" y="90" class="bt">4</text><text x="36" y="90" class="t" font-size="12.5">Wall B, 4 mm, 1 mm clear of plate 1 (washer between); rounded top R15 around the pin</text>
+<circle cx="20" cy="108" r="9" class="badge"/><text x="20" y="112" class="bt">5</text><text x="36" y="112" class="t" font-size="12.5">Pin boss: wall B is 8 mm thick here; Ø4 hole (press-fit) for the shoulder pin — see note</text>
+<circle cx="20" cy="130" r="9" class="badge"/><text x="20" y="134" class="bt">6</text><text x="36" y="134" class="t" font-size="12.5">Foot, 6 mm thick, spans both walls; fillet R4 where each wall meets it. 4 × M3 heat-set inserts</text>
+<circle cx="20" cy="152" r="9" class="badge"/><text x="20" y="156" class="bt">7</text><text x="36" y="156" class="t" font-size="12.5">Thrust washer, 1 mm, between plate 1 and wall B</text>
+<text x="24" y="182" class="s">Colours: green = bracket, orange = servo, grey = PLA plates, blue = adapter, dark = steel / horn, gold = brass insert.</text>
+</g>
+</svg>
