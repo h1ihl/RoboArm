@@ -184,6 +184,18 @@ middle** (that is where plate 1's holes are). Print with Z = 0 on the bed.
 Torque path: horn → M2 screws → adapter → M3 countersunk screws → plate 1 →
 spacers → plate 2.
 
+### `shoulder_bracket.SLDPRT` — modelled 2026-10-23 (34.9 g solid)
+One body. Origin on the shoulder axis; Front Plane = wall A's outer face
+(the ear seating face); +Z toward the arm; +Y toward the servo's long end
+(servo short end down, so its cable exits low). Wall A Z 0–4, 30 wide,
+Y −28 to +41.5, R10 top corners, window 20.6 × 41.5 (Y −10.3 to 31.2),
+4 × Ø3.2 ear holes at (±7.5, −15.05) and (±7.5, 35.95). Wall B Z 35.4–39.4
+(1 mm from plate 1), R15 top on the axis; boss Ø12 × 4 outside (to Z 43.4);
+Ø4 pin hole through boss + wall B. Foot Y −28 to −34, X ±25, Z −10.6 to 49.4;
+4 × Ø4.2 insert holes at X ±20, Z −6.6 / 45.4. R4 wall-to-foot fillets.
+Not yet: placed in MockShoulder / interference check, FEA, test print.
+`d_axis_turret` (34) is still a placeholder.
+
 ### `MockShoulder.SLDASM` — checked
 Two plates 20 mm apart (Z 0–3 and 23–26), 4 spacers, adapter, MG996R.
 Servo shaft concentric with plate 2's Ø15 hole; servo lid 0.5 mm off
