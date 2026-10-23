@@ -30,7 +30,7 @@
 "d_horn_screw_hole"= 2.2mm'Clearance for M2 self-tapper through the floor
 "r_horn_screw"= 7mm'Horn screw hole radius (14 mm square pattern)
 "d_access"= 4mm'Access bore for the M2 screws from the plate-1 side
-"d_insert_m3"= 4.2mm'Hole for M3 heat-set insert - check the insert maker spec
+"d_insert_m3"= 4mm'Hole for M3 heat-set insert - HZYUEGOU M3 inserts are 4.2 OD, hole 4.0; open to 4.1 if too tight
 "h_insert_m3"= 6mm'Insert hole depth
 "x_adapter_bolt"= 6mm'Adapter bolt offset from pin, along the arm toward its middle
 "y_adapter_bolt"= 5mm'Adapter bolt offset from pin, across the arm (+/-)

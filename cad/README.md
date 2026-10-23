@@ -47,7 +47,7 @@ change it once, re-export, and re-import into existing parts.
 | Adapter floor under horn | `t_adapter_floor` | 2 mm |
 | Horn screw hole / radius | `d_horn_screw_hole` / `r_horn_screw` | 2.2 / 7 mm (M2 self-tappers, ≤6 mm) |
 | Horn screw access bore | `d_access` | 4 mm, from the plate-1 side |
-| M3 heat-set insert hole | `d_insert_m3` / `h_insert_m3` | 4.2 / 6 mm — check the insert maker's spec |
+| M3 heat-set insert hole | `d_insert_m3` / `h_insert_m3` | 4.0 / 6 mm — for HZYUEGOU M3 × 5 inserts (4.2 mm across the knurls); open to 4.1 if too tight |
 | Adapter bolt offset from pin | `x_adapter_bolt` / `y_adapter_bolt` | 6 mm along the arm, ±5 mm across |
 | Plate 1 countersink (M3 flat head) | `d_csk_m3` | 6.4 mm, 90° |
 | M4 pin depth in adapter | `h_pin_bore` | 10 mm |
@@ -67,8 +67,9 @@ change it once, re-export, and re-import into existing parts.
 
 Bracket layout and dimensions: `docs/shoulder_bracket.svg`. As built in
 `shoulder_bracket.SLDPRT`: foot 61.8 × 50 × 6 mm (overhangs wall A by 11.6 and
-wall B by 11), 4 × Ø4.2 M3 insert holes on a 52.2 × 40 mm pattern, centres
-4.8 mm from each end of the foot (2.7 mm of plastic outside each insert);
+wall B by 11), 4 × M3 insert holes (`d_insert_m3`, 4.0 mm) on a 52.2 × 40 mm
+pattern, centres 4.8 mm from each end of the foot (2.8 mm of plastic outside
+each insert);
 R4 fillets where the walls meet the foot.
 
 The horn adapter bolts to plate 1 (the pin-side plate at the shoulder), not plate

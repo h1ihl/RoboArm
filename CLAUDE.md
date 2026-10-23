@@ -138,7 +138,7 @@ Current variables (values in mm):
 | `d_horn_screw_cb`, `h_horn_screw_cb` | 8.5, 2.6 | Recess for the horn's M3 centre-screw head |
 | `d_adapter`, `h_adapter` | 26, `w_gap` | Adapter collar |
 | `t_adapter_floor`, `d_horn_screw_hole`, `r_horn_screw`, `d_access` | 2, 2.2, 7, 4 | Horn screws (M2 self-tappers, ≤6 mm) from below |
-| `d_insert_m3`, `h_insert_m3` | 4.2, 6 | M3 heat-set insert hole — **check the insert maker's spec** |
+| `d_insert_m3`, `h_insert_m3` | 4.0, 6 | M3 heat-set insert hole. Inserts on hand: HZYUEGOU kit, M3 × 3/4/5/6/8 × **4.2 OD** — use **M3 × 5**. Hole changed 4.2 → 4.0 on 2026-10-23 (a 4.2 hole = OD gives no grip). Test one in a scrap print; open to 4.1 if too tight. Re-import into the adapter and bracket. |
 | `x_adapter_bolt`, `y_adapter_bolt` | 6, 5 | Adapter bolts relative to the pin |
 | `d_csk_m3` | 6.4 | 90° countersink for M3 flat heads in plate 1 |
 | `h_pin_bore` | 10 | M4 pin depth in the adapter |
@@ -186,7 +186,8 @@ M3×30 + plain nut (or M3×35 + nyloc). The forearm will need its own length.
 Horn pocket Ø20.2 × 4.5 (Z 15.5–20); centre-screw recess Ø8.5 × 2.6;
 pin bore Ø4.25 × 10 from Z = 0; 3 access bores Ø4 at r = 7 (angles 90°,
 −90°, 180°) stopping 2 mm below the pocket floor, then Ø2.2 through;
-2 insert holes Ø4.2 × 6 at (+6, ±5). Its **+X must point toward the arm's
+2 insert holes `d_insert_m3` × 6 at (+6, ±5) (Ø4.2 in the saved part until
+re-imported → 4.0). Its **+X must point toward the arm's
 middle** (that is where plate 1's holes are). Print with Z = 0 on the bed.
 Torque path: horn → M2 screws → adapter → M3 countersunk screws → plate 1 →
 spacers → plate 2.
@@ -202,13 +203,14 @@ One body. Origin on the shoulder axis; Front Plane = wall A's outer face
 - Wall B: Z 35.2–39.2 (after `a_ear` = 8.2 → exactly 1.0 to plate 1), R15
   top on the axis; boss Ø12 × 4 outside (to Z 43.2); Ø4 pin hole through
   boss + wall B (sized for a 4 mm press-fit dowel).
-- Foot: Y −28 to −34, X ±25, Z −11.6 to 50.2 (61.8 × 50 × 6). 4 × Ø4.2 M3
-  heat-set insert holes at X ±20, Z −6.8 / 45.4 (40 × 52.2 pattern); screws
-  come up from the turret. R4 wall-to-foot fillets. Foot extended 1 mm at
-  each end on 2026-10-23 → **2.7 mm** of plastic outside each insert (was
-  1.7). The lower holes are now dimensioned from the origin, not the foot
-  edge; Sketch5's far end is set by its 61.8 length. Still check the insert
-  maker's minimum wall. Mass 35.5 g solid.
+- Foot: Y −28 to −34, X ±25, Z −11.6 to 50.2 (61.8 × 50 × 6). 4 × M3
+  heat-set insert holes (`d_insert_m3`) at X ±20, Z −6.8 / 45.4 (40 × 52.2
+  pattern); screws come up from the turret. R4 wall-to-foot fillets. Foot
+  extended 1 mm at each end on 2026-10-23 → **2.7 mm** of plastic outside
+  each insert (was 1.7); **2.8 mm** once the holes are re-imported at 4.0
+  (the saved part still has Ø4.2). The lower holes are dimensioned from the
+  origin, not the foot edge; Sketch5's far end is set by its 61.8 length.
+  Mass 35.5 g solid.
 - `d_axis_turret` (34) is a **placeholder** — the turret sets it.
 - Not yet: FEA, test print, pin hardware decision.
 
