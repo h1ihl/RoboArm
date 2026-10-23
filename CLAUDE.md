@@ -198,14 +198,16 @@ One body. Origin on the shoulder axis; Front Plane = wall A's outer face
   Y −16.7 and +37.6; 0.33 mm beside each ear rib). 4 × Ø3.2 ear holes at
   (±5, −13.85) and (±5, +34.75) — exactly on the servo slots. Only 1.95 mm
   of wall between the lower holes and the window: watch it on the test print.
-- Wall B: Z 35.4–39.4, R15 top on the axis; boss Ø12 × 4 outside (to Z 43.4);
-  Ø4 pin hole through boss + wall B (sized for a 4 mm press-fit dowel).
-  With the corrected `a_ear` (8.2) the gap to plate 1 is **1.2**, not 1.0 —
-  the part still uses 35.4; set `a_ear` = 8.2 in the part's equations (or
-  Plane1 = 35.2) to get 1.0. Optional.
-- Foot: Y −28 to −34, X ±25, Z −10.6 to 49.4 (60 × 50 × 6). 4 × Ø4.2 M3
-  heat-set insert holes at X ±20, Z −6.6 / 45.4 (52 × 40 pattern, 4 mm from
-  each end); screws come up from the turret. R4 wall-to-foot fillets.
+- Wall B: Z 35.2–39.2 (after `a_ear` = 8.2 → exactly 1.0 to plate 1), R15
+  top on the axis; boss Ø12 × 4 outside (to Z 43.2); Ø4 pin hole through
+  boss + wall B (sized for a 4 mm press-fit dowel).
+- Foot: Y −28 to −34, X ±25, Z −10.6 to 49.2 (59.8 × 50 × 6). 4 × Ø4.2 M3
+  heat-set insert holes at X ±20, Z −6.8 / 45.4; screws come up from the
+  turret. R4 wall-to-foot fillets. **Open:** the holes are 3.8 mm from the
+  foot ends → only **1.7 mm** of plastic outside each insert (an earlier
+  "2.9 mm" claim was an arithmetic error). Fix: extend the foot ~1 mm more at
+  each end, keep the holes (→ ~2.7 mm); moving the holes inward would cut
+  the R4 fillets. Check the insert maker's minimum wall.
 - `d_axis_turret` (34) is a **placeholder** — the turret sets it.
 - Not yet: FEA, test print, pin hardware decision.
 
@@ -217,12 +219,12 @@ so assembly coords = bracket coords). Components: `MG996R Servo Motor-2`,
 bracket's Ø4 pin hole, ear seating face coincident with wall A's outer face,
 case side parallel to the window side. Stack along Z: plate 2 8.2–11.2,
 adapter 11.2–31.2, plate 1 31.2–34.2 → 4.2 mm behind wall A (ear screw heads
-get ~2.2 mm), 1.2 mm to wall B.
+get ~2.2 mm), 1.0 mm to wall B.
 Interference check: 32 hits, all inside the vendor servo model; **0 in our
 parts** (an earlier run found the two ear ribs, 4.32 mm³ each — fixed by the
-notches). **Re-check the horn mate** — the old fix (adapter–servo
-`Concentric5`, horn holes on the access bores) was in the pre-rebuild
-assembly. On the real arm the horn angle is set at assembly; the arm's zero
+notches). Horn mate re-checked after the rebuild: horn holes sit exactly on
+the adapter's access bores (0.00° off). Final check 2026-10-23: all of the
+above confirmed. On the real arm the horn angle is set at assembly; the arm's zero
 is trimmed by spline tooth choice (~14.4° steps) + `angle_offset` in
 `software/robot/config.py`.
 
@@ -247,9 +249,10 @@ after). SolidWorks lock files (`~$*`) are git-ignored.
 
 ## 6. Next steps (in order)
 
-1. **Close out the shoulder CAD:** re-check the horn mate in the rebuilt
-   MockShoulder; optionally set `a_ear` = 8.2 in the bracket (wall B gap
-   1.2 → 1.0); caliper the real servo's ear-hole centres (expect 48.6 × 10).
+1. **Close out the shoulder CAD:** extend the bracket foot ~1 mm at each end
+   so the insert holes get ~2.7 mm of edge material (see §5); caliper the
+   real servo's ear-hole centres (expect 48.6 × 10). (Horn mate and the
+   1.0 mm wall B gap are done.)
 2. **Decide the shoulder pin:** recommended a 4 mm steel dowel (drill rod /
    silver steel, ~22 mm) pressed into wall B's Ø4 hole, running in the
    adapter's Ø4.25 bore. A partially-threaded M4 bolt doesn't work cleanly:
