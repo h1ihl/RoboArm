@@ -86,7 +86,8 @@ Purchases: AliExpress order placed 2026-10-05 and **received 2026-10-22**:
 listing was rejected after a review reporting a fake, plastic-geared MG996R),
 MG90S 2-pack (Dogmang Plus), 608ZZ 2-pack, ESP32 DevKitC CH340C.
 SG90 and PSU come from the university; filament bought locally.
-**The real MG996R matches the downloaded CAD model** (Haseeb confirmed).
+**The real MG996R matches the downloaded CAD model** (Haseeb confirmed,
+caliper-verified 2026-10-23).
 
 Not yet bought: servo extension cables (wrist/gripper leads are too short),
 M2/M3/M4 screws incl. M3 countersunk (flat head) and nyloc nuts, M3 heat-set
@@ -182,9 +183,10 @@ Two plates 20 mm apart (Z 0–3 and 23–26), 4 spacers, adapter, MG996R.
 Servo shaft concentric with plate 2's Ø15 hole; servo lid 0.5 mm off
 plate 2's outer face; horn disc Z 18.5–20.8 sitting on the pocket floor.
 Interference check: **no collisions in our parts** (32 reported, all inside
-the vendor servo model). **Open:** the horn is rotated ~29.5° vs the adapter
-— add a concentric mate between an adapter screw hole and a horn hole.
-On the real arm this angle is set at assembly; the arm's zero is then
+the vendor servo model). Horn mate **fixed 2026-10-23** (adapter–servo
+`Concentric5`): horn holes now line up with the adapter's access bores
+(horn rotation matrix exact 0/±1). Re-checked: still 0 collisions in our
+parts. On the real arm this angle is set at assembly; the arm's zero is then
 trimmed by spline tooth choice (~14.4° steps) + `angle_offset` in
 `software/robot/config.py`.
 
@@ -203,15 +205,15 @@ work, push after). SolidWorks lock files (`~$*`) are git-ignored.
 
 ## 6. Next steps (in order)
 
-1. **Check the real hardware:** caliper the output boss (update `d_boss` if
-   not 13), confirm the horn type/material, and bench-test each servo on the
-   ESP32 (`PING` → `OK ARM v1`, then `J`/`G`) per `docs/assembly.md` — watch
+1. **Check the real hardware:** servo dimensions caliper-verified against
+   the CAD (done 2026-10-23); still to do: confirm the horn type/material and
+   bench-test each servo on the ESP32 (`PING` → `OK ARM v1`, then `J`/`G`) per `docs/assembly.md` — watch
    for 3.3 V jitter.
 2. **Print and test:** 2 plates, 4–8 spacers, 1 adapter (PLA, 4 perimeters,
    flat). Check the 120 mm pivot spacing with an M4 bolt (±0.2), spacer
    length, M3 fit, heat-set inserts, and the free-spin check for
    `c_fit_pivot`. Watch the plate's thin webs for cracks.
-3. **Fix the horn mate** in MockShoulder.
+3. ~~Fix the horn mate in MockShoulder~~ — done.
 4. **Shoulder bracket** (next real part, the FEA candidate): U-shape —
    wall A with a pocket for the servo body and the ear screws (ears rest on
    wall A's outer face; servo ear face is 8.4 mm from plate 2's outer face,
