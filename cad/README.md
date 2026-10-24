@@ -79,6 +79,14 @@ change it once, re-export, and re-import into existing parts.
 | Elbow mount standoffs | `h_standoff` / `d_standoff` | `g_wall_a` = 4.2 mm / 7 mm |
 | Elbow mount wall end | `e_mount` / `l_mount_back` | 5 mm past the bolt holes / 35 mm from the elbow axis toward the shoulder |
 | Elbow mount bolt grip | `l_mount_bolt` | 34.2 mm → M3×40 + nut |
+| SG90 case | `l_sg90` × `w_sg90` | 22.5 × 12.2 — GrabCAD model, **caliper** |
+| SG90 ears | `t_sg90_ear` / `l_sg90_ears` / `l_sg90_ear_holes` | 2.5 thick / 32.1 tip to tip / 27.8 hole spacing (**caliper**) |
+| SG90 shaft and top | `r_sg90_shaft` / `h_sg90_tower` / `h_sg90_spline` | 6.1 from the cable end / gear housing 8.55 above the ears' top face / spline 3.1 above that (**caliper** the first two) |
+| SG90 ear screws | `d_pilot_m2` × `h_pilot_m2` | Ø1.7 × 7 pilots in the flare face |
+| SG90 window | `l_sg90_window` × `w_sg90_window` | 23.1 × 12.8 through the servo-side prong |
+| SG90 placement | `x_sg90_centre` / `l_wrist_ext` | case centre 5.15 past the wrist axis (cable toward the elbow) / forearm end centred 16.4 past it |
+| Wrist clevis | `g_clevis` / `t_prong` / `x_clevis` | 12 gap centred on the forearm mid-plane / 3.5 pin-side prong / gap closed end at X 109 |
+| Wrist flare | `t_flare` / `x_flare` | 5.05 on the Z = 0 side (servo prong 8.55) / slot from X 109.1 |
 
 Elbow servo mount: same wall as the shoulder bracket's wall A (window, rib
 notches, ear holes, `h_wall_top` out past the elbow, servo long end outward),

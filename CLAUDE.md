@@ -44,6 +44,8 @@ docs/                          requirements, actuators, mechanical, electronics,
   arm_joint_detail.svg         early joint concept — SUPERSEDED by horn_adapter.svg
   horn_adapter.svg             current shoulder joint, to scale from the CAD
   shoulder_bracket.svg         shoulder bracket: section, wall A, foot (to scale)
+  elbow_concept.svg            elbow section + fold sweep, elbow servo mount
+  forearm.svg                  forearm part incl. clevis wrist, numbered build steps
 cad/
   README.md                    parameter table + part list (source of truth for parts)
   equations.txt                SolidWorks global variables — see §4, handle with care
@@ -79,6 +81,7 @@ Rebuild the PDF after editing the .tex:
 | Servo pocket library feature | **Skipped** | Haseeb designs servo mounts himself. |
 | Metal U-brackets (AliExpress) | **Not used** | Only a possible fallback if the printed shoulder bracket fails. |
 | Elbow layout | **Option A — nested, solid one-piece forearm** (2026-10-23) | 19 mm wide (0.5 mm each side) in the upper arm's 20 mm gap; its near face is its own horn adapter; 4 mm dowel turns in plate 2. Elbow servo sits outside plate 1. Any flare must start ≥35 mm from the elbow axis. See `docs/elbow_concept.svg`. |
+| Wrist layout | **Clevis at the forearm tip** (2026-10-23) | Wrist piece turns in a 12 mm gap centred on the forearm mid-plane (gripper stays on the arm plane); SG90 outside the Z = 0 prong (flared 5.05 → 8.55 thick), cable toward the elbow, gear housing flush with the gap, spline drives the wrist piece via the horn; 4 mm dowel in the 3.5 mm pin-side prong. Replaced an SG90 pocket design (24 mm sideways gripper offset, cantilevered SG90 output). |
 | Horn adapter | **Bolts to plate 1** (the pin-side plate at the shoulder), not plate 2 | Servo case is 0.5 mm off plate 2's outer face and plate 2 turns under it — no bolt head fits there. |
 | PCB | Considered (makerspace PCB mill), **not decided** | Perfboard is the documented default. |
 | Shoulder servo orientation | **Short end down, long end up** in the bracket | The servo cable leaves from the short end, so it exits low toward the turret; keeps the bracket's lower half compact. |
@@ -114,7 +117,7 @@ links). Both times it was restored from git.
   reference variables defined on earlier lines, and **no `@` links**.
   Edit with a byte-level script (Python `rb`/`wb`), not a text editor that
   normalises line endings.
-- Before committing, check: 79 lines (as of now), BOM present, no `@`,
+- Before committing, check: 98 lines (as of now), BOM present, no `@`,
   no forward references. If the working copy has fewer variables than HEAD,
   it was clobbered by an export — restore with `git checkout -- cad/equations.txt`
   (after confirming it adds nothing new).
@@ -158,6 +161,11 @@ Current variables (values in mm):
 | `h_dowel_fa`, `l_dowel_elbow` | 10, 13.5 | Elbow dowel: press-fit depth in the forearm (hole `d_pin`), length flush with plate 2 |
 | `r_mount_bolt`, `h_standoff`, `d_standoff` | 30, 4.2, 7 | Elbow servo mount: standoffs on the upper-arm spacer holes 30 mm toward the shoulder |
 | `e_mount`, `l_mount_back`, `l_mount_bolt` | 5, 35, 34.2 | Mount wall end past the bolts; wall end from the elbow axis; bolt grip → M3×40 + nut |
+| `l_sg90`, `w_sg90`, `t_sg90_ear`, `l_sg90_ears`, `l_sg90_ear_holes` | 22.5, 12.2, 2.5, 32.1, 27.8 | SG90 from the GrabCAD model (`cad/parts/SG90 Micro Servo/`) — **not yet calipered**; Haseeb's servo is a DFRobot DF9GMS (sheet: 22 × 12.5 × 29.5) |
+| `r_sg90_shaft`, `h_sg90_tower`, `h_sg90_spline` | 6.1, 8.55, 3.1 | Shaft to the cable end; gear-housing top above the ears' **top** face (the face that seats on the flare); spline above that |
+| `d_pilot_m2`, `h_pilot_m2` | 1.7, 7 | SG90 ear screw pilots (M2 self-tappers, chosen) |
+| `l_sg90_window`, `w_sg90_window`, `x_sg90_centre`, `l_wrist_ext` | 23.1, 12.8, 5.15, 16.4 | Window through the servo prong; case centre past the wrist axis; forearm end centre past it |
+| `g_clevis`, `t_prong`, `t_flare`, `x_flare`, `x_clevis` | 12, 3.5, 5.05, 109.1, 109 | Wrist clevis: gap, pin-side prong, flare on Z = 0 (servo prong 8.55), flare slot start, gap closed end |
 
 ---
 
@@ -201,6 +209,38 @@ re-imported → 4.0). Its **+X must point toward the arm's
 middle** (that is where plate 1's holes are). Print with Z = 0 on the bed.
 Torque path: horn → M2 screws → adapter → M3 countersunk screws → plate 1 →
 spacers → plate 2.
+
+### `forearm.SLDPRT` — elbow end done 2026-10-23 (65.05 g solid), wrist end steps written, not modelled
+Solid one piece, drawing `docs/forearm.svg`. Origin on the elbow axis, +X
+toward the wrist, Z = 0 the plate-1 (servo) face, Z = 19 the plate-2 face.
+Ø26 elbow boss (`d_adapter`: the Ø20.2 pocket would break out of a 20-deep
+bar) + 20-wide slot to X = `L2` (R10 end), both 19 thick. Pocket Ø20.2 ×
+4.0 (Z 0–4), recess Ø8.5 × 2.6 (Z 4–6.6), dowel bore Ø4.0 × 10 (Z 9–19),
+4 access bores Ø4 at r 7 (0/90/180/270°, Z 6–19) + Ø2.2 through the floor
+(Z 4–6) for M2×5 horn screws. `Wrist Axis` ref axis at X = 120. All 16
+dimensions linked; 79 globals in the saved part. Material not yet set.
+Print Z = 19 down.
+Wrist end (steps 7–12 in `docs/forearm.svg`, to model next): import the 19
+rows `l_sg90` … `x_clevis` (→ 98 globals); wrist extension slot to X 146.4
+(`l_wrist_ext`); flare slot on Z = 0 from X 109.1 (`x_flare`), 5.05 out
+(`t_flare`); clevis gap Z 3.5–15.5 from X 109 (`x_clevis`, `g_clevis`) via
+an offset plane at `t_prong`; SG90 window 23.1 × 12.8 from the flare face
+into the gap (not Through All); 2 ear pilots Ø1.7 × 7 at X 111.25/139.05;
+wrist pin hole Ø4.25 through the pin prong. Printing Z = 19 down needs
+support in the gap under the servo prong. The SG90 horn must fit inside the
+wrist piece's R10 end (gap closed end is 11 behind the axis) — trim it.
+
+SG90 model: GrabCAD "SG90 - Micro Servo 9g - Tower Pro" in
+`cad/parts/SG90 Micro Servo/` (licence unknown, like the MG996R). Haseeb's
+servo is a DFRobot DF9GMS (sheet: 22 × 12.5 × 29.5, matches within 0.5).
+From the model, in the case part's frame (Y up the shaft, shaft at X −5.15):
+case X ±11.25, Z ±6.1, bottom Y −10.55; ears Y 5.15–7.65, tips ±16.05,
+holes Ø2.2 at ±13.9 with 1.1 slots to the tip; main top Y 12.0; raised gear
+housing to Y 16.2 over X −11.25..0.24 full width + a 5.6-wide nose to 3.25;
+spline Ø4.9 to Y 19.3; cable exits the shaft end ~5 mm above the bottom.
+**Not calipered yet** — `l_sg90`, `w_sg90`, `l_sg90_ear_holes`,
+`r_sg90_shaft`, `h_sg90_tower` (8.55, ears' top face to housing top: sets
+whether the spline reaches the gap).
 
 ### `shoulder_bracket.SLDPRT` — done 2026-10-23 (35.5 g solid), checked in MockShoulder
 One body. Origin on the shoulder axis; Front Plane = wall A's outer face
@@ -291,7 +331,10 @@ after). SolidWorks lock files (`~$*`) are git-ignored.
    the elbow; mount = wall A copy whose lower end runs back to two 4.2 mm
    standoffs on the upper-arm spacer holes at 30 mm (M3×40 there). Standoffs
    around the Ø15 hole were rejected (they hit the servo case). Check the
-   two-bolt cantilever in FEA. Next: model forearm + mount, SG90 wrist end.
+   two-bolt cantilever in FEA. Forearm elbow end modelled; wrist end is a
+   clevis (§3) — model steps 7–12, caliper the SG90, then the elbow servo
+   mount, a MockElbow assembly + interference check, and the wrist piece
+   (merges with the gripper base, step 8).
 7. **Base, column (2 × 608ZZ), turret**: sets `d_axis_turret`
    (= 75 − turret top height); must match the bracket's 52 × 40 M3 pattern;
    ballast pocket for the steel block; V2 camera-mast bosses.
