@@ -71,6 +71,26 @@ change it once, re-export, and re-import into existing parts.
 | Wall B outer face | `z_wall_b_out` | `a_ear` + 2 × `t_link` + `w_gap` + `g_wall_b` + `t_bracket` = 39.2 mm |
 | Upper turret holes | `z_turret_hole` | `z_wall_b_out` + `l_foot_front` − `e_turret_hole` = 45.4 mm (lower pair mirrors about the foot centre) |
 | Wall-to-foot fillet | `r_foot_fillet` | 4 mm |
+| Forearm side clearance (elbow) | `c_side` | 0.5 mm each side, to each upper-arm plate |
+| Solid forearm width / depth | `w_forearm` / `h_forearm` | `w_gap` − 2 × `c_side` = 19 mm / `w_link` = 20 mm |
+| Elbow horn pocket depth | `h_horn_pocket_fa` | `g_horn` − `c_side` + `t_horn` = 4.0 mm (diameter: `d_horn_pocket`) |
+| Elbow dowel | `h_dowel_fa` / `l_dowel_elbow` | 10 mm deep in the forearm (press fit, hole `d_pin`) / 13.5 mm long, flush with plate 2 |
+| Elbow mount bolt holes | `r_mount_bolt` | `L1` / 4 = 30 mm from the elbow axis — the upper-arm spacer holes on the shoulder side |
+| Elbow mount standoffs | `h_standoff` / `d_standoff` | `g_wall_a` = 4.2 mm / 7 mm |
+| Elbow mount wall end | `e_mount` / `l_mount_back` | 5 mm past the bolt holes / 35 mm from the elbow axis toward the shoulder |
+| Elbow mount bolt grip | `l_mount_bolt` | 34.2 mm → M3×40 + nut |
+
+Elbow servo mount: same wall as the shoulder bracket's wall A (window, rib
+notches, ear holes, `h_wall_top` out past the elbow, servo long end outward),
+but its lower end runs back to `l_mount_back` and stands off plate 1's outer
+face on two standoffs over the spacer holes at `r_mount_bolt`. Those two
+spacer bolts become M3×40.
+
+Elbow layout (solid one-piece forearm nested in the upper arm): `docs/elbow_concept.svg`.
+The forearm reuses the shoulder adapter's horn variables (`d_horn_pocket`,
+`d_horn_screw_cb`, `h_horn_screw_cb`, `t_adapter_floor`, `d_horn_screw_hole`,
+`r_horn_screw`, `d_access`), leaving 2.4 mm of solid between the centre-screw
+recess and the dowel bore.
 
 Bracket layout and dimensions: `docs/shoulder_bracket.svg`. As built in
 `shoulder_bracket.SLDPRT`: foot 61.8 × 50 × 6 mm (overhangs wall A by 11.6 and

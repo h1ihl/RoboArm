@@ -46,7 +46,7 @@
 "a_ear"= 8.2mm'Servo ear seating face to plate-2 outer face - from MockShoulder (ear face incl. 0.2 edge round)
 "l_window"= "l_servo" + 2 * "c_win"'Wall A window length (41.5 mm)
 "w_window"= "w_servo" + 2 * "c_win"'Wall A window width (20.6 mm)
-"g_wall_a"= "a_ear" - "t_bracket"'Gap behind wall A to plate 2 (4.4 mm) - ear screw heads sit here
+"g_wall_a"= "a_ear" - "t_bracket"'Gap behind wall A to plate 2 (4.2 mm) - ear screw heads sit here
 "g_wall_b"= 1mm'Plate 1 outer face to wall B - thrust washer
 "d_axis_turret"= 34mm'Shoulder axis to turret mounting face - PLACEHOLDER until the turret is designed
 "t_foot"= 6mm'Bracket foot thickness
@@ -65,3 +65,15 @@
 "z_wall_b_out"= "a_ear" + 2 * "t_link" + "w_gap" + "g_wall_b" + "t_bracket"'Wall B outer face from wall A outer face (39.2 mm)
 "z_turret_hole"= "z_wall_b_out" + "l_foot_front" - "e_turret_hole"'Upper foot insert holes from wall A outer face (45.4 mm); lower pair mirrors about the foot centre
 "r_foot_fillet"= 4mm'Wall-to-foot fillet radius
+"c_side"= 0.5mm'Forearm running clearance to each upper-arm plate at the elbow
+"w_forearm"= "w_gap" - 2 * "c_side"'Solid forearm width along the elbow axis (19 mm)
+"h_forearm"= "w_link"'Forearm depth in the arm plane (20 mm, same as the plates)
+"h_horn_pocket_fa"= "g_horn" - "c_side" + "t_horn"'Elbow horn pocket depth from the forearm plate-1 face (4.0 mm)
+"h_dowel_fa"= 10mm'Elbow dowel depth in the forearm - press fit, hole = d_pin
+"l_dowel_elbow"= "h_dowel_fa" + "c_side" + "t_link"'Elbow dowel length, flush with plate 2 outer face (13.5 mm)
+"r_mount_bolt"= "L1" / 4'Elbow axis to the upper-arm spacer holes on the shoulder side (30 mm) - elbow servo mount bolts through these
+"h_standoff"= "g_wall_a"'Elbow mount standoffs, wall to plate 1 outer face (4.2 mm)
+"d_standoff"= 7mm'Elbow mount standoff diameter, same as the upper-arm spacers
+"e_mount"= 5mm'Elbow mount wall end past the standoff hole centres (3.4 mm plastic outside the hole)
+"l_mount_back"= "r_mount_bolt" + "e_mount"'Elbow mount wall end toward the shoulder, from the elbow axis (35 mm)
+"l_mount_bolt"= "t_bracket" + "h_standoff" + 2 * "t_link" + "w_gap"'Grip of the two spacer bolts through the elbow mount (34.2 mm) - M3x40 + nut

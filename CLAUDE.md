@@ -78,7 +78,7 @@ Rebuild the PDF after editing the .tex:
 | Gearboxes | **Not in V1** | No torque problem (SF 2.44); would eat servo travel and add backlash. Recorded as a separate V2 track. |
 | Servo pocket library feature | **Skipped** | Haseeb designs servo mounts himself. |
 | Metal U-brackets (AliExpress) | **Not used** | Only a possible fallback if the printed shoulder bracket fails. |
-| Elbow layout | **Option A — nested** (forearm plates sit inside the upper-arm gap, forearm gap ~10 mm) | Deferred; shoulder first. Means the forearm is NOT identical to the upper arm (own spacer length, own wrist end). |
+| Elbow layout | **Option A — nested, solid one-piece forearm** (2026-10-23) | 19 mm wide (0.5 mm each side) in the upper arm's 20 mm gap; its near face is its own horn adapter; 4 mm dowel turns in plate 2. Elbow servo sits outside plate 1. Any flare must start ≥35 mm from the elbow axis. See `docs/elbow_concept.svg`. |
 | Horn adapter | **Bolts to plate 1** (the pin-side plate at the shoulder), not plate 2 | Servo case is 0.5 mm off plate 2's outer face and plate 2 turns under it — no bolt head fits there. |
 | PCB | Considered (makerspace PCB mill), **not decided** | Perfboard is the documented default. |
 | Shoulder servo orientation | **Short end down, long end up** in the bracket | The servo cable leaves from the short end, so it exits low toward the turret; keeps the bracket's lower half compact. |
@@ -114,7 +114,7 @@ links). Both times it was restored from git.
   reference variables defined on earlier lines, and **no `@` links**.
   Edit with a byte-level script (Python `rb`/`wb`), not a text editor that
   normalises line endings.
-- Before committing, check: 67 lines (as of now), BOM present, no `@`,
+- Before committing, check: 79 lines (as of now), BOM present, no `@`,
   no forward references. If the working copy has fewer variables than HEAD,
   it was clobbered by an export — restore with `git checkout -- cad/equations.txt`
   (after confirming it adds nothing new).
@@ -153,6 +153,11 @@ Current variables (values in mm):
 | `l_foot_back`, `l_foot_front` | 11.6, 11 | Foot overhang behind wall A / past wall B |
 | `w_turret_holes`, `e_turret_hole` | 40, 4.8 | Turret bolt pattern across the foot; hole centre to foot end |
 | `z_wall_b_out`, `z_turret_hole` | 39.2, 45.4 | Derived: wall B outer face; upper turret holes (lower pair mirrors about the foot centre) |
+| `c_side`, `w_forearm`, `h_forearm` | 0.5, 19, 20 | Solid forearm nested in the 20 mm upper-arm gap |
+| `h_horn_pocket_fa` | 4.0 | Elbow horn pocket depth (forearm reuses the adapter's other horn variables) |
+| `h_dowel_fa`, `l_dowel_elbow` | 10, 13.5 | Elbow dowel: press-fit depth in the forearm (hole `d_pin`), length flush with plate 2 |
+| `r_mount_bolt`, `h_standoff`, `d_standoff` | 30, 4.2, 7 | Elbow servo mount: standoffs on the upper-arm spacer holes 30 mm toward the shoulder |
+| `e_mount`, `l_mount_back`, `l_mount_bolt` | 5, 35, 34.2 | Mount wall end past the bolts; wall end from the elbow axis; bolt grip → M3×40 + nut |
 
 ---
 
@@ -243,8 +248,10 @@ screws → wall B + shoulder pin (4 mm dowel recommended, see §6 step 2).
 Servo into bracket: ear screws go in from the plate-2 side (heads in the
 4.2 mm gap), nuts on top of the ears — so do it before plate 2 goes on.
 
-Machines: laptop has the repo at `C:\Users\hasee\OneDrive\Desktop\Robo Arm`
-(OneDrive) with SolidWorks and the full SolidWorks MCP server; a PC had a
+Machines: laptop has the repo at **`D:\RoboArm`** (internal HDD, moved off
+OneDrive on 2026-10-23 after OneDrive silently deleted the `docs/`,
+`firmware/`, `software/`, `calculations/` and `tools/` folders — restored
+from git) with SolidWorks and the full SolidWorks MCP server; a PC had a
 plain clone at `Desktop\RoboArm`. Since 2026-10-22 there is also a new
 computer with the repo at `C:\Users\hasee\Downloads\RoboArm` and
 SolidWorks 2026 SP3.2 **running from the external drive `G:`** (Samsung SSD,
@@ -278,9 +285,13 @@ after). SolidWorks lock files (`~$*`) are git-ignored.
    per `docs/assembly.md` — watch for 3.3 V jitter; confirm horn material.
 5. **FEA on the bracket** (SolidWorks Simulation): servo stall-torque
    reaction through the ears + arm weight/payload through the pin.
-6. **Elbow + forearm** (layout A, nested): forearm plates inside the
-   upper-arm gap, forearm gap ~10 mm, own spacer length, SG90 wrist end.
-   Draw a section diagram first (as done for the shoulder).
+6. **Elbow + forearm** (layout A, solid one-piece forearm, see
+   `docs/elbow_concept.svg`; variables `c_side` … `l_dowel_elbow` added).
+   Elbow servo mount decided 2026-10-23: servo long end points out past
+   the elbow; mount = wall A copy whose lower end runs back to two 4.2 mm
+   standoffs on the upper-arm spacer holes at 30 mm (M3×40 there). Standoffs
+   around the Ø15 hole were rejected (they hit the servo case). Check the
+   two-bolt cantilever in FEA. Next: model forearm + mount, SG90 wrist end.
 7. **Base, column (2 × 608ZZ), turret**: sets `d_axis_turret`
    (= 75 − turret top height); must match the bracket's 52 × 40 M3 pattern;
    ballast pocket for the steel block; V2 camera-mast bosses.
