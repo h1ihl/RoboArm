@@ -32,7 +32,7 @@
   <circle cx="120" cy="170" r="10" class="hid"/>
   <g class="hid"><circle cx="155" cy="170" r="10"/><circle cx="85" cy="170" r="10"/><circle cx="120" cy="135" r="10"/><circle cx="120" cy="205" r="10"/></g>
   <g class="cut"><circle cx="155" cy="170" r="5.5"/><circle cx="85" cy="170" r="5.5"/><circle cx="120" cy="135" r="5.5"/><circle cx="120" cy="205" r="5.5"/></g>
-  <!-- flare: slot X 109.1..136.4 centres, R10 -->
+  <!-- flare: slot X 109.03..136.45 centres, R10 -->
   <path d="M665.5,120 L802,120 A50,50 0 0 1 802,220 L665.5,220 A50,50 0 0 1 665.5,120 Z" class="fl"/>
   <!-- clevis gap closed end at X 109 (hidden) -->
   <line x1="665" y1="120" x2="665" y2="220" class="hid"/>
@@ -51,7 +51,7 @@
   <text x="420" y="278" class="dim" text-anchor="middle">L2 = 120 (wrist axis = SG90 shaft)</text>
   <line x1="720" y1="262" x2="852" y2="262" stroke="#2b6fd9" stroke-width="1.2"/>
   <polygon points="852,262 844,258 844,266" fill="#2b6fd9"/>
-  <text x="786" y="278" class="dim" text-anchor="middle">end at X 146.4</text>
+  <text x="786" y="278" class="dim" text-anchor="middle">end at X 146.45</text>
 
   <circle cx="872" cy="132" r="10" class="badge"/><text x="872" y="136" class="bt">7</text><line class="lead" x1="863" y1="137" x2="846" y2="150"/>
   <circle cx="630" cy="104" r="10" class="badge"/><text x="630" y="108" class="bt">8</text><line class="lead" x1="638" y1="110" x2="672" y2="124"/>
@@ -126,10 +126,10 @@
       <text x="16" y="104"><tspan font-weight="700">5</tspan>  4 access bores Ø4 at r 7, 13 deep from Z = 19</text>
       <text x="16" y="124"><tspan font-weight="700">6</tspan>  4 × Ø2.2 through the 2 mm floor (M2 × 5)</text>
       <text x="16" y="148" fill="#4f7a3a">Green dashed = wrist piece (next part), orange dashed = SG90</text>
-      <text x="460" y="24"><tspan font-weight="700">7</tspan>  Wrist extension: slot from the wrist axis, 16.4 long, 19 thick</text>
-      <text x="460" y="44"><tspan font-weight="700">8</tspan>  Flare: slot from X 109.1 to the end centre, 5.05 out of the Z = 0 face</text>
+      <text x="460" y="24"><tspan font-weight="700">7</tspan>  Wrist extension: slot from the wrist axis, 16.45 long, 19 thick</text>
+      <text x="460" y="44"><tspan font-weight="700">8</tspan>  Flare: slot from X 109.03 to the end centre, 5.05 out of the Z = 0 face</text>
       <text x="460" y="64"><tspan font-weight="700">9</tspan>  Clevis gap 12 (Z 3.5 to 15.5), from X 109 out through the tip</text>
-      <text x="460" y="84"><tspan font-weight="700">10</tspan> SG90 window 23.1 × 12.8 through the servo prong</text>
+      <text x="460" y="84"><tspan font-weight="700">10</tspan> SG90 window 23.15 × 12.8 through the servo prong</text>
       <text x="460" y="104"><tspan font-weight="700">11</tspan> 2 ear-screw pilots Ø1.7 × 7 from the flare face, 27.8 apart</text>
       <text x="460" y="124"><tspan font-weight="700">12</tspan> Pin hole Ø4.25 through the pin-side prong (4 mm dowel)</text>
       <text x="460" y="148">Print Z = 19 down; the gap needs support under the servo prong</text>

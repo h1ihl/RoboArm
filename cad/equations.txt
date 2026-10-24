@@ -77,22 +77,22 @@
 "e_mount"= 5mm'Elbow mount wall end past the standoff hole centres (3.4 mm plastic outside the hole)
 "l_mount_back"= "r_mount_bolt" + "e_mount"'Elbow mount wall end toward the shoulder, from the elbow axis (35 mm)
 "l_mount_bolt"= "t_bracket" + "h_standoff" + 2 * "t_link" + "w_gap"'Grip of the two spacer bolts through the elbow mount (34.2 mm) - M3x40 + nut
-"l_sg90"= 22.5mm'SG90 case length without ears - GrabCAD model, CALIPER (DFRobot DF9GMS sheet says 22)
-"w_sg90"= 12.2mm'SG90 case width - GrabCAD model, CALIPER (sheet says 12.5)
-"t_sg90_ear"= 2.5mm'SG90 ear thickness - GrabCAD model
-"l_sg90_ears"= 32.1mm'SG90 ear tip to tip - GrabCAD model
-"l_sg90_ear_holes"= 27.8mm'SG90 ear hole spacing, centre to centre - GrabCAD model, CALIPER
-"r_sg90_shaft"= 6.1mm'SG90 shaft axis to the nearer case end (the cable end) - GrabCAD model, CALIPER
-"h_sg90_tower"= 8.55mm'SG90 top of the raised gear housing above the top face of the ears - GrabCAD model, CALIPER
+"l_sg90"= 22.55mm'SG90 case length without ears - DF9GMS 2026-10-24, chosen by Haseeb (calipered 22.65-22.85; model 22.5)
+"w_sg90"= 12.2mm'SG90 case width - kept at the model value by Haseeb 2026-10-24 (calipered 11.92)
+"t_sg90_ear"= 2.5mm'SG90 ear thickness - calipered DF9GMS 2026-10-24, matches model
+"l_sg90_ears"= 32.29mm'SG90 ear tip to tip - calipered DF9GMS 2026-10-24 (model 32.1)
+"l_sg90_ear_holes"= 27.8mm'SG90 ear hole spacing, centre to centre - calipered DF9GMS 2026-10-24, matches model
+"r_sg90_shaft"= 6.1mm'SG90 shaft axis to the case end face the cable leaves from - calipered DF9GMS 2026-10-24, matches model
+"h_sg90_tower"= 8.55mm'SG90 top of the raised gear housing above the top face of the ears - calipered DF9GMS 2026-10-24, matches model
 "h_sg90_spline"= 3.1mm'SG90 spline height above the raised gear housing - GrabCAD model
 "d_pilot_m2"= 1.7mm'Pilot hole for M2 self-tappers into PLA (SG90 ear screws) - chosen, test on a print
 "h_pilot_m2"= 7mm'Pilot hole depth for the SG90 ear screws
-"l_sg90_window"= "l_sg90" + 2 * "c_win"'SG90 window through the servo-side prong (23.1 mm)
+"l_sg90_window"= "l_sg90" + 2 * "c_win"'SG90 window through the servo-side prong (23.15 mm)
 "w_sg90_window"= "w_sg90" + 2 * "c_win"'SG90 window width (12.8 mm)
-"x_sg90_centre"= "l_sg90" / 2 - "r_sg90_shaft"'SG90 case centre past the wrist axis, toward the forearm tip (5.15 mm) - cable end toward the elbow
-"l_wrist_ext"= "l_sg90" - "r_sg90_shaft"'Forearm round-end centre past the wrist axis = far end of the SG90 case (16.4 mm)
+"x_sg90_centre"= "l_sg90" / 2 - "r_sg90_shaft"'SG90 case centre past the wrist axis, toward the forearm tip (5.175 mm) - cable end toward the elbow
+"l_wrist_ext"= "l_sg90" - "r_sg90_shaft"'Forearm round-end centre past the wrist axis = far end of the SG90 case (16.45 mm)
 "g_clevis"= 12mm'Wrist clevis gap, centred on the forearm mid-plane
 "t_prong"= ( "w_forearm" - "g_clevis" ) / 2'Clevis prong thickness before the flare (3.5 mm) - the pin-side prong stays this
 "t_flare"= "h_sg90_tower" - "t_prong"'Wrist flare on the Z = 0 side (5.05 mm) - SG90 ears seat on it, gear housing ends flush with the gap; servo-side prong 8.55
-"x_flare"= "L2" + "x_sg90_centre" - "l_sg90_ears" / 2'Flare slot first centre, at the elbow-side SG90 ear tip (109.1 mm)
+"x_flare"= "L2" + "x_sg90_centre" - "l_sg90_ears" / 2'Flare slot first centre, at the elbow-side SG90 ear tip (109.03 mm)
 "x_clevis"= "L2" - "h_forearm" / 2 - 1mm'Clevis gap closed end, 1 mm behind the R10 end of the wrist piece (109 mm)

@@ -1,7 +1,7 @@
 # CLAUDE.md — Desk Arm project handoff
 
 Read this first. It records what has been decided, what exists, how to work
-in this repo, and what comes next. Last updated 2026-10-23.
+in this repo, and what comes next. Last updated 2026-10-24.
 
 The owner is Haseeb (GitHub `h1ihl`), an engineering student at the
 University of Calgary, with access to the Schulich makerspace (3D printers,
@@ -161,11 +161,11 @@ Current variables (values in mm):
 | `h_dowel_fa`, `l_dowel_elbow` | 10, 13.5 | Elbow dowel: press-fit depth in the forearm (hole `d_pin`), length flush with plate 2 |
 | `r_mount_bolt`, `h_standoff`, `d_standoff` | 30, 4.2, 7 | Elbow servo mount: standoffs on the upper-arm spacer holes 30 mm toward the shoulder |
 | `e_mount`, `l_mount_back`, `l_mount_bolt` | 5, 35, 34.2 | Mount wall end past the bolts; wall end from the elbow axis; bolt grip → M3×40 + nut |
-| `l_sg90`, `w_sg90`, `t_sg90_ear`, `l_sg90_ears`, `l_sg90_ear_holes` | 22.5, 12.2, 2.5, 32.1, 27.8 | SG90 from the GrabCAD model (`cad/parts/SG90 Micro Servo/`) — **not yet calipered**; Haseeb's servo is a DFRobot DF9GMS (sheet: 22 × 12.5 × 29.5) |
+| `l_sg90`, `w_sg90`, `t_sg90_ear`, `l_sg90_ears`, `l_sg90_ear_holes` | 22.55, 12.2, 2.5, 32.29, 27.8 | Haseeb's DFRobot DF9GMS, calipered 2026-10-24. Length 22.55 and width 12.2 are **his chosen values** (calipered 22.65–22.85 × 11.92); ears, holes, thickness match the GrabCAD model (`cad/parts/SG90 Micro Servo/`) |
 | `r_sg90_shaft`, `h_sg90_tower`, `h_sg90_spline` | 6.1, 8.55, 3.1 | Shaft to the cable end; gear-housing top above the ears' **top** face (the face that seats on the flare); spline above that |
 | `d_pilot_m2`, `h_pilot_m2` | 1.7, 7 | SG90 ear screw pilots (M2 self-tappers, chosen) |
-| `l_sg90_window`, `w_sg90_window`, `x_sg90_centre`, `l_wrist_ext` | 23.1, 12.8, 5.15, 16.4 | Window through the servo prong; case centre past the wrist axis; forearm end centre past it |
-| `g_clevis`, `t_prong`, `t_flare`, `x_flare`, `x_clevis` | 12, 3.5, 5.05, 109.1, 109 | Wrist clevis: gap, pin-side prong, flare on Z = 0 (servo prong 8.55), flare slot start, gap closed end |
+| `l_sg90_window`, `w_sg90_window`, `x_sg90_centre`, `l_wrist_ext` | 23.15, 12.8, 5.18, 16.45 | Window through the servo prong; case centre past the wrist axis; forearm end centre past it |
+| `g_clevis`, `t_prong`, `t_flare`, `x_flare`, `x_clevis` | 12, 3.5, 5.05, 109.03, 109 | Wrist clevis: gap, pin-side prong, flare on Z = 0 (servo prong 8.55), flare slot start, gap closed end |
 
 ---
 
@@ -210,25 +210,29 @@ middle** (that is where plate 1's holes are). Print with Z = 0 on the bed.
 Torque path: horn → M2 screws → adapter → M3 countersunk screws → plate 1 →
 spacers → plate 2.
 
-### `forearm.SLDPRT` — elbow end done 2026-10-23 (65.05 g solid), wrist end steps written, not modelled
+### `forearm.SLDPRT` — done 2026-10-24 (64.45 g solid), checked
 Solid one piece, drawing `docs/forearm.svg`. Origin on the elbow axis, +X
 toward the wrist, Z = 0 the plate-1 (servo) face, Z = 19 the plate-2 face.
-Ø26 elbow boss (`d_adapter`: the Ø20.2 pocket would break out of a 20-deep
-bar) + 20-wide slot to X = `L2` (R10 end), both 19 thick. Pocket Ø20.2 ×
-4.0 (Z 0–4), recess Ø8.5 × 2.6 (Z 4–6.6), dowel bore Ø4.0 × 10 (Z 9–19),
-4 access bores Ø4 at r 7 (0/90/180/270°, Z 6–19) + Ø2.2 through the floor
-(Z 4–6) for M2×5 horn screws. `Wrist Axis` ref axis at X = 120. All 16
-dimensions linked; 79 globals in the saved part. Material not yet set.
-Print Z = 19 down.
-Wrist end (steps 7–12 in `docs/forearm.svg`, to model next): import the 19
-rows `l_sg90` … `x_clevis` (→ 98 globals); wrist extension slot to X 146.4
-(`l_wrist_ext`); flare slot on Z = 0 from X 109.1 (`x_flare`), 5.05 out
-(`t_flare`); clevis gap Z 3.5–15.5 from X 109 (`x_clevis`, `g_clevis`) via
-an offset plane at `t_prong`; SG90 window 23.1 × 12.8 from the flare face
-into the gap (not Through All); 2 ear pilots Ø1.7 × 7 at X 111.25/139.05;
-wrist pin hole Ø4.25 through the pin prong. Printing Z = 19 down needs
-support in the gap under the servo prong. The SG90 horn must fit inside the
-wrist piece's R10 end (gap closed end is 11 behind the axis) — trim it.
+One body; 98 globals imported (the 2026-10-24 SG90 values).
+- **Elbow end** (steps 1–6): Ø26 boss (`d_adapter`: the Ø20.2 pocket would
+  break out of a 20-deep bar) + 20-wide bar, 19 thick. Pocket Ø20.2 × 4.0
+  (Z 0–4), recess Ø8.5 × 2.6 (Z 4–6.6), dowel bore Ø4.0 × 10 (Z 9–19),
+  4 access bores Ø4 at r 7 (0/90/180/270°, Z 6–19) + Ø2.2 through the floor
+  (Z 4–6) for M2×5 horn screws. `Wrist Axis` ref axis at X = 120.
+- **Wrist end** (steps 7–12), all checked against the variables:
+  extension to X 146.45 (R10 end centred at 136.45); flare on the Z = 0
+  side to Z −5.05, from X 99.03 (slot centre 109.03) to the tip; clevis gap
+  Z 3.5–15.5 from X 109 out through the tip (servo prong 8.55, pin prong
+  3.5); SG90 window X 113.6–136.75 × Y ±6.4 (23.15 × 12.8), Z −5.05 → 3.5
+  into the gap; ear pilots Ø1.7 × 7 at X 111.28 / 139.08 (from Z −5.05);
+  wrist pin hole Ø4.25 on X 120 through the pin prong (Z 15.5–19).
+- Thin spots: ~1.47 mm between each ear pilot and the window end (set by
+  the SG90's own ear-hole position — drive the M2 screws gently); 3.6 mm
+  from the window corners to the R10 tip. The window is only ~0.15 mm per
+  side on the real 22.65–22.85 case (modelled 22.55) — check on the print.
+- Material not yet set. Print Z = 19 down; the gap needs support under the
+  servo prong. The SG90 horn must fit inside the wrist piece's R10 end (gap
+  closed end is 11 behind the axis) — trim it.
 
 SG90 model: GrabCAD "SG90 - Micro Servo 9g - Tower Pro" in
 `cad/parts/SG90 Micro Servo/` (licence unknown, like the MG996R). Haseeb's
@@ -238,9 +242,12 @@ case X ±11.25, Z ±6.1, bottom Y −10.55; ears Y 5.15–7.65, tips ±16.05,
 holes Ø2.2 at ±13.9 with 1.1 slots to the tip; main top Y 12.0; raised gear
 housing to Y 16.2 over X −11.25..0.24 full width + a 5.6-wide nose to 3.25;
 spline Ø4.9 to Y 19.3; cable exits the shaft end ~5 mm above the bottom.
-**Not calipered yet** — `l_sg90`, `w_sg90`, `l_sg90_ear_holes`,
-`r_sg90_shaft`, `h_sg90_tower` (8.55, ears' top face to housing top: sets
-whether the spline reaches the gap).
+**Calipered 2026-10-24** (DF9GMS): `h_sg90_tower` 8.55, `r_sg90_shaft` 6.1
+(spline centre to the cable-exit face), `l_sg90_ear_holes` 27.8,
+`t_sg90_ear` 2.5 all match the model; ears 32.29 tip to tip. Case measured
+22.65–22.85 × 11.92 — Haseeb chose to model it as 22.55 × 12.2. Note the
+window is then 23.15 long: only ~0.15 mm per side on a 22.85 case — check
+the fit on the test print.
 
 ### `shoulder_bracket.SLDPRT` — done 2026-10-23 (35.5 g solid), checked in MockShoulder
 One body. Origin on the shoulder axis; Front Plane = wall A's outer face
@@ -331,12 +338,17 @@ after). SolidWorks lock files (`~$*`) are git-ignored.
    the elbow; mount = wall A copy whose lower end runs back to two 4.2 mm
    standoffs on the upper-arm spacer holes at 30 mm (M3×40 there). Standoffs
    around the Ø15 hole were rejected (they hit the servo case). Check the
-   two-bolt cantilever in FEA. Forearm elbow end modelled; wrist end is a
-   clevis (§3) — model steps 7–12, caliper the SG90, then the elbow servo
-   mount, a MockElbow assembly + interference check, and the wrist piece
-   (merges with the gripper base, step 8).
+   two-bolt cantilever in FEA. **Forearm done 2026-10-24** (both ends,
+   SG90 calipered). Next, in order:
+   a. **Elbow servo mount** part (variables `r_mount_bolt` … `l_mount_bolt`
+      already in `equations.txt`).
+   b. **MockElbow** assembly: upper-arm plates + spacers, forearm, mount,
+      MG996R, elbow dowel; interference check through the fold sweep.
+   c. **Wrist piece** (turns in the 12 mm clevis gap on the Ø4.25 pin,
+      driven by the SG90 horn; trim the horn to the R10 end) — merges with
+      the gripper base (step 8).
 7. **Base, column (2 × 608ZZ), turret**: sets `d_axis_turret`
-   (= 75 − turret top height); must match the bracket's 52 × 40 M3 pattern;
+   (= 75 − turret top height); must match the bracket's 52.2 × 40 M3 pattern;
    ballast pocket for the steel block; V2 camera-mast bosses.
 8. **Gripper** (PETG jaws, compliant tips, gear-sector mesh, MG90S).
 9. Electronics (perfboard or PCB), firmware bring-up, calibration, testing
@@ -369,7 +381,9 @@ Also to buy: M3×10 screws + M3 nuts for the servo ears (4 per MG996R), a
 
 ### Laptop
 A SolidWorks MCP server is configured on the laptop
-(`C:\Users\hasee\Downloads\solidworks-mcp`). Notes:
+(`C:\Users\hasee\Downloads\solidworks-mcp`) — identified 2026-10-24 as
+[alisamsam/solidworks-mcp](https://github.com/alisamsam/solidworks-mcp)
+(same four tools). Notes:
 - `connect_solidworks` works. `list_open_documents` and `get_document_info`
   **error** — use `execute_python` instead (`sw` and `doc` are provided).
 - In that Python, many COM members come back as **values, not callables**
@@ -400,6 +414,16 @@ A SolidWorks MCP server is configured on the laptop
   in `~/.claude.json` and in Claude Desktop's MSIX config
   (`%LOCALAPPDATA%\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\Claude\claude_desktop_config.json`).
   It only has sketch/extrude tools — **useless for inspection**.
+- The laptop's full server (alisamsam/solidworks-mcp, with `execute_python`)
+  is cloned to `C:\Users\hasee\mcp-servers\alisamsam-solidworks-mcp` and
+  was reviewed 2026-10-24 (no network calls; the repo's `.env` belongs to an
+  unrelated LLM script and is not read by the server; logs to a file).
+  **Not registered or run yet** — Claude Code's permission check blocked
+  running downloaded code; it needs Haseeb's go-ahead. To use it: register
+  it as `solidworks-full` in `~/.claude.json` with command
+  `C:\Python313\python.exe`, args `-m solidworks_mcp.server`, and
+  `PYTHONPATH` = the clone folder (it uses relative imports); `mcp` 1.30
+  and `pywin32` are already installed. Then restart Claude Code.
 - Inspect instead with read-only pywin32 scripts against the running
   SolidWorks (`GetActiveObject("SldWorks.Application")`). Run them with
   `C:\Python313\python.exe` (the `python` on Git Bash's PATH lacks pywin32)
