@@ -55,3 +55,13 @@
 "w_foot"= 50mm'Bracket foot width across the walls
 "t_boss_b"= 4mm'Extra thickness of the pin boss on the outside of wall B
 "d_boss_b"= 12mm'Pin boss diameter on wall B
+"r_wall_corner"= 10mm'Wall A top corner radius
+"l_notch"= 6.4mm'Ear rib notch length past each end of the wall A window - from the model
+"w_notch"= 1.66mm'Ear rib notch width (1.0 rib + 0.33 each side)
+"l_foot_back"= 11.6mm'Bracket foot overhang behind wall A outer face
+"l_foot_front"= 11mm'Bracket foot overhang past wall B outer face
+"w_turret_holes"= 40mm'Turret bolt pattern across the foot (X)
+"e_turret_hole"= 4.8mm'Foot insert hole centre to foot end (2.8 mm plastic with d_insert_m3 = 4.0)
+"z_wall_b_out"= "a_ear" + 2 * "t_link" + "w_gap" + "g_wall_b" + "t_bracket"'Wall B outer face from wall A outer face (39.2 mm)
+"z_turret_hole"= "z_wall_b_out" + "l_foot_front" - "e_turret_hole"'Upper foot insert holes from wall A outer face (45.4 mm); lower pair mirrors about the foot centre
+"r_foot_fillet"= 4mm'Wall-to-foot fillet radius

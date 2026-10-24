@@ -114,7 +114,7 @@ links). Both times it was restored from git.
   reference variables defined on earlier lines, and **no `@` links**.
   Edit with a byte-level script (Python `rb`/`wb`), not a text editor that
   normalises line endings.
-- Before committing, check: 57 lines (as of now), BOM present, no `@`,
+- Before committing, check: 67 lines (as of now), BOM present, no `@`,
   no forward references. If the working copy has fewer variables than HEAD,
   it was clobbered by an export — restore with `git checkout -- cad/equations.txt`
   (after confirming it adds nothing new).
@@ -148,6 +148,11 @@ Current variables (values in mm):
 | `g_wall_a`, `g_wall_b` | 4.2, 1 | Wall A to plate 2 gap; plate 1 to wall B (washer) |
 | `d_axis_turret`, `t_foot`, `w_foot`, `h_wall_top`, `w_wall` | 34, 6, 50, 41.5, 30 | Bracket envelope — `d_axis_turret` is a **placeholder** until the turret exists |
 | `t_boss_b`, `d_boss_b` | 4, 12 | Pin boss on wall B |
+| `r_wall_corner`, `r_foot_fillet` | 10, 4 | Wall A top corners; wall-to-foot fillets |
+| `l_notch`, `w_notch` | 6.4, 1.66 | Ear rib notches past each end of the wall A window |
+| `l_foot_back`, `l_foot_front` | 11.6, 11 | Foot overhang behind wall A / past wall B |
+| `w_turret_holes`, `e_turret_hole` | 40, 4.8 | Turret bolt pattern across the foot; hole centre to foot end |
+| `z_wall_b_out`, `z_turret_hole` | 39.2, 45.4 | Derived: wall B outer face; upper turret holes (lower pair mirrors about the foot centre) |
 
 ---
 

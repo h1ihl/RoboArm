@@ -64,6 +64,13 @@ change it once, re-export, and re-import into existing parts.
 | Wall A top above the axis | `h_wall_top` | 41.5 mm — long-end ear holes + 4 mm |
 | Bracket wall width (A and B) | `w_wall` | 30 mm |
 | Wall B pin boss | `t_boss_b` / `d_boss_b` | 4 mm extra thickness / Ø12 mm |
+| Wall A top corner radius | `r_wall_corner` | 10 mm |
+| Ear rib notches in wall A | `l_notch` / `w_notch` | 6.4 mm past each window end / 1.66 mm wide (1.0 rib + 0.33 each side) |
+| Foot overhang | `l_foot_back` / `l_foot_front` | 11.6 mm behind wall A / 11 mm past wall B |
+| Turret bolt pattern | `w_turret_holes` / `e_turret_hole` | 40 mm across / hole centre 4.8 mm from each foot end |
+| Wall B outer face | `z_wall_b_out` | `a_ear` + 2 × `t_link` + `w_gap` + `g_wall_b` + `t_bracket` = 39.2 mm |
+| Upper turret holes | `z_turret_hole` | `z_wall_b_out` + `l_foot_front` − `e_turret_hole` = 45.4 mm (lower pair mirrors about the foot centre) |
+| Wall-to-foot fillet | `r_foot_fillet` | 4 mm |
 
 Bracket layout and dimensions: `docs/shoulder_bracket.svg`. As built in
 `shoulder_bracket.SLDPRT`: foot 61.8 × 50 × 6 mm (overhangs wall A by 11.6 and
